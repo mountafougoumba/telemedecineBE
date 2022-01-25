@@ -1,2 +1,2 @@
 # telemedecineBE
-Back End dof  telemedecine Entities,webservices,DAO,DTO
+Back End of  telemedecine Entities,webservices,DAO,DTO
