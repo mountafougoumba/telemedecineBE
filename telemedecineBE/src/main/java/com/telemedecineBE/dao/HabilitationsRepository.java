@@ -10,6 +10,6 @@ import com.telemedecineBE.entities.Habilitations;
 public interface HabilitationsRepository 
 					extends JpaRepository<Habilitations, Serializable>{
 	
-	public List<Habilitations> findByNameHabilitation(String nomhabilitation);
+	//public List<Habilitations> findByNameHabilitation(String nomhabilitation);
 
 }
