@@ -19,7 +19,7 @@ public interface PatientRepository
 	
 	public Patient findByEmail(String email);
 	
-	//public Patient findByAntecedantMedicaux(List<AntecedentMedicaux> antecedantList);
+	public Patient findByAntecedantMedicaux(List<AntecedentMedicaux> antecedantList);
 	
 	public List<Patient> findByDatePremiereConsultation(Date date);
 	
