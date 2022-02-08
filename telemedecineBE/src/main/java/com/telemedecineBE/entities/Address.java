@@ -12,6 +12,9 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 
 @Entity
 @Table(name = "ADDRESS")
@@ -31,6 +34,13 @@ public class Address implements Serializable{
 	@Column(name = "LINE",length = 255)
 	private String line;
 	
+	 @OneToOne(cascade = CascadeType.ALL, mappedBy = "address")
+	 @JsonManagedReference
+	 private Patient patient;
+	 
+	 @OneToOne(cascade = CascadeType.ALL,mappedBy = "address")
+	 @JsonBackReference
+	 private Doctor doctor;
 	
 	public Address() {
 		super();
@@ -48,6 +58,26 @@ public class Address implements Serializable{
 	
 	public Long getId() {
 		return id;
+	}
+
+
+	public Patient getPatient() {
+		return patient;
+	}
+
+
+	public Doctor getDoctor() {
+		return doctor;
+	}
+
+
+	public void setDoctor(Doctor doctor) {
+		this.doctor = doctor;
+	}
+
+
+	public void setPatient(Patient patient) {
+		this.patient = patient;
 	}
 
 

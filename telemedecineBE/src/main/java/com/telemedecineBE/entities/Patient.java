@@ -13,7 +13,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table(name = "PATIENT")
@@ -69,8 +72,21 @@ public class Patient implements Serializable{
     @JoinColumn(name = "assuranceID")
     private Insurance assurance;
 	
+	@OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "addressID")
+    @JsonBackReference
+	private Address address;
+	
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "userID")
+	@JsonBackReference
+	private User user;
 	
 	
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "appointmentID")
+	@JsonBackReference
+	private Appointment appointment;
 
 	public Patient() {
 		super();
@@ -81,6 +97,18 @@ public class Patient implements Serializable{
 	public Integer getId() {
 		return id;
 	}
+	
+	public User getUser() {
+		return user;
+	}
+
+
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+
 
 	public void setId(Integer id) {
 		this.id = id;
@@ -93,6 +121,18 @@ public class Patient implements Serializable{
 	public void setFname(String fname) {
 		Fname = fname;
 	}
+
+	public Address getAddress() {
+		return address;
+	}
+
+
+
+	public void setAddress(Address address) {
+		this.address = address;
+	}
+
+
 
 	public String getLname() {
 		return Lname;

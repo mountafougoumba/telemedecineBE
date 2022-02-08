@@ -13,7 +13,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.JoinColumn;
 
 
@@ -36,6 +40,10 @@ public class User implements Serializable{
 		            inverseJoinColumns = @JoinColumn(name = "habilitationID")
 		    )
 		private List<Habilitations> habilitations = new ArrayList<>();
+		@OneToOne(cascade = CascadeType.ALL,mappedBy = "user")
+		@JsonBackReference
+		private Patient patient;
+		
 	  	private String lname;
 	    private String fname;
 	    private String userName;
@@ -99,6 +107,15 @@ public class User implements Serializable{
 
 		public void setId(Integer id) {
 			this.id = id;
+		}
+		
+
+		public Patient getPatient() {
+			return patient;
+		}
+
+		public void setPatient(Patient patient) {
+			this.patient = patient;
 		}
 
 		public List<Habilitations> getHabilitations() {
