@@ -29,9 +29,6 @@ public class AntecedentMedicaux implements Serializable {
 	private String dateSurvenance;
 	private Integer state = 1;
 
-	@ManyToMany(mappedBy = "antecedantMedicaux")
-	private List<Patient> patients = new ArrayList<>();
-
 	public AntecedentMedicaux() {
 		super();
 	}
@@ -84,13 +81,6 @@ public class AntecedentMedicaux implements Serializable {
 		this.state = state;
 	}
 
-	public List<Patient> getPatients() {
-		return patients;
-	}
-
-	public void setPatients(List<Patient> patients) {
-		this.patients = patients;
-	}
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
@@ -101,8 +91,7 @@ public class AntecedentMedicaux implements Serializable {
 	@Override
 	public String toString() {
 		return "AntecedentMedicaux [id=" + id + ", nomAntecedant=" + nom + ", medecinTraitant="
-				+ medecinTraitant + ", dateSurvenance=" + dateSurvenance + ", state=" + state + ", patients=" + patients
-				+ "]";
+				+ medecinTraitant + ", dateSurvenance=" + dateSurvenance + ", state=" + state + "]";
 	}
 
 }

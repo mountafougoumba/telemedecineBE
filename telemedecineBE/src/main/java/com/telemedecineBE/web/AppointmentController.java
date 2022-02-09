@@ -39,14 +39,14 @@ public class AppointmentController {
     }
 
     // Create appointment
-    @PostMapping("/insurance")
+    @PostMapping("/appointment")
     Appointment create(@RequestBody Appointment app){
         appRep.save(app);
         return app;
     }
 
     // Update appointment
-    @PutMapping("/insurance/id={id}")
+    @PutMapping("/appointment/id={id}")
     Optional<Appointment> update(@PathVariable String id)
     {
         Optional<Appointment> app = appRep.findById(id);
