@@ -76,7 +76,7 @@ public class AntecedentMedicauxController {
     void deleteMedicationById(@PathVariable(value = "id") Integer id){
         Boolean exists = antecedentMedicauxRepository.existsById(id);
         if(!exists){
-            throw new IllegalStateException("Medication with id " + id + "does not exist.");
+            throw new IllegalStateException("Medication with id " + id + " does not exist.");
         }
         System.out.println("deleteMedicationById");
         antecedentMedicauxRepository.deleteById(id);
@@ -88,7 +88,8 @@ public class AntecedentMedicauxController {
             @PathVariable(value = "name") String name,
             @RequestParam(required = false)String nom,
             @RequestParam(required = false)String medecinTraitant,
-            @RequestParam(required = false)String dateSurvenance
+            @RequestParam(required = false)String dateSurvenance,
+            @RequestParam(required = false)Integer state
     ){
         Boolean exists = antecedentMedicauxRepository.existsByNom(name);
         if(!exists){
@@ -107,6 +108,11 @@ public class AntecedentMedicauxController {
         if(dateSurvenance != null && dateSurvenance.length() > 0 && antecedentMedicaux.getDateSurvenance() != dateSurvenance){
             antecedentMedicaux.setDateSurvenance(dateSurvenance);
         }
+
+        if(state != null && state > 0 && state != antecedentMedicaux.getState()){
+            antecedentMedicaux.setState(state);
+        }
+
         System.out.println("updateMedication\n" + antecedentMedicaux);
         antecedentMedicauxRepository.save(antecedentMedicaux);
         return antecedentMedicaux;
@@ -118,7 +124,8 @@ public class AntecedentMedicauxController {
             @PathVariable(value = "id") Integer id,
             @RequestParam(required = false)String nom,
             @RequestParam(required = false)String medecinTraitant,
-            @RequestParam(required = false)String dateSurvenance
+            @RequestParam(required = false)String dateSurvenance,
+            @RequestParam(required = false)Integer state
     ){
         Boolean exists = antecedentMedicauxRepository.existsById(id);
         if(!exists){
@@ -137,6 +144,11 @@ public class AntecedentMedicauxController {
         if(dateSurvenance != null && dateSurvenance.length() > 0 && antecedentMedicaux.getDateSurvenance() != dateSurvenance){
             antecedentMedicaux.setDateSurvenance(dateSurvenance);
         }
+
+        if(state != null && state > 0 && state != antecedentMedicaux.getState()){
+            antecedentMedicaux.setState(state);
+        }
+
         System.out.println("updateMedication\n" + antecedentMedicaux);
         antecedentMedicauxRepository.save(antecedentMedicaux);
         return antecedentMedicaux;
