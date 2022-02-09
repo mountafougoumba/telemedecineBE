@@ -21,8 +21,11 @@ public class AntecedentMedicaux implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
-	private String nomAntecedant;
+	//name
+	private String nom;
+	//doctor that prescribed
 	private String medecinTraitant;
+	//date prescribed
 	private String dateSurvenance;
 	private Integer state = 1;
 
@@ -33,10 +36,10 @@ public class AntecedentMedicaux implements Serializable {
 		super();
 	}
 
-	public AntecedentMedicaux(String nomAntecedant, String medecinTraitant,
-			String dateSurvenance) {
+	public AntecedentMedicaux(String nom, String medecinTraitant,
+							  String dateSurvenance) {
 		super();
-		this.nomAntecedant = nomAntecedant;
+		this.nom = nom;
 		this.medecinTraitant = medecinTraitant;
 		this.dateSurvenance = dateSurvenance;
 	}
@@ -49,12 +52,12 @@ public class AntecedentMedicaux implements Serializable {
 		this.id = id;
 	}
 
-	public String getNomAntecedant() {
-		return nomAntecedant;
+	public String getNom() {
+		return nom;
 	}
 
-	public void setNomAntecedant(String nomAntecedant) {
-		this.nomAntecedant = nomAntecedant;
+	public void setNom(String nomAntecedant) {
+		this.nom = nomAntecedant;
 	}
 
 	public String getMedecinTraitant() {
@@ -97,7 +100,7 @@ public class AntecedentMedicaux implements Serializable {
 
 	@Override
 	public String toString() {
-		return "AntecedentMedicaux [id=" + id + ", nomAntecedant=" + nomAntecedant + ", medecinTraitant="
+		return "AntecedentMedicaux [id=" + id + ", nomAntecedant=" + nom + ", medecinTraitant="
 				+ medecinTraitant + ", dateSurvenance=" + dateSurvenance + ", state=" + state + ", patients=" + patients
 				+ "]";
 	}
