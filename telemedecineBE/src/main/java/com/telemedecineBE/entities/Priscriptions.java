@@ -37,6 +37,11 @@ public class Priscriptions implements Serializable{
 		this.description = description;
 	}
 
+	public Priscriptions(String dosages, String description) {
+		this.dosages = dosages;
+		this.description = description;
+	}
+
 	public Integer getId() {
 		return id;
 	}
