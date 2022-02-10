@@ -22,27 +22,27 @@ public class Habilitations implements Serializable{
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     
-    private String namehabilitation;
+    private String nameHabilitation;
     private Integer state = 1;
     @ManyToMany(mappedBy = "habilitations")
     private List<User> users = new ArrayList<>();
     
 	@Override
 	public String toString() {
-		return  "ID="+id + "Name=" + namehabilitation + " State=" + state;
+		return  "ID="+id + "Name=" + nameHabilitation + " State=" + state;
 	}
 	public Habilitations() {
 		super();
 	}
 	public Habilitations( String nomHabilitation) {
 		super();
-		this.namehabilitation = nomHabilitation;
+		this.nameHabilitation = nomHabilitation;
 	}
-	public String getNomHabilitation() {
-		return namehabilitation;
+	public String getNameHabilitation() {
+		return nameHabilitation;
 	}
-	public void setNomHabilitation(String nomHabilitation) {
-		this.namehabilitation = nomHabilitation;
+	public void setNameHabilitation(String nomHabilitation) {
+		this.nameHabilitation = nomHabilitation;
 	}
 	public Integer getState() {
 		return state;
@@ -53,7 +53,7 @@ public class Habilitations implements Serializable{
 	
 	public Habilitations( String nomHabilitation, Integer state) {
 		super();
-		this.namehabilitation = nomHabilitation;
+		this.nameHabilitation = nomHabilitation;
 		this.state = state;
 	}
 	
