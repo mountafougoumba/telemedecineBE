@@ -14,10 +14,15 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 
 
 @Entity
 @Table(name = "ADDRESS")
+@AllArgsConstructor
+@NoArgsConstructor
 public class Address implements Serializable{
 
 	/**
@@ -28,39 +33,33 @@ public class Address implements Serializable{
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private Long id;
 	
-	@Column(name = "ZIPECODE")
+	@Column(name = "ZIPCODE")
 	private String zipcode;
 	
 	@Column(name = "LINE",length = 255)
 	private String line;
-	
-	 @OneToOne(cascade = CascadeType.ALL, mappedBy = "address")
-	 @JsonManagedReference
+
+	//These caused the 415 error.
+	/* @OneToOne(cascade = CascadeType.ALL, mappedBy = "address")
+	 @JsonBackReference(value="patient-address")
 	 private Patient patient;
-	 
+
 	 @OneToOne(cascade = CascadeType.ALL,mappedBy = "address")
-	 @JsonBackReference
-	 private Doctor doctor;
-	
-	public Address() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
+	 @JsonBackReference(value="doctor-address")
+	 private Doctor doctor; */
 
-
-	public Address(Long id, String zipcode, String line) {
+	public Address(String zipcode, String line) {
 		super();
-		this.id = id;
 		this.zipcode = zipcode;
 		this.line = line;
 	}
 
-	
+
 	public Long getId() {
 		return id;
 	}
 
-
+/*
 	public Patient getPatient() {
 		return patient;
 	}
@@ -79,7 +78,7 @@ public class Address implements Serializable{
 	public void setPatient(Patient patient) {
 		this.patient = patient;
 	}
-
+*/
 
 	public void setId(Long id) {
 		this.id = id;
@@ -108,13 +107,13 @@ public class Address implements Serializable{
 		return serialVersionUID;
 	}
 
-	
-	
-	
+
+
+
 	@Override
 	public String toString() {
 		return "Address [id=" + id + ", zipcode=" + zipcode + ", line=" + line + "]";
 	}
-	
 
-}
+
+	}
