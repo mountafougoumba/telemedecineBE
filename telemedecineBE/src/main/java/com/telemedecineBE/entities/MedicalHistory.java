@@ -14,7 +14,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "ANTECEDANT_MEDICAUX")
 
-public class AntecedentMedicaux implements Serializable {
+public class MedicalHistory implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -29,11 +29,11 @@ public class AntecedentMedicaux implements Serializable {
 	@ManyToMany(mappedBy = "antecedantMedicaux")
 	private List<Patient> patients = new ArrayList<>();
 
-	public AntecedentMedicaux() {
+	public MedicalHistory() {
 		super();
 	}
 
-	public AntecedentMedicaux(String nomAntecedant, String medecinTraitant,
+	public MedicalHistory(String nomAntecedant, String medecinTraitant,
 			String dateSurvenance) {
 		super();
 		this.nomAntecedant = nomAntecedant;

@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.telemedecineBE.entities.AntecedentMedicaux;
+import com.telemedecineBE.entities.MedicalHistory;
 import com.telemedecineBE.entities.Patient;
 
 public interface PatientRepository 

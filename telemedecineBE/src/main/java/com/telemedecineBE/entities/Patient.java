@@ -43,7 +43,7 @@ public class Patient implements Serializable{
 	
 	public Patient(Integer id, String fname, String lname, String dateNaissance, String tel, String email, String bP,
 			boolean estAssure, String datePremiereConsultation, Integer state,
-			List<AntecedentMedicaux> antecedantMedicaux, Insurance assurance) {
+			List<MedicalHistory> antecedantMedicaux, Insurance assurance) {
 		super();
 		this.id = id;
 		Fname = fname;
@@ -66,7 +66,7 @@ public class Patient implements Serializable{
 	            joinColumns = @JoinColumn(name = "patientID"),
 	            inverseJoinColumns = @JoinColumn(name = "AntecedantMedicauxID")
 	    )
-	    private List<AntecedentMedicaux> antecedantMedicaux = new ArrayList<>();
+	    private List<MedicalHistory> antecedantMedicaux = new ArrayList<>();
 	
 	@ManyToOne
     @JoinColumn(name = "assuranceID")
@@ -198,11 +198,11 @@ public class Patient implements Serializable{
 		this.state = state;
 	}
 
-	public List<AntecedentMedicaux> getAntecedantMedicaux() {
+	public List<MedicalHistory> getAntecedantMedicaux() {
 		return antecedantMedicaux;
 	}
 
-	public void setAntecedantMedicaux(List<AntecedentMedicaux> antecedantMedicaux) {
+	public void setAntecedantMedicaux(List<MedicalHistory> antecedantMedicaux) {
 		this.antecedantMedicaux = antecedantMedicaux;
 	}
 
