@@ -2,12 +2,10 @@ package com.telemedecineBE.web;
 
 import com.telemedecineBE.dao.AppointmentRepository;
 import com.telemedecineBE.entities.Appointment;
-import net.bytebuddy.implementation.bytecode.Throw;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-
-import javax.swing.text.html.Option;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,13 +18,13 @@ public class AppointmentController {
         this.appRep = ar;
     }
 
-    @GetMapping("/appointments")
+    @GetMapping("/appointment")
     List<Appointment> getAllAppointments(){
         return appRep.findAll();
     }
 
     @GetMapping("/appointment/id={id}")
-    Optional<Appointment> get(@PathVariable String id)
+    Optional<Appointment> get(@PathVariable Integer id)
     {
         return appRep.findById(id);
     }
@@ -47,13 +45,21 @@ public class AppointmentController {
 
     // Update appointment
     @PutMapping("/appointment/id={id}")
-    Optional<Appointment> update(@PathVariable String id)
+    Appointment update(
+            @PathVariable String id,
+            @RequestParam(required = false) Date dateRDV,
+            @RequestParam(required = false)String heureRDV,
+            @RequestParam(required = false)String objectRDV
+    )
     {
-        Optional<Appointment> app = appRep.findById(id);
-        if(app.isPresent())
+        Optional<Appointment> fetchedAppointment = appRep.findById(id);
+        if(fetchedAppointment.isPresent())
         {
-            // Save updated data
-            return app;
+            Appointment updatedAppointment = fetchedAppointment.get();
+            updatedAppointment.setDateRDV(dateRDV);
+            updatedAppointment.setHeureRDV(heureRDV);
+            updatedAppointment.setObjectRDV(objectRDV);
+            return updatedAppointment;
         } else {
             throw new IllegalStateException("Appointment with id " + id + " does not exist.");
         }
