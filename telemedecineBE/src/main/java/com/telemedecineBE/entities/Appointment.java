@@ -38,6 +38,10 @@ public class Appointment implements Serializable {
 		this.objectRDV = objectRDV;
 	}
 
+	public Appointment() {
+
+	}
+
 	public Integer getId() {
 		return id;
 	}
