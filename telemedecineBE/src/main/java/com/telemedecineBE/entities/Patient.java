@@ -16,10 +16,13 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "PATIENT")
+@Getter
+@Setter
 public class Patient implements Serializable{
 	
 	/**
@@ -36,14 +39,14 @@ public class Patient implements Serializable{
     private String tel;
     private String email;
     private String BP;
-    private boolean estAssure;
+    private Boolean estAssure;
     private String datePremiereConsultation;
     private Integer state=1;
     
 	
 	public Patient(Integer id, String fname, String lname, String dateNaissance, String tel, String email, String bP,
-			boolean estAssure, String datePremiereConsultation, Integer state,
-			List<AntecedentMedicaux> antecedantMedicaux, Insurance assurance) {
+				   Boolean estAssure, String datePremiereConsultation, Integer state,
+				   List<MedicalHistory> antecedantMedicaux, Insurance insurance) {
 		super();
 		this.id = id;
 		Fname = fname;
@@ -56,9 +59,36 @@ public class Patient implements Serializable{
 		this.datePremiereConsultation = datePremiereConsultation;
 		this.state = state;
 		this.antecedantMedicaux = antecedantMedicaux;
-		this.assurance = assurance;
+		this.insurance = insurance;
 	}
 
+
+	public Patient(String fname, String lname,
+				   String dateNaissance, String tel,
+				   String email, Boolean estAssure,
+				   Address address) {
+		Fname = fname;
+		Lname = lname;
+		this.dateNaissance = dateNaissance;
+		this.tel = tel;
+		this.email = email;
+		this.estAssure = estAssure;
+		this.address = address;
+	}
+
+	public Patient(String fname, String lname,
+				   String dateNaissance, String tel,
+				   String email, Boolean estAssure,
+				   Insurance insurance, Address address) {
+		Fname = fname;
+		Lname = lname;
+		this.dateNaissance = dateNaissance;
+		this.tel = tel;
+		this.email = email;
+		this.estAssure = estAssure;
+		this.insurance = insurance;
+		this.address = address;
+	}
 
 	@ManyToMany(cascade = {
 	        CascadeType.PERSIST, CascadeType.MERGE})
@@ -66,26 +96,28 @@ public class Patient implements Serializable{
 	            joinColumns = @JoinColumn(name = "patientID"),
 	            inverseJoinColumns = @JoinColumn(name = "AntecedantMedicauxID")
 	    )
-	    private List<AntecedentMedicaux> antecedantMedicaux = new ArrayList<>();
+	    private List<MedicalHistory> antecedantMedicaux = new ArrayList<>();
 	
-	@ManyToOne
-    @JoinColumn(name = "assuranceID")
-    private Insurance assurance;
+	@ManyToOne(cascade =  {
+			CascadeType.PERSIST, CascadeType.MERGE
+	})
+    @JoinColumn(name = "insuranceID")
+    private Insurance insurance;
 	
 	@OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "addressID")
-    @JsonBackReference
+   // @JsonBackReference
 	private Address address;
 	
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "userID")
-	@JsonBackReference
+	//@JsonBackReference
 	private User user;
 	
 	
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "appointmentID")
-	@JsonBackReference
+	//@JsonBackReference
 	private Appointment appointment;
 
 	public Patient() {
@@ -198,20 +230,24 @@ public class Patient implements Serializable{
 		this.state = state;
 	}
 
-	public List<AntecedentMedicaux> getAntecedantMedicaux() {
+	public List<MedicalHistory> getAntecedantMedicaux() {
 		return antecedantMedicaux;
 	}
 
-	public void setAntecedantMedicaux(List<AntecedentMedicaux> antecedantMedicaux) {
+	public void setAntecedantMedicaux(List<MedicalHistory> antecedantMedicaux) {
 		this.antecedantMedicaux = antecedantMedicaux;
 	}
 
-	public Insurance getAssurance() {
-		return assurance;
+	public void addAntecedantMedicaux(MedicalHistory medicalHistory){
+		this.antecedantMedicaux.add(medicalHistory);
 	}
 
-	public void setAssurance(Insurance assurance) {
-		this.assurance = assurance;
+	public Insurance getInsurance() {
+		return insurance;
+	}
+
+	public void setInsurance(Insurance assurance) {
+		this.insurance = assurance;
 	}
 
 	
@@ -226,7 +262,7 @@ public class Patient implements Serializable{
 		return "Patient [id=" + id + ", Fname=" + Fname + ", Lname=" + Lname + ", dateNaissance=" + dateNaissance
 				+ ", tel=" + tel + ", email=" + email + ", BP=" + BP + ", estAssure=" + estAssure
 				+ ", datePremiereConsultation=" + datePremiereConsultation + ", state=" + state
-				+ ", antecedantMedicaux=" + antecedantMedicaux + ", assurance=" + assurance + "]";
+				+ ", antecedantMedicaux=" + antecedantMedicaux + ", insurance=" + insurance + "]";
 	}
 
 	

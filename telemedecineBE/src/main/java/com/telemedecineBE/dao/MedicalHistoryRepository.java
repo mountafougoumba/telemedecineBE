@@ -1,16 +1,16 @@
 package com.telemedecineBE.dao;
 
-import com.telemedecineBE.entities.AntecedentMedicaux;
+import com.telemedecineBE.entities.MedicalHistory;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import javax.transaction.Transactional;
 import java.io.Serializable;
 
 @Transactional
-public interface AntecedentMedicauxRepository extends JpaRepository<AntecedentMedicaux, Serializable> {
-    public AntecedentMedicaux findByNom(String name);
+public interface MedicalHistoryRepository extends JpaRepository<MedicalHistory, Serializable> {
+    public MedicalHistory findByNom(String name);
 
-    public AntecedentMedicaux findById(Integer id);
+    public MedicalHistory findById(Integer id);
 
     public Boolean existsByNom(String name);
 
