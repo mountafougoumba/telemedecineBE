@@ -11,17 +11,10 @@ import java.util.List;
 public class PatientController {
 
 	private final PatientRepository patientRepository;
-	private final AddressController addressController;
-	private final MedicalHistoryController medicalHistoryController;
-	private final InsuranceController insuranceController;
 
 	@Autowired
-	public PatientController(PatientRepository patientRepository, AddressController addressController,
-							 InsuranceController insuranceController, MedicalHistoryController medicalHistoryController) {
+	public PatientController(PatientRepository patientRepository) {
 		this.patientRepository = patientRepository;
-		this.addressController = addressController;
-		this.medicalHistoryController = medicalHistoryController;
-		this.insuranceController = insuranceController;
 	}
 
 	@GetMapping("/patient")
@@ -111,12 +104,7 @@ public class PatientController {
 							  @RequestParam(required = false) String BP,
 							  @RequestParam(required = false) Boolean estAssure,
 							  @RequestParam(required = false) String datePremiereConsultation,
-							  @RequestParam(required = false) Integer state,
-							  @RequestParam(required = false) @RequestBody MedicalHistory medicalHistory,
-							  @RequestParam(required = false) @RequestBody Insurance insurance,
-							  @RequestParam(required = false) @RequestBody Address address/*,
-							  @RequestParam(required = false) @RequestBody Appointment appointment,
-							  @RequestParam(required = false) @RequestBody User user */){
+							  @RequestParam(required = false) Integer state){
 		Boolean exists = patientRepository.existsById(id);
 		if(!exists){
 			throw new IllegalStateException(
@@ -126,27 +114,27 @@ public class PatientController {
 
 		Patient patient = patientRepository.findById(id);
 
-		if(fname != null && fname.length() > 0 && patient.getFname() != fname){
+		if(fname != null && fname.length() > 0 && !patient.getFname().equals(fname)){
 			patient.setFname(fname);
 		}
 
-		if(lname != null && lname.length() > 0 && patient.getLname() != lname){
+		if(lname != null && lname.length() > 0 && !patient.getLname().equals(lname)){
 			patient.setLname(lname);
 		}
 
-		if(dateNaissance != null && dateNaissance.length() > 0 && dateNaissance != patient.getDateNaissance()){
+		if(dateNaissance != null && dateNaissance.length() > 0 && !patient.getDateNaissance().equals(dateNaissance)){
 			patient.setDateNaissance(dateNaissance);
 		}
 
-		if(tel != null && tel.length() > 0 && patient.getTel() != tel){
+		if(tel != null && tel.length() > 0 && !patient.getTel().equals(tel)){
 			patient.setTel(tel);
 		}
 
-		if(email != null && email.length() > 0  && patient.getEmail() != email){
+		if(email != null && email.length() > 0  && !patient.getEmail().equals(email)){
 			patient.setEmail(email);
 		}
 
-		if(BP != null && BP.length() > 0 && patient.getBP() != BP){
+		if(BP != null && BP.length() > 0 && !patient.getBP().equals(BP)){
 			patient.setBP(BP);
 		}
 
@@ -154,46 +142,13 @@ public class PatientController {
 			patient.setEstAssure(estAssure);
 		}
 
-		if(datePremiereConsultation != null && datePremiereConsultation.length() > 0 && patient.getDatePremiereConsultation() != datePremiereConsultation){
+		if(datePremiereConsultation != null && datePremiereConsultation.length() > 0 && !patient.getDatePremiereConsultation().equals(datePremiereConsultation)){
 			patient.setDatePremiereConsultation(datePremiereConsultation);
 		}
 
-		if(state != null & patient.getState() != state){
+		if(state != null & !patient.getState().equals(state)){
 			patient.setState(state);
 		}
-
-		if(medicalHistory != null && !patient.getAntecedantMedicaux().contains(medicalHistory)){
-			try{
-				medicalHistoryController.updateMedicalHistoryByName(medicalHistory.getNom(), medicalHistory.getNom(),
-						medicalHistory.getMedecinTraitant(), medicalHistory.getDateSurvenance(), medicalHistory.getState());
-			} catch(IllegalStateException e){
-				System.out.println("Medical condition does not exist");
-			}
-		}
-
-		if(insurance != null && !patient.getInsurance().equals(insurance)){
-			try{
-				insuranceController.updateInsuranceByName(insurance.getNom(), insurance.getNom(),
-						insurance.getCouvreToutSoins(), insurance.getCouvreFraisConsultation(), insurance.getState(),
-						insurance.getPercentageAssurance());
-			} catch(IllegalStateException e){
-				System.out.println("Insurance does not exist");
-			}
-		}
-
-		if(address != null && !patient.getAddress().equals(address)){
-			addressController.updateAddressByLine(address.getLine(), address.getZipcode(), address.getLine());
-		}
-
-		/*
-		if(appointment != null && !patient.getAppointment().equals(appointment)){
-			//add
-		}
-
-		if(user != null & !patient.getUser().equals(user)){
-			//add
-		}
-		*/
 
 		System.out.println(patient);
 		patientRepository.save(patient);
@@ -210,12 +165,7 @@ public class PatientController {
 							  @RequestParam(required = false) String BP,
 							  @RequestParam(required = false) Boolean estAssure,
 							  @RequestParam(required = false) String datePremiereConsultation,
-							  @RequestParam(required = false) Integer state,
-							  @RequestParam(required = false) @RequestBody MedicalHistory medicalHistory,
-							  @RequestParam(required = false) @RequestBody Insurance insurance,
-							  @RequestParam(required = false) @RequestBody Address address/*,
-							  @RequestParam(required = false) @RequestBody Appointment appointment,
-							  @RequestParam(required = false) @RequestBody User user */){
+							  @RequestParam(required = false) Integer state){
 		Boolean exists = patientRepository.existsByEmail(emailOriginal);
 		if(!exists){
 			throw new IllegalStateException(
@@ -225,27 +175,28 @@ public class PatientController {
 
 		Patient patient = patientRepository.findByEmail(emailOriginal);
 
-		if(fname != null && fname.length() > 0 && patient.getFname() != fname){
+
+		if(fname != null && fname.length() > 0 && !patient.getFname().equals(fname)){
 			patient.setFname(fname);
 		}
 
-		if(lname != null && lname.length() > 0 && patient.getLname() != lname){
+		if(lname != null && lname.length() > 0 && !patient.getLname().equals(lname)){
 			patient.setLname(lname);
 		}
 
-		if(dateNaissance != null && dateNaissance.length() > 0 && dateNaissance != patient.getDateNaissance()){
+		if(dateNaissance != null && dateNaissance.length() > 0 && !patient.getDateNaissance().equals(dateNaissance)){
 			patient.setDateNaissance(dateNaissance);
 		}
 
-		if(tel != null && tel.length() > 0 && patient.getTel() != tel){
+		if(tel != null && tel.length() > 0 && !patient.getTel().equals(tel)){
 			patient.setTel(tel);
 		}
 
-		if(email != null && email.length() > 0  && patient.getEmail() != email){
+		if(email != null && email.length() > 0  && !patient.getEmail().equals(email)){
 			patient.setEmail(email);
 		}
 
-		if(BP != null && BP.length() > 0 && patient.getBP() != BP){
+		if(BP != null && BP.length() > 0 && !patient.getBP().equals(BP)){
 			patient.setBP(BP);
 		}
 
@@ -253,36 +204,13 @@ public class PatientController {
 			patient.setEstAssure(estAssure);
 		}
 
-		if(datePremiereConsultation != null && datePremiereConsultation.length() > 0 && patient.getDatePremiereConsultation() != datePremiereConsultation){
+		if(datePremiereConsultation != null && datePremiereConsultation.length() > 0 && !patient.getDatePremiereConsultation().equals(datePremiereConsultation)){
 			patient.setDatePremiereConsultation(datePremiereConsultation);
 		}
 
-		if(state != null & patient.getState() != state){
+		if(state != null & !patient.getState().equals(state)){
 			patient.setState(state);
 		}
-
-		if(medicalHistory != null && !patient.getAntecedantMedicaux().contains(medicalHistory)){
-			System.out.println("updatePatientMedicalHistory");
-		}
-
-		if(insurance != null && !patient.getInsurance().equals(insurance)){
-			System.out.println("updatePatientInsurance");
-		}
-
-		if(address != null && !patient.getAddress().equals(address)){
-			System.out.println("updatePatientAddress");
-			patient.setAddress(address);
-		}
-
-		/*
-		if(appointment != null && !patient.getAppointment().equals(appointment)){
-			//add
-		}
-
-		if(user != null & !patient.getUser().equals(user)){
-			//add
-		}
-		*/
 
 		System.out.println(patient);
 		patientRepository.save(patient);
@@ -299,12 +227,7 @@ public class PatientController {
 								 @RequestParam(required = false) String BP,
 								 @RequestParam(required = false) Boolean estAssure,
 								 @RequestParam(required = false) String datePremiereConsultation,
-							     @RequestParam(required = false) Integer state,
-								 @RequestParam(required = false) @RequestBody MedicalHistory medicalHistory,
-								 @RequestParam(required = false) @RequestBody Insurance insurance,
-								 @RequestParam(required = false) @RequestBody Address address/*,
-							  @RequestParam(required = false) @RequestBody Appointment appointment,
-							  @RequestParam(required = false) @RequestBody User user */){
+							     @RequestParam(required = false) Integer state){
 		Boolean exists = patientRepository.existsByTel(phone);
 		if(!exists){
 			throw new IllegalStateException(
@@ -314,27 +237,27 @@ public class PatientController {
 
 		Patient patient = patientRepository.findByTel(phone);
 
-		if(fname != null && fname.length() > 0 && patient.getFname() != fname){
+		if(fname != null && fname.length() > 0 && !patient.getFname().equals(fname)){
 			patient.setFname(fname);
 		}
 
-		if(lname != null && lname.length() > 0 && patient.getLname() != lname){
+		if(lname != null && lname.length() > 0 && !patient.getLname().equals(lname)){
 			patient.setLname(lname);
 		}
 
-		if(dateNaissance != null && dateNaissance.length() > 0 && dateNaissance != patient.getDateNaissance()){
+		if(dateNaissance != null && dateNaissance.length() > 0 && !patient.getDateNaissance().equals(dateNaissance)){
 			patient.setDateNaissance(dateNaissance);
 		}
 
-		if(tel != null && tel.length() > 0 && patient.getTel() != tel){
+		if(tel != null && tel.length() > 0 && !patient.getTel().equals(tel)){
 			patient.setTel(tel);
 		}
 
-		if(email != null && email.length() > 0  && patient.getEmail() != email){
+		if(email != null && email.length() > 0  && !patient.getEmail().equals(email)){
 			patient.setEmail(email);
 		}
 
-		if(BP != null && BP.length() > 0 && patient.getBP() != BP){
+		if(BP != null && BP.length() > 0 && !patient.getBP().equals(BP)){
 			patient.setBP(BP);
 		}
 
@@ -342,46 +265,13 @@ public class PatientController {
 			patient.setEstAssure(estAssure);
 		}
 
-		if(datePremiereConsultation != null && datePremiereConsultation.length() > 0 && patient.getDatePremiereConsultation() != datePremiereConsultation){
+		if(datePremiereConsultation != null && datePremiereConsultation.length() > 0 && !patient.getDatePremiereConsultation().equals(datePremiereConsultation)){
 			patient.setDatePremiereConsultation(datePremiereConsultation);
 		}
 
-		if(state != null & patient.getState() != state){
+		if(state != null & !patient.getState().equals(state)){
 			patient.setState(state);
 		}
-
-		if(medicalHistory != null && !patient.getAntecedantMedicaux().contains(medicalHistory)){
-			try{
-				medicalHistoryController.updateMedicalHistoryByName(medicalHistory.getNom(), medicalHistory.getNom(),
-						medicalHistory.getMedecinTraitant(), medicalHistory.getDateSurvenance(), medicalHistory.getState());
-			} catch(IllegalStateException e){
-				System.out.println("Medical condition does not exist");
-			}
-		}
-
-		if(insurance != null && !patient.getInsurance().equals(insurance)){
-			try{
-				insuranceController.updateInsuranceByName(insurance.getNom(), insurance.getNom(),
-						insurance.getCouvreToutSoins(), insurance.getCouvreFraisConsultation(), insurance.getState(),
-						insurance.getPercentageAssurance());
-			} catch(IllegalStateException e){
-				System.out.println("Insurance does not exist");
-			}
-		}
-
-		if(address != null && !patient.getAddress().equals(address)){
-			addressController.updateAddressByLine(address.getLine(), address.getZipcode(), address.getLine());
-		}
-
-		/*
-		if(appointment != null && !patient.getAppointment().equals(appointment)){
-			//add
-		}
-
-		if(user != null & !patient.getUser().equals(user)){
-			//add
-		}
-		*/
 
 		System.out.println(patient);
 		patientRepository.save(patient);

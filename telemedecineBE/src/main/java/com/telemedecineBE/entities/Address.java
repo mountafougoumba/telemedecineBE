@@ -3,27 +3,23 @@ package com.telemedecineBE.entities;
 import java.io.Serializable;
 import java.util.Objects;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 
 @Entity
 @Table(name = "ADDRESS")
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class Address implements Serializable{
 
 	/**
@@ -37,8 +33,14 @@ public class Address implements Serializable{
 	@Column(name = "ZIPCODE")
 	private String zipcode;
 	
-	@Column(name = "LINE",length = 255)
-	private String line;
+	@Column(name = "STREET_ADDRESS",length = 255)
+	private String streetAddress;
+
+	@Column(name = "CITY")
+	private String city;
+
+	@Column(name = "US_STATE")
+	private String usState;
 
 	//These caused the 415 error.
 	/* @OneToOne(cascade = CascadeType.ALL, mappedBy = "address")
@@ -49,11 +51,14 @@ public class Address implements Serializable{
 	 @JsonBackReference(value="doctor-address")
 	 private Doctor doctor; */
 
-	public Address(String zipcode, String line) {
+	public Address(String zipcode, String streetAddress, String city, String usState) {
 		super();
 		this.zipcode = zipcode;
-		this.line = line;
+		this.streetAddress = streetAddress;
+		this.city = city;
+		this.usState = usState;
 	}
+
 
 
 	public Long getId() {
@@ -94,15 +99,30 @@ public class Address implements Serializable{
 		this.zipcode = zipcode;
 	}
 
-	public String getLine() {
-		return line;
+	public String getStreetAddress() {
+		return streetAddress;
 	}
 
 
-	public void setLine(String line) {
-		this.line = line;
+	public void setStreetAddress(String line) {
+		this.streetAddress = line;
 	}
 
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public String getUsState() {
+		return usState;
+	}
+
+	public void setUsState(String usState) {
+		this.usState = usState;
+	}
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
@@ -113,18 +133,13 @@ public class Address implements Serializable{
 		if (this == o) return true;
 		if (!(o instanceof Address)) return false;
 		Address address = (Address) o;
-		return getZipcode().equals(address.getZipcode()) && getLine().equals(address.getLine());
+		return getZipcode().equals(address.getZipcode()) && getStreetAddress().equals(address.getStreetAddress()) &&
+				getCity().equals(address.getCity()) && getUsState().equals(address.getUsState());
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(getZipcode(), getLine());
+		return Objects.hash(getZipcode(), getStreetAddress(), getCity(), getUsState());
 	}
-
-	@Override
-	public String toString() {
-		return "Address [id=" + id + ", zipcode=" + zipcode + ", line=" + line + "]";
-	}
-
 
 	}
