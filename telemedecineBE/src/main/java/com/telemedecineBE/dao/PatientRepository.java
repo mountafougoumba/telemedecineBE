@@ -15,13 +15,13 @@ public interface PatientRepository
 	
 				extends JpaRepository<Patient, Serializable>{
 	
-//	public Patient findByTel(String cellephone);
-//
-//	public Patient findByEmail(String email);
-//
-//	//public Patient findByAntecedantMedicaux(List<AntecedentMedicaux> antecedantList);
-//
-//	public List<Patient> findByDatePremiereConsultation(Date date);
+	public Patient findByTel(String cellephone);
+
+	public Patient findByEmail(String email);
+
+	public Patient findByAntecedantMedicaux(List<AntecedentMedicaux> antecedantList);
+
+	public List<Patient> findByDatePremiereConsultation(Date date);
 	
 	@Query("select p from Patient p where p.estAssure=true")
 	public List<Patient> findByEstAssure();
