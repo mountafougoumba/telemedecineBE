@@ -176,27 +176,27 @@ public class PatientController {
 		Patient patient = patientRepository.findByEmail(emailOriginal);
 
 
-		if(fname != null && fname.length() > 0 && !patient.getFname().equals(fname)){
+		if(fname != null && fname.length() > 0 && patient.getFname()!=fname){
 			patient.setFname(fname);
 		}
 
-		if(lname != null && lname.length() > 0 && !patient.getLname().equals(lname)){
+		if(lname != null && lname.length() > 0 && patient.getLname() != lname){
 			patient.setLname(lname);
 		}
 
-		if(dateNaissance != null && dateNaissance.length() > 0 && !patient.getDateNaissance().equals(dateNaissance)){
+		if(dateNaissance != null && dateNaissance.length() > 0 && patient.getDateNaissance() != dateNaissance){
 			patient.setDateNaissance(dateNaissance);
 		}
 
-		if(tel != null && tel.length() > 0 && !patient.getTel().equals(tel)){
+		if(tel != null && tel.length() > 0 && patient.getTel() != tel){
 			patient.setTel(tel);
 		}
 
-		if(email != null && email.length() > 0  && !patient.getEmail().equals(email)){
+		if(email != null && email.length() > 0  && patient.getEmail() != email){
 			patient.setEmail(email);
 		}
 
-		if(BP != null && BP.length() > 0 && !patient.getBP().equals(BP)){
+		if(BP != null && BP.length() > 0 && patient.getBP() != BP){
 			patient.setBP(BP);
 		}
 
@@ -204,11 +204,11 @@ public class PatientController {
 			patient.setEstAssure(estAssure);
 		}
 
-		if(datePremiereConsultation != null && datePremiereConsultation.length() > 0 && !patient.getDatePremiereConsultation().equals(datePremiereConsultation)){
+		if(datePremiereConsultation != null && datePremiereConsultation.length() > 0 && patient.getDatePremiereConsultation() != datePremiereConsultation){
 			patient.setDatePremiereConsultation(datePremiereConsultation);
 		}
 
-		if(state != null & !patient.getState().equals(state)){
+		if(state != null & patient.getState() != state){
 			patient.setState(state);
 		}
 
@@ -237,27 +237,27 @@ public class PatientController {
 
 		Patient patient = patientRepository.findByTel(phone);
 
-		if(fname != null && fname.length() > 0 && !patient.getFname().equals(fname)){
+		if(fname != null && fname.length() > 0 && patient.getFname()!=fname){
 			patient.setFname(fname);
 		}
 
-		if(lname != null && lname.length() > 0 && !patient.getLname().equals(lname)){
+		if(lname != null && lname.length() > 0 && patient.getLname() != lname){
 			patient.setLname(lname);
 		}
 
-		if(dateNaissance != null && dateNaissance.length() > 0 && !patient.getDateNaissance().equals(dateNaissance)){
+		if(dateNaissance != null && dateNaissance.length() > 0 && patient.getDateNaissance() != dateNaissance){
 			patient.setDateNaissance(dateNaissance);
 		}
 
-		if(tel != null && tel.length() > 0 && !patient.getTel().equals(tel)){
+		if(tel != null && tel.length() > 0 && patient.getTel() != tel){
 			patient.setTel(tel);
 		}
 
-		if(email != null && email.length() > 0  && !patient.getEmail().equals(email)){
+		if(email != null && email.length() > 0  && patient.getEmail() != email){
 			patient.setEmail(email);
 		}
 
-		if(BP != null && BP.length() > 0 && !patient.getBP().equals(BP)){
+		if(BP != null && BP.length() > 0 && patient.getBP() != BP){
 			patient.setBP(BP);
 		}
 
@@ -265,11 +265,11 @@ public class PatientController {
 			patient.setEstAssure(estAssure);
 		}
 
-		if(datePremiereConsultation != null && datePremiereConsultation.length() > 0 && !patient.getDatePremiereConsultation().equals(datePremiereConsultation)){
+		if(datePremiereConsultation != null && datePremiereConsultation.length() > 0 && patient.getDatePremiereConsultation() != datePremiereConsultation){
 			patient.setDatePremiereConsultation(datePremiereConsultation);
 		}
 
-		if(state != null & !patient.getState().equals(state)){
+		if(state != null & patient.getState() != state){
 			patient.setState(state);
 		}
 

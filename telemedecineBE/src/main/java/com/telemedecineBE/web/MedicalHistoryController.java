@@ -27,12 +27,12 @@ public class MedicalHistoryController {
     //get medical history by name
     @GetMapping("/medical_history/name={name}")
     MedicalHistory getMedicalHistoryByName(@PathVariable(value="name")String name){
-        Boolean exists = medicalHistoryRepository.existsByNom(name);
+        Boolean exists = medicalHistoryRepository.existsByName(name);
         if(!exists){
             throw new IllegalStateException("Medical history with the name " + name + " does not exist.");
         }
         System.out.println("getMedicalHistoryByName");
-        MedicalHistory medication = medicalHistoryRepository.findByNom(name);
+        MedicalHistory medication = medicalHistoryRepository.findByName(name);
         return medication;
     }
 
@@ -51,9 +51,9 @@ public class MedicalHistoryController {
     //add new medical history
     @PostMapping("/medical_history")
     MedicalHistory newMedicalHistory(@RequestBody MedicalHistory medicalHistory){
-        Boolean exists = medicalHistoryRepository.existsByNom(medicalHistory.getNom());
+        Boolean exists = medicalHistoryRepository.existsByName(medicalHistory.getName());
         if(exists){
-            throw new IllegalStateException("Medical history with name " + medicalHistory.getNom() + " already exists.");
+            throw new IllegalStateException("Medical history with name " + medicalHistory.getName() + " already exists.");
         }
         medicalHistoryRepository.save(medicalHistory);
         System.out.println("newMedicalHistory");
@@ -63,12 +63,12 @@ public class MedicalHistoryController {
     //delete medical history by name
     @DeleteMapping("/medical_history/name={name}")
     void deleteMedicalHistoryByName(@PathVariable(value = "name") String name){
-        Boolean exists = medicalHistoryRepository.existsByNom(name);
+        Boolean exists = medicalHistoryRepository.existsByName(name);
         if(!exists){
             throw new IllegalStateException("Medical history with name " + name + " does not exist.");
         }
         System.out.println("deleteMedicalHistoryByName");
-        medicalHistoryRepository.deleteByNom(name);
+        medicalHistoryRepository.deleteByName(name);
     }
 
     //delete medical history by id
@@ -86,34 +86,40 @@ public class MedicalHistoryController {
     @PutMapping("/medical_history/name={name}")
     MedicalHistory updateMedicalHistoryByName(
             @PathVariable(value = "name") String name,
-            @RequestParam(required = false)String nom,
-            @RequestParam(required = false)String medecinTraitant,
-            @RequestParam(required = false)String dateSurvenance,
+            @RequestParam(required = false)String newName,
+            @RequestParam(required = false)String doctorDiagnosed,
+            @RequestParam(required = false)String dateDiagnosed,
+            @RequestParam(required = false)String description,
             @RequestParam(required = false)Integer state
+
     ){
-        Boolean exists = medicalHistoryRepository.existsByNom(name);
+        Boolean exists = medicalHistoryRepository.existsByName(name);
         if(!exists){
             throw new IllegalStateException("Medical history with name " + name + " does not exist.");
         }
-        MedicalHistory medicalHistory = medicalHistoryRepository.findByNom(name);
+        MedicalHistory medicalHistory = medicalHistoryRepository.findByName(name);
 
-        if(nom != null && nom.length() > 0 && medicalHistory.getNom() != nom){
-            medicalHistory.setNom(nom);
+        if(newName != null && newName.length() > 0 && medicalHistory.getName() != newName){
+            medicalHistory.setName(newName);
         }
 
-        if(medecinTraitant != null && medecinTraitant.length() > 0 && medicalHistory.getMedecinTraitant() != medecinTraitant){
-            medicalHistory.setMedecinTraitant(medecinTraitant);
+        if(doctorDiagnosed != null && doctorDiagnosed.length() > 0 && medicalHistory.getDoctorDiagnosed() != doctorDiagnosed){
+            medicalHistory.setDoctorDiagnosed(doctorDiagnosed);
         }
 
-        if(dateSurvenance != null && dateSurvenance.length() > 0 && medicalHistory.getDateSurvenance() != dateSurvenance){
-            medicalHistory.setDateSurvenance(dateSurvenance);
+        if(dateDiagnosed != null && dateDiagnosed.length() > 0 && medicalHistory.getDateDiagnosed() != dateDiagnosed){
+            medicalHistory.setDateDiagnosed(dateDiagnosed);
+        }
+
+        if(description != null && description.length() > 0 && medicalHistory.getDescription() != description){
+            medicalHistory.setDescription(description);
         }
 
         if(state != null && state > 0 && state != medicalHistory.getState()){
             medicalHistory.setState(state);
         }
 
-        System.out.println("updateMedicalHistory\n" + medicalHistory);
+        System.out.println("updateMedicalHistoryByName\n" + medicalHistory);
         medicalHistoryRepository.save(medicalHistory);
         return medicalHistory;
     }
@@ -122,9 +128,10 @@ public class MedicalHistoryController {
     @PutMapping("/medical_history/id={id}")
     MedicalHistory updateMedicalHistoryById(
             @PathVariable(value = "id") Integer id,
-            @RequestParam(required = false)String nom,
-            @RequestParam(required = false)String medecinTraitant,
-            @RequestParam(required = false)String dateSurvenance,
+            @RequestParam(required = false)String name,
+            @RequestParam(required = false)String doctorDiagnosed,
+            @RequestParam(required = false)String dateDiagnosed,
+            @RequestParam(required = false)String description,
             @RequestParam(required = false)Integer state
     ){
         Boolean exists = medicalHistoryRepository.existsById(id);
@@ -133,23 +140,27 @@ public class MedicalHistoryController {
         }
         MedicalHistory medicalHistory = medicalHistoryRepository.findById(id);
 
-        if(nom != null && nom.length() > 0 && medicalHistory.getNom() != nom){
-            medicalHistory.setNom(nom);
+        if(name != null && name.length() > 0 && medicalHistory.getName() != name){
+            medicalHistory.setName(name);
         }
 
-        if(medecinTraitant != null && medecinTraitant.length() > 0 && medicalHistory.getMedecinTraitant() != medecinTraitant){
-            medicalHistory.setMedecinTraitant(medecinTraitant);
+        if(doctorDiagnosed != null && doctorDiagnosed.length() > 0 && medicalHistory.getDoctorDiagnosed() != doctorDiagnosed){
+            medicalHistory.setDoctorDiagnosed(doctorDiagnosed);
         }
 
-        if(dateSurvenance != null && dateSurvenance.length() > 0 && medicalHistory.getDateSurvenance() != dateSurvenance){
-            medicalHistory.setDateSurvenance(dateSurvenance);
+        if(dateDiagnosed != null && dateDiagnosed.length() > 0 && medicalHistory.getDateDiagnosed() != dateDiagnosed){
+            medicalHistory.setDateDiagnosed(dateDiagnosed);
+        }
+
+        if(description != null && description.length() > 0 && medicalHistory.getDescription() != description){
+            medicalHistory.setDescription(description);
         }
 
         if(state != null && state > 0 && state != medicalHistory.getState()){
             medicalHistory.setState(state);
         }
 
-        System.out.println("updateMedicalHistory\n" + medicalHistory);
+        System.out.println("updateMedicalHistoryById\n" + medicalHistory);
         medicalHistoryRepository.save(medicalHistory);
         return medicalHistory;
     }

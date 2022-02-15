@@ -116,19 +116,19 @@ public class AddressController {
         }
         Address address = addressRepository.findById(id);
 
-        if(zipcode != null && zipcode.length() > 0 && !address.getZipcode().equals(zipcode)){
+        if(zipcode != null && zipcode.length() > 0 && address.getZipcode() != zipcode){
             address.setZipcode(zipcode);
         }
 
-        if(streetAddress != null && streetAddress.length() > 0 && !address.getStreetAddress().equals(streetAddress)){
+        if(streetAddress != null && streetAddress.length() > 0 && address.getStreetAddress() != streetAddress){
             address.setStreetAddress(streetAddress);
         }
 
-        if(city != null && city.length() > 0 && !address.getCity().equals(city)){
+        if(city != null && city.length() > 0 && address.getCity() != city){
             address.setCity(city);
         }
 
-        if(usState != null && usState.length() > 0 && !address.getUsState().equals(usState)){
+        if(usState != null && usState.length() > 0 && address.getUsState() != usState){
             address.setUsState(usState);
         }
 
@@ -149,19 +149,19 @@ public class AddressController {
         }
         Address address = addressRepository.findByStreetAddress(searchStreetAddress);
 
-        if(zipcode != null && zipcode.length() > 0 && !address.getZipcode().equals(zipcode)){
+        if(zipcode != null && zipcode.length() > 0 && address.getZipcode() != zipcode){
             address.setZipcode(zipcode);
         }
 
-        if(streetAddress != null && streetAddress.length() > 0 && !address.getStreetAddress().equals(streetAddress)){
+        if(streetAddress != null && streetAddress.length() > 0 && address.getStreetAddress() != streetAddress){
             address.setStreetAddress(streetAddress);
         }
 
-        if(city != null && city.length() > 0 && !address.getCity().equals(city)){
+        if(city != null && city.length() > 0 && address.getCity() != city){
             address.setCity(city);
         }
 
-        if(usState != null && usState.length() > 0 && !address.getUsState().equals(usState)){
+        if(usState != null && usState.length() > 0 && address.getUsState() != usState) {
             address.setUsState(usState);
         }
 
