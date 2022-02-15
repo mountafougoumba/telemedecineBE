@@ -1,6 +1,7 @@
 package com.telemedecineBE.entities;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -90,5 +91,18 @@ public class Insurance implements Serializable{
 				+ " couvreFraisConsultation=" + couvreFraisConsultation + " state=" + state + " percentageAssurance="
 				+ percentageAssurance;
 	}
-	
+
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof Insurance)) return false;
+		Insurance insurance = (Insurance) o;
+		return getNom().equals(insurance.getNom()) && getCouvreToutSoins().equals(insurance.getCouvreToutSoins()) && getCouvreFraisConsultation().equals(insurance.getCouvreFraisConsultation()) && getPercentageAssurance().equals(insurance.getPercentageAssurance());
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(getNom(), getCouvreToutSoins(), getCouvreFraisConsultation(), getPercentageAssurance());
+	}
 }

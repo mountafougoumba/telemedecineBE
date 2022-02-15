@@ -1,6 +1,7 @@
 package com.telemedecineBE.entities;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -107,8 +108,18 @@ public class Address implements Serializable{
 		return serialVersionUID;
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof Address)) return false;
+		Address address = (Address) o;
+		return getZipcode().equals(address.getZipcode()) && getLine().equals(address.getLine());
+	}
 
-
+	@Override
+	public int hashCode() {
+		return Objects.hash(getZipcode(), getLine());
+	}
 
 	@Override
 	public String toString() {
