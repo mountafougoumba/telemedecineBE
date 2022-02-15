@@ -31,6 +31,11 @@ public class Appointment implements Serializable {
 	@JsonBackReference
 	private Patient patient;
 
+	public Appointment()
+	{
+		super();
+	}
+
 	public Appointment(Date dateRDV, String heureRDV, String objectRDV) {
 		super();
 		this.dateRDV = dateRDV;
