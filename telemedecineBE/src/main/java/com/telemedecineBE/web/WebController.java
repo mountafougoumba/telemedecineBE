@@ -1,5 +1,5 @@
 package com.telemedecineBE.web;
-
+/*
 import com.telemedecineBE.dao.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,3 +18,6 @@ public class WebController {
         return "Home Page";
     }
 }
+
+
+ */
