@@ -1,7 +1,7 @@
 package com.telemedecineBE.Security;
 
 
-
+/*
 
 
 import org.springframework.context.annotation.Bean;
@@ -59,3 +59,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return  new BCryptPasswordEncoder();
     }
 }
+
+
+ */

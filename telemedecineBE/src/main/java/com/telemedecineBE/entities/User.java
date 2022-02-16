@@ -6,195 +6,192 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-
-import javax.persistence.JoinColumn;
-
 
 
 @Entity
 @Table(name = "XUSER")
 public class User implements Serializable{
-	
-		/**
-	 * 
+
+	/**
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
-		@Id
-		@GeneratedValue(strategy=GenerationType.AUTO)
-		private Integer id;
-		@ManyToMany(cascade = {
-		        CascadeType.PERSIST, CascadeType.MERGE})
-		    @JoinTable(name = "userHabilitation",
-		            joinColumns = @JoinColumn(name = "userID"),
-		            inverseJoinColumns = @JoinColumn(name = "habilitationID")
-		    )
-		private List<Habilitations> habilitations = new ArrayList<>();
-		@OneToOne(cascade = CascadeType.ALL,mappedBy = "user")
-		@JsonBackReference
-		private Patient patient;
-		
-	  	private String lname;
-	    private String fname;
-	    private String userName;
-	    private String userpassword;
-	    private String userType;
-	    private String email;
-	    private String cellphone;
-	    private Integer state=1;
-		public User(String nom,  String prenom, String nomUtilisateur,
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private Integer id;
+	@ManyToMany(cascade = {
+			CascadeType.PERSIST, CascadeType.MERGE})
+	@JoinTable(name = "userHabilitation",
+			joinColumns = @JoinColumn(name = "userID"),
+			inverseJoinColumns = @JoinColumn(name = "habilitationID")
+	)
+	private List<Habilitations> habilitations = new ArrayList<>();
+	@OneToOne(cascade = CascadeType.ALL,mappedBy = "user")
+	@JsonBackReference
+	private Patient patient;
+
+	private String lname;
+	private String fname;
+	@Column(unique = true)
+	private String userName;
+	private String userpassword;
+	private String userType;
+	private String email;
+	private String cellphone;
+	private Integer state=1;
+	public User(String nom,  String prenom, String nomUtilisateur,
 				String motDePasse, String email, String cellphone) {
-			super();
-			this.lname = nom;
-			this.fname = prenom;
-			this.userName = nomUtilisateur;
-			this.userpassword = motDePasse;
-			this.email = email;
-			this.cellphone = cellphone;
-		}
-		
-		public User() {
-			super();
-		}
+		super();
+		this.lname = nom;
+		this.fname = prenom;
+		this.userName = nomUtilisateur;
+		this.userpassword = motDePasse;
+		this.email = email;
+		this.cellphone = cellphone;
+	}
 
-		public User(String nom, String prenom,  String nomUtilisateur,
-				 String motDePasse,  String typeUtilisateur,  String email,
-				 String cellphone) {
-			super();
-			this.lname = nom;
-			this.fname = prenom;
-			this.userName = nomUtilisateur;
-			this.userpassword = motDePasse;
-			this.userType = typeUtilisateur;
-			this.email = email;
-			this.cellphone = cellphone;
-		}
+	public User() {
+		super();
+	}
 
-		public User( String nom, String prenom,  String nomUtilisateur,
+	public User(String userName, String password) {
+		this.userName = userName;
+		this.userpassword = password;
+	}
+
+	public User(String nom, String prenom,  String nomUtilisateur,
+				String motDePasse,  String typeUtilisateur,  String email,
+				String cellphone) {
+		super();
+		this.lname = nom;
+		this.fname = prenom;
+		this.userName = nomUtilisateur;
+		this.userpassword = motDePasse;
+		this.userType = typeUtilisateur;
+		this.email = email;
+		this.cellphone = cellphone;
+	}
+
+	public User( String nom, String prenom,  String nomUtilisateur,
 				 String motDePasse,  String typeUtilisateur, String email,
 				 String cellphone,Integer state) {
-			super();
-			this.lname = nom;
-			this.fname = prenom;
-			this.userName = nomUtilisateur;
-			this.userpassword = motDePasse;
-			this.userType = typeUtilisateur;
-			this.email = email;
-			this.cellphone = cellphone;
-			this.state = state;
-		}
+		super();
+		this.lname = nom;
+		this.fname = prenom;
+		this.userName = nomUtilisateur;
+		this.userpassword = motDePasse;
+		this.userType = typeUtilisateur;
+		this.email = email;
+		this.cellphone = cellphone;
+		this.state = state;
+	}
 
-		@Override
-		public String toString() {
-			return "nom=" + lname + " prenom=" + fname + " nomUtilisateur=" + userName
-					+ " motDePasse=" + userpassword + " typeUtilisateur=" + userType + " email=" + email
-					+ "  cellphone=" + cellphone + " ";
-		}
 
-		public Integer getId() {
-			return id;
-		}
 
-		public void setId(Integer id) {
-			this.id = id;
-		}
-		
+	@Override
+	public String toString() {
+		return "nom=" + lname + " prenom=" + fname + " nomUtilisateur=" + userName
+				+ " motDePasse=" + userpassword + " typeUtilisateur=" + userType + " email=" + email
+				+ "  cellphone=" + cellphone + " ";
+	}
 
-		public Patient getPatient() {
-			return patient;
-		}
+	public Integer getId() {
+		return id;
+	}
 
-		public void setPatient(Patient patient) {
-			this.patient = patient;
-		}
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
-		public List<Habilitations> getHabilitations() {
-			return habilitations;
-		}
 
-		public void setHabilitations(List<Habilitations> habilitations) {
-			this.habilitations = habilitations;
-		}
+	public Patient getPatient() {
+		return patient;
+	}
 
-		public String getLname() {
-			return lname;
-		}
+	public void setPatient(Patient patient) {
+		this.patient = patient;
+	}
 
-		public void setLname(String lname) {
-			this.lname = lname;
-		}
+	public List<Habilitations> getHabilitations() {
+		return habilitations;
+	}
 
-		public String getFname() {
-			return fname;
-		}
+	public void setHabilitations(List<Habilitations> habilitations) {
+		this.habilitations = habilitations;
+	}
 
-		public void setFname(String fname) {
-			this.fname = fname;
-		}
+	public String getLname() {
+		return lname;
+	}
 
-		public String getUserName() {
-			return userName;
-		}
+	public void setLname(String lname) {
+		this.lname = lname;
+	}
 
-		public void setUserName(String userName) {
-			this.userName = userName;
-		}
+	public String getFname() {
+		return fname;
+	}
 
-		public String getUserpassword() {
-			return userpassword;
-		}
+	public void setFname(String fname) {
+		this.fname = fname;
+	}
 
-		public void setUserpassword(String userpassword) {
-			this.userpassword = userpassword;
-		}
+	public String getUserName() {
+		return userName;
+	}
 
-		public String getUserType() {
-			return userType;
-		}
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
 
-		public void setUserType(String userType) {
-			this.userType = userType;
-		}
+	public String getUserpassword() {
+		return userpassword;
+	}
 
-		public String getEmail() {
-			return email;
-		}
+	public void setUserpassword(String userpassword) {
+		this.userpassword = userpassword;
+	}
 
-		public void setEmail(String email) {
-			this.email = email;
-		}
+	public String getUserType() {
+		return userType;
+	}
 
-		public String getCellphone() {
-			return cellphone;
-		}
+	public void setUserType(String userType) {
+		this.userType = userType;
+	}
 
-		public void setCellphone(String cellphone) {
-			this.cellphone = cellphone;
-		}
+	public String getEmail() {
+		return email;
+	}
 
-		public Integer getState() {
-			return state;
-		}
+	public void setEmail(String email) {
+		this.email = email;
+	}
 
-		public void setState(Integer state) {
-			this.state = state;
-		}
+	public String getCellphone() {
+		return cellphone;
+	}
 
-		public static long getSerialversionuid() {
-			return serialVersionUID;
-		}
+	public void setCellphone(String cellphone) {
+		this.cellphone = cellphone;
+	}
 
-		
-	    
+	public Integer getState() {
+		return state;
+	}
+
+	public void setState(Integer state) {
+		this.state = state;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+
+
 
 }
