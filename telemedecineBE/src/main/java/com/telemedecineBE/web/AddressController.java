@@ -75,13 +75,26 @@ public class AddressController {
 
     @PostMapping("/address")
     Address newAddress(@RequestBody Address address){
-        Boolean exists = addressRepository.existsById(address.getId());
+        Boolean exists = addressRepository.existsByStreetAddress(address.getStreetAddress());
         if(exists){
-            throw new IllegalStateException("Address with id " + address.getId() + " already exists.");
+            throw new IllegalStateException("Address with street address " + address.getStreetAddress() + " already exists.");
         }
         addressRepository.save(address);
         System.out.println("newAddress");
         return address;
+    }
+    
+    @PostMapping("/addresses")
+    List<Address> multipleNewAddresses(@RequestBody List<Address> addresses){
+        for (Address a:
+             addresses) {
+            if(addressRepository.existsByStreetAddress(a.getStreetAddress())){
+                throw new IllegalStateException("Address with street address " + a.getStreetAddress() + " already exists.");
+            }
+        }
+        System.out.println("multipleNewAddresses");
+        addressRepository.saveAll(addresses);
+        return addresses;
     }
 
     @DeleteMapping("/address/id={id}")
