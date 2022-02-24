@@ -27,6 +27,8 @@ public class Report implements Serializable{
 		this.id = id;
 		this.description = description;
 		this.doctor_upload = doctor_upload;
+		
+		
 	}
 	public Integer getId() {
 		return id;
