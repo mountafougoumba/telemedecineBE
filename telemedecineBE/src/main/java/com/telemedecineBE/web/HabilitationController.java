@@ -99,6 +99,7 @@ public class HabilitationController {
         habilitationsRepository.save(habilitations);
         return habilitations;
     }
+    
 
     @PutMapping("/habilitation/name={name}")
     Habilitations updateHabilitationByName(@PathVariable(value="name")String name,
