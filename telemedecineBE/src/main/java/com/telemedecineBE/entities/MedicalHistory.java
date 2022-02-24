@@ -1,14 +1,19 @@
 package com.telemedecineBE.entities;
 
-import lombok.ToString;
-
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
 
 @Entity
-@Table(name = "MEDICAL_HISTORY")
-@ToString
+@Table(name = "MEDICALHISTORY")
+
 public class MedicalHistory implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -16,35 +21,24 @@ public class MedicalHistory implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
-
-	@Column(name="NAME")
-	private String name;
-	@Column(name="DOCTOR_DIAGNOSED")
-	private String doctorDiagnosed;
-	@Column(name="DATE_DIAGNOSED")
-	private String dateDiagnosed;
-	@Column(name="DESCRIPTION_NOTES")
-	private String description;
-	@Column(name="STATE")
+	private String nomAntecedant;
+	private String medecinTraitant;
+	private String dateSurvenance;
 	private Integer state = 1;
+
+	@ManyToMany(mappedBy = "medicalhistory")
+	private List<Patient> patients = new ArrayList<>();
 
 	public MedicalHistory() {
 		super();
 	}
 
-	public MedicalHistory(String name, String doctorDiagnosed,
-						  String dateDiagnosed) {
+	public MedicalHistory(String nomAntecedant, String medecinTraitant,
+			String dateSurvenance) {
 		super();
-		this.name = name;
-		this.doctorDiagnosed = doctorDiagnosed;
-		this.dateDiagnosed = dateDiagnosed;
-	}
-
-	public MedicalHistory(String name, String doctorDiagnosed, String dateDiagnosed, String description) {
-		this.name = name;
-		this.doctorDiagnosed = doctorDiagnosed;
-		this.dateDiagnosed = dateDiagnosed;
-		this.description = description;
+		this.nomAntecedant = nomAntecedant;
+		this.medecinTraitant = medecinTraitant;
+		this.dateSurvenance = dateSurvenance;
 	}
 
 	public Integer getId() {
@@ -55,36 +49,28 @@ public class MedicalHistory implements Serializable {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	public String getNomAntecedant() {
+		return nomAntecedant;
 	}
 
-	public void setName(String nomAntecedant) {
-		this.name = nomAntecedant;
+	public void setNomAntecedant(String nomAntecedant) {
+		this.nomAntecedant = nomAntecedant;
 	}
 
-	public String getDoctorDiagnosed() {
-		return doctorDiagnosed;
+	public String getMedecinTraitant() {
+		return medecinTraitant;
 	}
 
-	public void setDoctorDiagnosed(String medecinTraitant) {
-		this.doctorDiagnosed = medecinTraitant;
+	public void setMedecinTraitant(String medecinTraitant) {
+		this.medecinTraitant = medecinTraitant;
 	}
 
-	public String getDateDiagnosed() {
-		return dateDiagnosed;
+	public String getDateSurvenance() {
+		return dateSurvenance;
 	}
 
-	public void setDateDiagnosed(String dateSurvenance) {
-		this.dateDiagnosed = dateSurvenance;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
+	public void setDateSurvenance(String dateSurvenance) {
+		this.dateSurvenance = dateSurvenance;
 	}
 
 	public Integer getState() {
@@ -95,9 +81,25 @@ public class MedicalHistory implements Serializable {
 		this.state = state;
 	}
 
+	public List<Patient> getPatients() {
+		return patients;
+	}
+
+	public void setPatients(List<Patient> patients) {
+		this.patients = patients;
+	}
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
+	}
+
+	
+
+	@Override
+	public String toString() {
+		return "AntecedentMedicaux [id=" + id + ", nomAntecedant=" + nomAntecedant + ", medecinTraitant="
+				+ medecinTraitant + ", dateSurvenance=" + dateSurvenance + ", state=" + state + ", patients=" + patients
+				+ "]";
 	}
 
 }

@@ -14,4 +14,4 @@ public interface AppointmentRepository
 
     @Query("select a from Appointment a")
     public List<Appointment> findAllApps();
-}
+    }
