@@ -10,9 +10,9 @@ import java.util.List;
 @RestController
 public class HabilitationController {
 
-    private final HabilitationsRepository habilitationsRepository;
-
     @Autowired
+	private final HabilitationsRepository habilitationsRepository;
+
     HabilitationController(HabilitationsRepository habilitationsRepository){
         this.habilitationsRepository = habilitationsRepository;
     }

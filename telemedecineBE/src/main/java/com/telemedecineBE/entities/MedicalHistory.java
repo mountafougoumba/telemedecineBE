@@ -12,7 +12,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "ANTECEDANT_MEDICAUX")
+@Table(name = "MEDICALHISTORY")
 
 public class MedicalHistory implements Serializable {
 
@@ -26,7 +26,7 @@ public class MedicalHistory implements Serializable {
 	private String dateSurvenance;
 	private Integer state = 1;
 
-	@ManyToMany(mappedBy = "antecedantMedicaux")
+	@ManyToMany(mappedBy = "medicalhistory")
 	private List<Patient> patients = new ArrayList<>();
 
 	public MedicalHistory() {

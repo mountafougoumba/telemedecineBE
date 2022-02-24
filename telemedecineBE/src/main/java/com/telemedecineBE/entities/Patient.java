@@ -41,9 +41,11 @@ public class Patient implements Serializable{
     private Integer state=1;
     
 	
+	
+
 	public Patient(Integer id, String fname, String lname, String dateNaissance, String tel, String email, String bP,
-			boolean estAssure, String datePremiereConsultation, Integer state,
-			List<MedicalHistory> antecedantMedicaux, Insurance assurance) {
+			boolean estAssure, String datePremiereConsultation, Integer state, List<MedicalHistory> medicalhistory,
+			Insurance assurance, Address address, User user, Appointment appointment) {
 		super();
 		this.id = id;
 		Fname = fname;
@@ -55,18 +57,22 @@ public class Patient implements Serializable{
 		this.estAssure = estAssure;
 		this.datePremiereConsultation = datePremiereConsultation;
 		this.state = state;
-		this.antecedantMedicaux = antecedantMedicaux;
+		this.medicalhistory = medicalhistory;
 		this.assurance = assurance;
+		this.address = address;
+		this.user = user;
+		this.appointment = appointment;
 	}
+
 
 
 	@ManyToMany(cascade = {
 	        CascadeType.PERSIST, CascadeType.MERGE})
-	    @JoinTable(name = "PatientAntecedantMedicaux",
+	    @JoinTable(name = "medicalhistory",
 	            joinColumns = @JoinColumn(name = "patientID"),
-	            inverseJoinColumns = @JoinColumn(name = "AntecedantMedicauxID")
+	            inverseJoinColumns = @JoinColumn(name = "MedicalHistory")
 	    )
-	    private List<MedicalHistory> antecedantMedicaux = new ArrayList<>();
+	    private List<MedicalHistory> medicalhistory = new ArrayList<>();
 	
 	@ManyToOne
     @JoinColumn(name = "assuranceID")
@@ -100,6 +106,30 @@ public class Patient implements Serializable{
 	
 	public User getUser() {
 		return user;
+	}
+
+
+
+	public List<MedicalHistory> getMedicalhistory() {
+		return medicalhistory;
+	}
+
+
+
+	public void setMedicalhistory(List<MedicalHistory> medicalhistory) {
+		this.medicalhistory = medicalhistory;
+	}
+
+
+
+	public Appointment getAppointment() {
+		return appointment;
+	}
+
+
+
+	public void setAppointment(Appointment appointment) {
+		this.appointment = appointment;
 	}
 
 
@@ -198,13 +228,7 @@ public class Patient implements Serializable{
 		this.state = state;
 	}
 
-	public List<MedicalHistory> getAntecedantMedicaux() {
-		return antecedantMedicaux;
-	}
 
-	public void setAntecedantMedicaux(List<MedicalHistory> antecedantMedicaux) {
-		this.antecedantMedicaux = antecedantMedicaux;
-	}
 
 	public Insurance getAssurance() {
 		return assurance;
@@ -219,15 +243,6 @@ public class Patient implements Serializable{
 		return serialVersionUID;
 	}
 
-
-
-	@Override
-	public String toString() {
-		return "Patient [id=" + id + ", Fname=" + Fname + ", Lname=" + Lname + ", dateNaissance=" + dateNaissance
-				+ ", tel=" + tel + ", email=" + email + ", BP=" + BP + ", estAssure=" + estAssure
-				+ ", datePremiereConsultation=" + datePremiereConsultation + ", state=" + state
-				+ ", antecedantMedicaux=" + antecedantMedicaux + ", assurance=" + assurance + "]";
-	}
 
 	
 

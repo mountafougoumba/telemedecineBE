@@ -17,11 +17,13 @@ public class Insurance implements Serializable{
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     private String nom;
+	//all care coverage
     private Boolean couvreToutSoins;
+	//cover consulting fees
     private Boolean couvreFraisConsultation;
     private Integer state =1;
-    
     private Double percentageAssurance;
+
 	public Insurance(String nom,Boolean couvreToutSoins,Boolean couvreFraisConsultation,
 			Integer state,Double percentageAssurance) {
 		super();

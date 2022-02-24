@@ -1,21 +1,17 @@
 package com.telemedecineBE.entities;
 
 import java.io.Serializable;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 
 @Entity
-@Table(name = "PRESCRIPTIONS")
-public class Priscriptions implements Serializable{
+@Table(name = "REPORT")
+public class Report implements Serializable{
 
 	/**
 	 * 
@@ -24,35 +20,19 @@ public class Priscriptions implements Serializable{
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-	private String dosages;
 	private String description;
-	public Priscriptions() {
-		// TODO Auto-generated constructor stub
-	}
-	
-	public Priscriptions(Integer id, String dosages, String description) {
+	private String doctor_upload;
+	public Report(Integer id, String description, String doctor_upload) {
 		super();
 		this.id = id;
-		this.dosages = dosages;
 		this.description = description;
+		this.doctor_upload = doctor_upload;
 	}
-
-	public Priscriptions(String dosages, String description) {
-		this.dosages = dosages;
-		this.description = description;
-	}
-
 	public Integer getId() {
 		return id;
 	}
 	public void setId(Integer id) {
 		this.id = id;
-	}
-	public String getDosages() {
-		return dosages;
-	}
-	public void setDosages(String dosages) {
-		this.dosages = dosages;
 	}
 	public String getDescription() {
 		return description;
@@ -60,14 +40,23 @@ public class Priscriptions implements Serializable{
 	public void setDescription(String description) {
 		this.description = description;
 	}
+	public String getDoctor_upload() {
+		return doctor_upload;
+	}
+	public void setDoctor_upload(String doctor_upload) {
+		this.doctor_upload = doctor_upload;
+	}
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
-
 	@Override
 	public String toString() {
-		return "Priscriptions [id=" + id + ", dosages=" + dosages + ", description=" + description + "]";
+		return "Report [id=" + id + ", description=" + description + ", doctor_upload=" + doctor_upload + ", getId()="
+				+ getId() + ", getDescription()=" + getDescription() + ", getDoctor_upload()=" + getDoctor_upload()
+				+ ", getClass()=" + getClass() + ", hashCode()=" + hashCode() + ", toString()=" + super.toString()
+				+ "]";
 	}
+	
 	
 
 }
