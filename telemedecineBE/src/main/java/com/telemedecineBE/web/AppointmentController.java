@@ -30,7 +30,7 @@ public class AppointmentController {
     }
 
     @DeleteMapping("/appointment/id={id}")
-    void delete(@PathVariable Integer id)
+    void delete(@PathVariable String id)
     {
         Optional<Appointment> app = appRep.findById(id);
         app.ifPresent(appointment -> appRep.delete(appointment));
@@ -46,10 +46,10 @@ public class AppointmentController {
     // Update appointment
     @PutMapping("/appointment/id={id}")
     Appointment update(
-            @PathVariable Integer id,
+            @PathVariable String id,
             @RequestParam(required = false) Date dateRDV,
-            @RequestParam(required = false) String heureRDV,
-            @RequestParam(required = false) String objectRDV
+            @RequestParam(required = false)String heureRDV,
+            @RequestParam(required = false)String objectRDV
     )
     {
         Optional<Appointment> fetchedAppointment = appRep.findById(id);
