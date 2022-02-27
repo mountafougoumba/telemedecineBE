@@ -12,7 +12,7 @@ public interface AddressRepository extends JpaRepository<Address, Serializable> 
 
     public Address findById(Long id);
 
-    public Address findByStreetAddress(String line);
+    public Address findByStreetAddress(String streetAddress);
 
     public List<Address> findAddressesByCity(String city);
 
@@ -22,7 +22,7 @@ public interface AddressRepository extends JpaRepository<Address, Serializable> 
 
     public Boolean existsById(Long id);
 
-    public Boolean existsByStreetAddress(String Line);
+    public Boolean existsByStreetAddress(String streetAddress);
 
     public Boolean existsByCity(String city);
 

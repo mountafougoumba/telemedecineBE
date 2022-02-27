@@ -14,15 +14,17 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 
 @Entity
 @Table(name = "ADDRESS")
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
+@ToString
+@EqualsAndHashCode
 public class Address implements Serializable{
 
 	/**
@@ -35,9 +37,15 @@ public class Address implements Serializable{
 	
 	@Column(name = "ZIPCODE")
 	private String zipcode;
-	
-	@Column(name = "LINE",length = 255)
-	private String line;
+
+	@Column(name="STREET_ADDRESS")
+	private String streetAddress;
+
+	@Column(name="CITY")
+	private String city;
+
+	@Column(name="US_STATE")
+	private String usState;
 
 	//These caused the 415 error.
 	/* @OneToOne(cascade = CascadeType.ALL, mappedBy = "address")
@@ -48,10 +56,12 @@ public class Address implements Serializable{
 	 @JsonBackReference(value="doctor-address")
 	 private Doctor doctor; */
 
-	public Address(String zipcode, String line) {
+	public Address(String zipcode, String streetAddress, String city, String usState) {
 		super();
 		this.zipcode = zipcode;
-		this.line = line;
+		this.streetAddress=streetAddress;
+		this.city=city;
+		this.usState=usState;
 	}
 
 
@@ -80,40 +90,7 @@ public class Address implements Serializable{
 	}
 */
 
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getZipcode() {
-		return zipcode;
-	}
-
-
-	public void setZipcode(String zipcode) {
-		this.zipcode = zipcode;
-	}
-
-	public String getLine() {
-		return line;
-	}
-
-
-	public void setLine(String line) {
-		this.line = line;
-	}
-
-
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
-
-
-
-
-	@Override
-	public String toString() {
-		return "Address [id=" + id + ", zipcode=" + zipcode + ", line=" + line + "]";
-	}
-
-
 	}

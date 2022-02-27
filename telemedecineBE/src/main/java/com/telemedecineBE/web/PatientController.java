@@ -17,7 +17,7 @@ public class PatientController {
 		this.patientRepository = patientRepository;
 	}
 
-	@GetMapping("/patient")
+	@GetMapping("/patients")
 	List<Patient> getAllPatients(){
 		System.out.println("getAllPatients");
 		return patientRepository.findAll();
@@ -45,23 +45,41 @@ public class PatientController {
 
 	@GetMapping("/patient/tel={tel}")
 	Patient getPatientByTel(@PathVariable(value = "tel")String phone){
-		Boolean exists = patientRepository.existsByTel(phone);
+		Boolean exists = patientRepository.existsByPhone(phone);
 		if(!exists){
 			throw new IllegalStateException("Patient with phone " + phone + " does not exist.");
 		}
 		System.out.println("getPatientByTel");
-		return patientRepository.findByTel(phone);
+		return patientRepository.findByPhone(phone);
 	}
 
 	@PostMapping("/patient")
 	Patient newPatient(@RequestBody Patient patient){
 		Boolean exists = patientRepository.existsByEmail(patient.getEmail());
+		Boolean exists2 = patientRepository.existsByPhone(patient.getPhone());
 		if(exists){
 			throw new IllegalStateException("Patient with email " + patient.getEmail() + " already exists.");
+		} else if(exists2){
+			throw new IllegalStateException("Patient with phone " + patient.getPhone() + " already exists.");
 		}
 		patientRepository.save(patient);
 		System.out.println("newPatient");
 		return patient;
+	}
+
+	@PostMapping("/patients")
+	List<Patient> newPatients(@RequestBody List<Patient> patients){
+		for (Patient p:
+				patients) {
+			if(patientRepository.existsByEmail(p.getEmail())){
+				throw new IllegalStateException("Patient with email " + p.getEmail() + " already exists.");
+			} else if(patientRepository.existsByPhone(p.getPhone())){
+				throw new IllegalStateException("Patient with phone " + p.getPhone() + " already exists.");
+			}
+		}
+		System.out.println("newPatients");
+		patientRepository.saveAll(patients);
+		return patients;
 	}
 
 	@DeleteMapping("/patient/id={id}")
@@ -86,24 +104,22 @@ public class PatientController {
 
 	@DeleteMapping("/patient/tel={tel}")
 	void deletePatientByTel(@PathVariable(value = "tel")String phone){
-		Boolean exists = patientRepository.existsByTel(phone);
+		Boolean exists = patientRepository.existsByPhone(phone);
 		if(!exists){
 			throw new IllegalStateException("Patient with phone " + phone + " does not exist.");
 		}
 		System.out.println("deletePatientByPhone");
-		patientRepository.deleteByTel(phone);
+		patientRepository.deleteByPhone(phone);
 	}
 
 	@PutMapping("/patient/id={id}")
 	Patient updatePatientById(@PathVariable(value = "id")Integer id,
 							  @RequestParam(required = false) String fname,
 							  @RequestParam(required = false) String lname,
-							  @RequestParam(required = false) String dateNaissance,
+							  @RequestParam(required = false) String dob,
 							  @RequestParam(required = false) String tel,
 							  @RequestParam(required = false) String email,
-							  @RequestParam(required = false) String BP,
-							  @RequestParam(required = false) Boolean estAssure,
-							  @RequestParam(required = false) String datePremiereConsultation,
+							  @RequestParam(required = false) Boolean isInsured,
 							  @RequestParam(required = false) Integer state){
 		Boolean exists = patientRepository.existsById(id);
 		if(!exists){
@@ -122,28 +138,20 @@ public class PatientController {
 			patient.setLname(lname);
 		}
 
-		if(dateNaissance != null && dateNaissance.length() > 0 && !patient.getDateNaissance().equals(dateNaissance)){
-			patient.setDateNaissance(dateNaissance);
+		if(dob != null && dob.length() > 0 && !patient.getDob().equals(dob)){
+			patient.setDob(dob);
 		}
 
-		if(tel != null && tel.length() > 0 && !patient.getTel().equals(tel)){
-			patient.setTel(tel);
+		if(tel != null && tel.length() > 0 && !patient.getPhone().equals(tel)){
+			patient.setPhone(tel);
 		}
 
 		if(email != null && email.length() > 0  && !patient.getEmail().equals(email)){
 			patient.setEmail(email);
 		}
 
-		if(BP != null && BP.length() > 0 && !patient.getBP().equals(BP)){
-			patient.setBP(BP);
-		}
-
-		if(estAssure != null && estAssure != patient.isEstAssure()){
-			patient.setEstAssure(estAssure);
-		}
-
-		if(datePremiereConsultation != null && datePremiereConsultation.length() > 0 && !patient.getDatePremiereConsultation().equals(datePremiereConsultation)){
-			patient.setDatePremiereConsultation(datePremiereConsultation);
+		if(isInsured != null && isInsured != patient.getIsInsured()){
+			patient.setIsInsured(isInsured);
 		}
 
 		if(state != null & !patient.getState().equals(state)){
@@ -159,12 +167,10 @@ public class PatientController {
 	Patient updatePatientByEmail(@PathVariable(value = "email")String emailOriginal,
 							  @RequestParam(required = false) String fname,
 							  @RequestParam(required = false) String lname,
-							  @RequestParam(required = false) String dateNaissance,
+							  @RequestParam(required = false) String dob,
 							  @RequestParam(required = false) String tel,
 							  @RequestParam(required = false) String email,
-							  @RequestParam(required = false) String BP,
-							  @RequestParam(required = false) Boolean estAssure,
-							  @RequestParam(required = false) String datePremiereConsultation,
+							  @RequestParam(required = false) Boolean isInsured,
 							  @RequestParam(required = false) Integer state){
 		Boolean exists = patientRepository.existsByEmail(emailOriginal);
 		if(!exists){
@@ -184,28 +190,20 @@ public class PatientController {
 			patient.setLname(lname);
 		}
 
-		if(dateNaissance != null && dateNaissance.length() > 0 && patient.getDateNaissance() != dateNaissance){
-			patient.setDateNaissance(dateNaissance);
+		if(dob != null && dob.length() > 0 && patient.getDob() != dob){
+			patient.setDob(dob);
 		}
 
-		if(tel != null && tel.length() > 0 && patient.getTel() != tel){
-			patient.setTel(tel);
+		if(tel != null && tel.length() > 0 && patient.getPhone() != tel){
+			patient.setPhone(tel);
 		}
 
 		if(email != null && email.length() > 0  && patient.getEmail() != email){
 			patient.setEmail(email);
 		}
 
-		if(BP != null && BP.length() > 0 && patient.getBP() != BP){
-			patient.setBP(BP);
-		}
-
-		if(estAssure != null && estAssure != patient.isEstAssure()){
-			patient.setEstAssure(estAssure);
-		}
-
-		if(datePremiereConsultation != null && datePremiereConsultation.length() > 0 && patient.getDatePremiereConsultation() != datePremiereConsultation){
-			patient.setDatePremiereConsultation(datePremiereConsultation);
+		if(isInsured != null && isInsured != patient.getIsInsured()){
+			patient.setIsInsured(isInsured);
 		}
 
 		if(state != null & patient.getState() != state){
@@ -221,21 +219,19 @@ public class PatientController {
 	Patient updatePatientByTel(@PathVariable(value = "tel")String phone,
 								 @RequestParam(required = false) String fname,
 								 @RequestParam(required = false) String lname,
-								 @RequestParam(required = false) String dateNaissance,
+								 @RequestParam(required = false) String dob,
 								 @RequestParam(required = false) String tel,
 								 @RequestParam(required = false) String email,
-								 @RequestParam(required = false) String BP,
-								 @RequestParam(required = false) Boolean estAssure,
-								 @RequestParam(required = false) String datePremiereConsultation,
+								 @RequestParam(required = false) Boolean isInsured,
 							     @RequestParam(required = false) Integer state){
-		Boolean exists = patientRepository.existsByTel(phone);
+		Boolean exists = patientRepository.existsByPhone(phone);
 		if(!exists){
 			throw new IllegalStateException(
 					"Patient with tel " + phone + " does not exist."
 			);
 		}
 
-		Patient patient = patientRepository.findByTel(phone);
+		Patient patient = patientRepository.findByPhone(phone);
 
 		if(fname != null && fname.length() > 0 && patient.getFname()!=fname){
 			patient.setFname(fname);
@@ -245,28 +241,21 @@ public class PatientController {
 			patient.setLname(lname);
 		}
 
-		if(dateNaissance != null && dateNaissance.length() > 0 && patient.getDateNaissance() != dateNaissance){
-			patient.setDateNaissance(dateNaissance);
+		if(dob != null && dob.length() > 0 && patient.getDob() != dob){
+			patient.setDob(dob);
 		}
 
-		if(tel != null && tel.length() > 0 && patient.getTel() != tel){
-			patient.setTel(tel);
+		if(tel != null && tel.length() > 0 && patient.getPhone() != tel){
+			patient.setPhone(tel);
 		}
 
 		if(email != null && email.length() > 0  && patient.getEmail() != email){
 			patient.setEmail(email);
 		}
 
-		if(BP != null && BP.length() > 0 && patient.getBP() != BP){
-			patient.setBP(BP);
-		}
 
-		if(estAssure != null && estAssure != patient.isEstAssure()){
-			patient.setEstAssure(estAssure);
-		}
-
-		if(datePremiereConsultation != null && datePremiereConsultation.length() > 0 && patient.getDatePremiereConsultation() != datePremiereConsultation){
-			patient.setDatePremiereConsultation(datePremiereConsultation);
+		if(isInsured != null && isInsured != patient.getIsInsured()){
+			patient.setIsInsured(isInsured);
 		}
 
 		if(state != null & patient.getState() != state){
@@ -277,4 +266,7 @@ public class PatientController {
 		patientRepository.save(patient);
 		return patient;
 	}
+
+
+
 }
