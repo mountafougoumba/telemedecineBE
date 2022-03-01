@@ -38,33 +38,15 @@ public class AppointmentController {
 
     // Create appointment
     @PostMapping("/appointment")
-    Appointment create(
-            @RequestParam(required = false) Date dateRDV,
-            @RequestParam(required = false)String heureRDV,
-            @RequestParam(required = false)String objectRDV
-    )
-    {
-        Appointment appointment = new Appointment();
-
-        if (dateRDV != null) {
-            appointment.setDateRDV(dateRDV);
-        }
-        if(heureRDV != null && !heureRDV.isEmpty())
-        {
-            appointment.setHeureRDV(heureRDV);
-        }
-        if(objectRDV != null && !objectRDV.isEmpty())
-        {
-            appointment.setObjectRDV(objectRDV);
-        }
-        appRep.save(appointment);
-        return appointment;
+    Appointment create(@RequestBody Appointment app){
+        appRep.save(app);
+        return app;
     }
 
     // Update appointment
     @PutMapping("/appointment/id={id}")
     Appointment update(
-            @PathVariable Integer id,
+            @PathVariable String id,
             @RequestParam(required = false) Date dateRDV,
             @RequestParam(required = false)String heureRDV,
             @RequestParam(required = false)String objectRDV
@@ -74,18 +56,9 @@ public class AppointmentController {
         if(fetchedAppointment.isPresent())
         {
             Appointment updatedAppointment = fetchedAppointment.get();
-            if (dateRDV != null) {
-                updatedAppointment.setDateRDV(dateRDV);
-            }
-            if(heureRDV != null && !heureRDV.isEmpty())
-            {
-                updatedAppointment.setHeureRDV(heureRDV);
-            }
-            if(objectRDV != null && !objectRDV.isEmpty())
-            {
-                updatedAppointment.setObjectRDV(objectRDV);
-            }
-            appRep.save(updatedAppointment);
+            updatedAppointment.setDateRDV(dateRDV);
+            updatedAppointment.setHeureRDV(heureRDV);
+            updatedAppointment.setObjectRDV(objectRDV);
             return updatedAppointment;
         } else {
             throw new IllegalStateException("Appointment with id " + id + " does not exist.");
