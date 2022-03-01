@@ -1,17 +1,21 @@
 package com.telemedecineBE.entities;
 
-import java.io.Serializable;
-import java.sql.Time;
-import java.util.Date;
+import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+
+import javax.persistence.*;
 
 @Entity
 @Table(name = "MESSAGE")
+@Getter
+@Setter
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
 public class Message  implements Serializable{
 
 	/**
@@ -21,50 +25,28 @@ public class Message  implements Serializable{
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
+	@Column(name="CONTENT")
 	private String content;
-	private Date date;
-	private Time time;
-	public Message(String content, Date date, Time time) {
+	@Column(name="DATE")
+	private LocalDate date;
+	@Column(name="TIME")
+	private String time;
+
+	public Message(String content, LocalDate date, LocalTime time){
 		super();
 		this.content = content;
 		this.date = date;
-		this.time = time;
+		this.time = time.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
 	}
-	public Integer getId() {
-		return id;
-	}
-	public void setId(Integer id) {
-		this.id = id;
-	}
-	public String getContent() {
-		return content;
-	}
-	public void setContent(String content) {
+
+	public Message(String content){
+		super();
 		this.content = content;
+		this.date = LocalDate.now();
+		this.time = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
 	}
-	public Date getDate() {
-		return date;
-	}
-	public void setDate(Date date) {
-		this.date = date;
-	}
-	public Time getTime() {
-		return time;
-	}
-	public void setTime(Time time) {
-		this.time = time;
-	}
+
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
-	@Override
-	public String toString() {
-		return "Message [id=" + id + ", content=" + content + ", date=" + date + ", time=" + time + "]";
-	}
-	
-	
-	
-	
-	
-
 }
