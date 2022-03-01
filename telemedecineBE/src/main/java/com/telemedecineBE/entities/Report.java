@@ -22,6 +22,9 @@ public class Report implements Serializable{
     private Integer id;
 	private String description;
 	private String doctor_upload;
+
+	public Report() { super(); }
+
 	public Report(Integer id, String description, String doctor_upload) {
 		super();
 		this.id = id;
