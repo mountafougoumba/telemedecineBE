@@ -13,19 +13,19 @@ public interface PatientRepository
 	
 				extends JpaRepository<Patient, Serializable>{
 	
-	public Patient findByTel(String tel);
+	public Patient findByPhone(String phone);
 	
 	public Patient findByEmail(String email);
 
 	public Patient findById(Integer id);
 	
-	public Boolean existsByTel(String tel);
+	public Boolean existsByPhone(String phone);
 
 	public Boolean existsByEmail(String email);
 
 	public Boolean existsById(Integer id);
 
-	public void deleteByTel(String tel);
+	public void deleteByPhone(String tel);
 
 	public void deleteByEmail(String email);
 

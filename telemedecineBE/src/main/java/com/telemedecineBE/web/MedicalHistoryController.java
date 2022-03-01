@@ -1,6 +1,7 @@
 package com.telemedecineBE.web;
 
 import com.telemedecineBE.dao.MedicalHistoryRepository;
+import com.telemedecineBE.entities.Address;
 import com.telemedecineBE.entities.MedicalHistory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +19,7 @@ public class MedicalHistoryController {
     }
 
     //get all medical history (conditions)
-    @GetMapping("/medical_history")
+    @GetMapping("/medical_histories")
     List<MedicalHistory> getAllMedicalHistory(){
         System.out.println("getAllMedicalHistory");
         return medicalHistoryRepository.findAll();
@@ -58,6 +59,19 @@ public class MedicalHistoryController {
         medicalHistoryRepository.save(medicalHistory);
         System.out.println("newMedicalHistory");
         return medicalHistory;
+    }
+
+    @PostMapping("/medical_histories")
+    List<MedicalHistory> newMedicalHistories(@RequestBody List<MedicalHistory> medicalHistories){
+        for (MedicalHistory mH:
+                medicalHistories) {
+            if(medicalHistoryRepository.existsByName(mH.getName())){
+                throw new IllegalStateException("Medical History with  " + mH.getName() + " already exists.");
+            }
+        }
+        System.out.println("newMedicalHistories");
+        medicalHistoryRepository.saveAll(medicalHistories);
+        return medicalHistories;
     }
 
     //delete medical history by name

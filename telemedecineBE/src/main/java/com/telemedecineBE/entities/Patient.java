@@ -4,22 +4,22 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.telemedecineBE.web.UserController;
+import lombok.*;
 
 @Entity
-@Table(name = "PATIENT")
+@Table(name = "PATIENT",
+		uniqueConstraints = @UniqueConstraint(columnNames={"EMAIL", "PHONE"}))
+@Getter
+@Setter
+@ToString
+@EqualsAndHashCode
+@AllArgsConstructor
+@NoArgsConstructor
 public class Patient implements Serializable{
 	
 	/**
@@ -29,58 +29,33 @@ public class Patient implements Serializable{
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-	
+
+	@Column(name="FIRST_NAME")
 	private String Fname;
+	@Column(name="LAST_NAME")
     private String Lname;
-    private String dateNaissance;
-    private String tel;
+	@Column(name="DOB")
+    private String dob;
+	@Column(name="PHONE")
+    private String phone;
+	@Column(name="EMAIL")
     private String email;
-    private String BP;
-    private boolean estAssure;
-    private String datePremiereConsultation;
+    //private String BP;
+	@Column(name="IS_INSURED")
+    private Boolean isInsured;
+	@Column(name="STATE")
     private Integer state=1;
-    
+
+	@OneToMany(cascade=CascadeType.ALL)
+	@JoinColumn(name="medicalHistoryId")
+	private List<MedicalHistory> medicalHistory = new ArrayList<>();
 	
-	
-
-	public Patient(Integer id, String fname, String lname, String dateNaissance, String tel, String email, String bP,
-			boolean estAssure, String datePremiereConsultation, Integer state, List<MedicalHistory> medicalhistory,
-			Insurance assurance, Address address, User user, Appointment appointment) {
-		super();
-		this.id = id;
-		Fname = fname;
-		Lname = lname;
-		this.dateNaissance = dateNaissance;
-		this.tel = tel;
-		this.email = email;
-		BP = bP;
-		this.estAssure = estAssure;
-		this.datePremiereConsultation = datePremiereConsultation;
-		this.state = state;
-		this.medicalhistory = medicalhistory;
-		this.assurance = assurance;
-		this.address = address;
-		this.user = user;
-		this.appointment = appointment;
-	}
-
-
-
-	@ManyToMany(cascade = {
-	        CascadeType.PERSIST, CascadeType.MERGE})
-	    @JoinTable(name = "medicalhistory",
-	            joinColumns = @JoinColumn(name = "patientID"),
-	            inverseJoinColumns = @JoinColumn(name = "MedicalHistory")
-	    )
-	    private List<MedicalHistory> medicalhistory = new ArrayList<>();
-	
-	@ManyToOne
-    @JoinColumn(name = "assuranceID")
-    private Insurance assurance;
+	@OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "insuranceID")
+    private List<Insurance> insurance;
 	
 	@OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "addressID")
-    @JsonBackReference
 	private Address address;
 	
 	@OneToOne(cascade = CascadeType.ALL)
@@ -88,162 +63,28 @@ public class Patient implements Serializable{
 	@JsonBackReference
 	private User user;
 	
-	
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "appointmentID")
-	@JsonBackReference
-	private Appointment appointment;
+	@JsonManagedReference
+	private List<Appointment> appointments;
 
-	public Patient() {
-		super();
-	}
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name="prescriptionId")
+	private List<Priscriptions> prescriptions;
 
-	
-
-	public Integer getId() {
-		return id;
-	}
-	
-	public User getUser() {
-		return user;
-	}
-
-
-
-	public List<MedicalHistory> getMedicalhistory() {
-		return medicalhistory;
-	}
-
-
-
-	public void setMedicalhistory(List<MedicalHistory> medicalhistory) {
-		this.medicalhistory = medicalhistory;
-	}
-
-
-
-	public Appointment getAppointment() {
-		return appointment;
-	}
-
-
-
-	public void setAppointment(Appointment appointment) {
-		this.appointment = appointment;
-	}
-
-
-
-	public void setUser(User user) {
-		this.user = user;
-	}
-
-
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public String getFname() {
-		return Fname;
-	}
-
-	public void setFname(String fname) {
+	public Patient(String fname, String lname, String phone, String email) {
 		Fname = fname;
-	}
-
-	public Address getAddress() {
-		return address;
-	}
-
-
-
-	public void setAddress(Address address) {
-		this.address = address;
-	}
-
-
-
-	public String getLname() {
-		return Lname;
-	}
-
-	public void setLname(String lname) {
 		Lname = lname;
-	}
-
-	public String getDateNaissance() {
-		return dateNaissance;
-	}
-
-	public void setDateNaissance(String dateNaissance) {
-		this.dateNaissance = dateNaissance;
-	}
-
-	public String getTel() {
-		return tel;
-	}
-
-	public void setTel(String tel) {
-		this.tel = tel;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
+		this.phone = phone;
 		this.email = email;
 	}
 
-	public String getBP() {
-		return BP;
-	}
-
-	public void setBP(String bP) {
-		BP = bP;
-	}
-
-	public boolean isEstAssure() {
-		return estAssure;
-	}
-
-	public void setEstAssure(boolean estAssure) {
-		this.estAssure = estAssure;
-	}
-
-	public String getDatePremiereConsultation() {
-		return datePremiereConsultation;
-	}
-
-	public void setDatePremiereConsultation(String datePremiereConsultation) {
-		this.datePremiereConsultation = datePremiereConsultation;
-	}
-
-	public Integer getState() {
-		return state;
-	}
-
-	public void setState(Integer state) {
-		this.state = state;
-	}
-
-
-
-	public Insurance getAssurance() {
-		return assurance;
-	}
-
-	public void setAssurance(Insurance assurance) {
-		this.assurance = assurance;
-	}
-
-	
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
 
+	public Boolean getIsInsured(){ return isInsured; };
 
-	
+	public void setIsInsured(boolean isInsured) { this.isInsured = isInsured; }
 
 }
