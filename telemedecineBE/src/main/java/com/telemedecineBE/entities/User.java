@@ -9,10 +9,17 @@ import java.util.List;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import lombok.*;
 
 
 @Entity
-@Table(name = "XUSER")
+@Table(name = "XUSER",
+	uniqueConstraints = @UniqueConstraint(columnNames = {"EMAIL", "PHONE", "USERNAME"}))
+@Getter
+@Setter
+@ToString
+@AllArgsConstructor
+@NoArgsConstructor
 public class User implements Serializable{
 
 	/**
@@ -30,18 +37,26 @@ public class User implements Serializable{
 	)
 	private List<Habilitations> habilitations = new ArrayList<>();
 	@OneToOne(cascade = CascadeType.ALL,mappedBy = "user")
-	@JsonBackReference
+	//@JsonBackReference
 	private Patient patient;
 
+	@Column(name="LAST_NAME")
 	private String lname;
+	@Column(name="FIRST_NAME")
 	private String fname;
-	@Column(unique = true)
+	@Column(name="USERNAME")
 	private String userName;
+	@Column(name="PASSWORD")
 	private String userpassword;
+	@Column(name="USER_TYPE")
 	private String userType;
+	@Column(name="EMAIL")
 	private String email;
+	@Column(name="PHONE")
 	private String cellphone;
+	@Column(name="STATE")
 	private Integer state=1;
+
 	public User(String nom,  String prenom, String nomUtilisateur,
 				String motDePasse, String email, String cellphone) {
 		super();
@@ -51,10 +66,6 @@ public class User implements Serializable{
 		this.userpassword = motDePasse;
 		this.email = email;
 		this.cellphone = cellphone;
-	}
-
-	public User() {
-		super();
 	}
 
 	public User(String userName, String password) {
@@ -73,118 +84,6 @@ public class User implements Serializable{
 		this.userType = typeUtilisateur;
 		this.email = email;
 		this.cellphone = cellphone;
-	}
-
-	public User( String nom, String prenom,  String nomUtilisateur,
-				 String motDePasse,  String typeUtilisateur, String email,
-				 String cellphone,Integer state) {
-		super();
-		this.lname = nom;
-		this.fname = prenom;
-		this.userName = nomUtilisateur;
-		this.userpassword = motDePasse;
-		this.userType = typeUtilisateur;
-		this.email = email;
-		this.cellphone = cellphone;
-		this.state = state;
-	}
-
-
-
-	@Override
-	public String toString() {
-		return "nom=" + lname + " prenom=" + fname + " nomUtilisateur=" + userName
-				+ " motDePasse=" + userpassword + " typeUtilisateur=" + userType + " email=" + email
-				+ "  cellphone=" + cellphone + " ";
-	}
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-
-	public Patient getPatient() {
-		return patient;
-	}
-
-	public void setPatient(Patient patient) {
-		this.patient = patient;
-	}
-
-	public List<Habilitations> getHabilitations() {
-		return habilitations;
-	}
-
-	public void setHabilitations(List<Habilitations> habilitations) {
-		this.habilitations = habilitations;
-	}
-
-	public String getLname() {
-		return lname;
-	}
-
-	public void setLname(String lname) {
-		this.lname = lname;
-	}
-
-	public String getFname() {
-		return fname;
-	}
-
-	public void setFname(String fname) {
-		this.fname = fname;
-	}
-
-	public String getUserName() {
-		return userName;
-	}
-
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
-
-	public String getUserpassword() {
-		return userpassword;
-	}
-
-	public void setUserpassword(String userpassword) {
-		this.userpassword = userpassword;
-	}
-
-	public String getUserType() {
-		return userType;
-	}
-
-	public void setUserType(String userType) {
-		this.userType = userType;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getCellphone() {
-		return cellphone;
-	}
-
-	public void setCellphone(String cellphone) {
-		this.cellphone = cellphone;
-	}
-
-	public Integer getState() {
-		return state;
-	}
-
-	public void setState(Integer state) {
-		this.state = state;
 	}
 
 	public static long getSerialversionuid() {
