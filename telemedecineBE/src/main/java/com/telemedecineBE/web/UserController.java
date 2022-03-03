@@ -13,6 +13,9 @@ public class UserController {
 
     @Autowired
     private UserDao userDao;
+    
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @GetMapping("/users")
     List<User> getAllUsers(){
@@ -272,7 +275,7 @@ public class UserController {
     public String create(String userName, String userpassword){
         User user = null;
         try {
-            user = new User(userName, userpassword);
+            user = new User(userName, passwordEncoder.encode(userpassword));
             userDao.save(user);
         }
         catch (Exception ex){
