@@ -67,7 +67,7 @@ public class Patient extends User{
 	private List<Priscriptions> prescriptions;
 
 	public Patient(String first, String last, String email, String phone, String password){
-		super(first, last, email, password, UserType.PATIENT, email, phone);
+		super(first, last, password, UserType.PATIENT, email, phone);
 	}
 
 	@Override

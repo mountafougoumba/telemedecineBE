@@ -82,13 +82,29 @@ public class User implements Serializable{
 		this.userpassword = password;
 	}
 
-	public User(String first, String last, String userName,
+	public User(String first, String last,
+				String password,  String userType,  String email,
+				String cellphone) {
+		super();
+		this.fname = first;
+		this.lname = last;
+		this.userName = email;
+		this.userpassword = password;
+		this.userType = this.userType.findByName(userType);
+		this.email = email;
+		this.cellphone = cellphone;
+		if(userType == null){
+			throw new IllegalStateException("user type " + userType + "does not exist");
+		}
+	}
+
+	public User(String first, String last,
 				String password,  UserType userType,  String email,
 				String cellphone) {
 		super();
 		this.fname = first;
 		this.lname = last;
-		this.userName = userName;
+		this.userName = email;
 		this.userpassword = password;
 		this.userType = userType;
 		this.email = email;

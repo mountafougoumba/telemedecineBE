@@ -1,7 +1,5 @@
 package com.telemedecineBE.enumeration;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-
 public enum UserType {
     PATIENT("PATIENT"),
     DOCTOR("DOCTOR"),
@@ -13,17 +11,22 @@ public enum UserType {
         this.type=type;
     }
 
-    @JsonCreator
-    public static UserType getUserType(String value) {
-
-        for (UserType userType : UserType.values()) {
-
-            if (userType.getType().equals(value)) {
-
-                return userType;
-            }
+    public UserType findByName(String name){
+        switch (name) {
+            case "PATIENT":
+            case "patient":
+                return PATIENT;
+            case "DOCTOR":
+            case "doctor":
+            case "NURSE":
+            case "nurse":
+                return DOCTOR;
+            case "ADMIN":
+            case "ADMINISTRATOR":
+            case "admin":
+            case "administrator":
+                return ADMIN;
         }
-
         return null;
     }
 
