@@ -45,22 +45,22 @@ public class PatientController {
 
 	@GetMapping("/patient/tel={tel}")
 	Patient getPatientByTel(@PathVariable(value = "tel")String phone){
-		Boolean exists = patientRepository.existsByPhone(phone);
+		Boolean exists = patientRepository.existsByCellphone(phone);
 		if(!exists){
 			throw new IllegalStateException("Patient with phone " + phone + " does not exist.");
 		}
 		System.out.println("getPatientByTel");
-		return patientRepository.findByPhone(phone);
+		return patientRepository.findByCellphone(phone);
 	}
 
 	@PostMapping("/patient")
 	Patient newPatient(@RequestBody Patient patient){
 		Boolean exists = patientRepository.existsByEmail(patient.getEmail());
-		Boolean exists2 = patientRepository.existsByPhone(patient.getPhone());
+		Boolean exists2 = patientRepository.existsByCellphone(patient.getCellphone());
 		if(exists){
 			throw new IllegalStateException("Patient with email " + patient.getEmail() + " already exists.");
 		} else if(exists2){
-			throw new IllegalStateException("Patient with phone " + patient.getPhone() + " already exists.");
+			throw new IllegalStateException("Patient with phone " + patient.getCellphone() + " already exists.");
 		}
 		patientRepository.save(patient);
 		System.out.println("newPatient");
@@ -73,8 +73,8 @@ public class PatientController {
 				patients) {
 			if(patientRepository.existsByEmail(p.getEmail())){
 				throw new IllegalStateException("Patient with email " + p.getEmail() + " already exists.");
-			} else if(patientRepository.existsByPhone(p.getPhone())){
-				throw new IllegalStateException("Patient with phone " + p.getPhone() + " already exists.");
+			} else if(patientRepository.existsByCellphone(p.getCellphone())){
+				throw new IllegalStateException("Patient with phone " + p.getCellphone() + " already exists.");
 			}
 		}
 		System.out.println("newPatients");
@@ -104,12 +104,12 @@ public class PatientController {
 
 	@DeleteMapping("/patient/tel={tel}")
 	void deletePatientByTel(@PathVariable(value = "tel")String phone){
-		Boolean exists = patientRepository.existsByPhone(phone);
+		Boolean exists = patientRepository.existsByCellphone(phone);
 		if(!exists){
 			throw new IllegalStateException("Patient with phone " + phone + " does not exist.");
 		}
 		System.out.println("deletePatientByPhone");
-		patientRepository.deleteByPhone(phone);
+		patientRepository.deleteByCellphone(phone);
 	}
 
 	@PutMapping("/patient/id={id}")
@@ -142,8 +142,8 @@ public class PatientController {
 			patient.setDob(dob);
 		}
 
-		if(tel != null && tel.length() > 0 && !patient.getPhone().equals(tel)){
-			patient.setPhone(tel);
+		if(tel != null && tel.length() > 0 && !patient.getCellphone().equals(tel)){
+			patient.setCellphone(tel);
 		}
 
 		if(email != null && email.length() > 0  && !patient.getEmail().equals(email)){
@@ -194,8 +194,8 @@ public class PatientController {
 			patient.setDob(dob);
 		}
 
-		if(tel != null && tel.length() > 0 && patient.getPhone() != tel){
-			patient.setPhone(tel);
+		if(tel != null && tel.length() > 0 && patient.getCellphone() != tel){
+			patient.setCellphone(tel);
 		}
 
 		if(email != null && email.length() > 0  && patient.getEmail() != email){
@@ -224,14 +224,14 @@ public class PatientController {
 								 @RequestParam(required = false) String email,
 								 @RequestParam(required = false) Boolean isInsured,
 							     @RequestParam(required = false) Integer state){
-		Boolean exists = patientRepository.existsByPhone(phone);
+		Boolean exists = patientRepository.existsByCellphone(phone);
 		if(!exists){
 			throw new IllegalStateException(
 					"Patient with tel " + phone + " does not exist."
 			);
 		}
 
-		Patient patient = patientRepository.findByPhone(phone);
+		Patient patient = patientRepository.findByCellphone(phone);
 
 		if(fname != null && fname.length() > 0 && patient.getFname()!=fname){
 			patient.setFname(fname);
@@ -245,8 +245,8 @@ public class PatientController {
 			patient.setDob(dob);
 		}
 
-		if(tel != null && tel.length() > 0 && patient.getPhone() != tel){
-			patient.setPhone(tel);
+		if(tel != null && tel.length() > 0 && patient.getCellphone() != tel){
+			patient.setCellphone(tel);
 		}
 
 		if(email != null && email.length() > 0  && patient.getEmail() != email){

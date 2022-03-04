@@ -2,7 +2,9 @@ package com.telemedecineBE.web;
 
 import com.telemedecineBE.entities.User;
 import com.telemedecineBE.dao.UserDao;
+import com.telemedecineBE.enumeration.UserType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -13,9 +15,10 @@ public class UserController {
 
     @Autowired
     private UserDao userDao;
-    
+    /*
     @Autowired
     private PasswordEncoder passwordEncoder;
+     */
 
     @GetMapping("/users")
     List<User> getAllUsers(){
@@ -103,7 +106,7 @@ public class UserController {
                         @RequestParam(required = false)String fName,
                         @RequestParam(required = false)String username,
                         @RequestParam(required = false)String password,
-                        @RequestParam(required = false)String userType,
+                        @RequestParam(required = false) UserType userType,
                         @RequestParam(required = false)String email,
                         @RequestParam(required = false)String phone,
                         @RequestParam(required = false)Integer state){
@@ -129,7 +132,7 @@ public class UserController {
             user.setUserpassword(password);
         }
 
-        if(userType != null && userType.length() > 0 && userType != user.getUserType()){
+        if(userType != null && userType != user.getUserType()){
             user.setUserType(userType);
         }
 
@@ -156,7 +159,7 @@ public class UserController {
                         @RequestParam(required = false)String fName,
                         @RequestParam(required = false)String username,
                         @RequestParam(required = false)String password,
-                        @RequestParam(required = false)String userType,
+                        @RequestParam(required = false)UserType userType,
                         @RequestParam(required = false)String email,
                         @RequestParam(required = false)String phone,
                         @RequestParam(required = false)Integer state){
@@ -182,7 +185,7 @@ public class UserController {
             user.setUserpassword(password);
         }
 
-        if(userType != null && userType.length() > 0 && userType != user.getUserType()){
+        if(userType != null && userType != user.getUserType()){
             user.setUserType(userType);
         }
 
@@ -209,7 +212,7 @@ public class UserController {
                            @RequestParam(required = false)String fName,
                            @RequestParam(required = false)String username,
                            @RequestParam(required = false)String password,
-                           @RequestParam(required = false)String userType,
+                           @RequestParam(required = false)UserType userType,
                            @RequestParam(required = false)String email,
                            @RequestParam(required = false)String phone,
                            @RequestParam(required = false)Integer state){
@@ -235,7 +238,7 @@ public class UserController {
             user.setUserpassword(password);
         }
 
-        if(userType != null && userType.length() > 0 && userType != user.getUserType()){
+        if(userType != null && userType != user.getUserType()){
             user.setUserType(userType);
         }
 
@@ -269,7 +272,7 @@ public class UserController {
         return "Login Page";
     }
 
-     // Create User. Edit to add encoded passwords to database
+     /*Create User. Edit to add encoded passwords to database
     @GetMapping("/register")
     @ResponseBody
     public String create(String userName, String userpassword){
@@ -282,7 +285,7 @@ public class UserController {
             return "Error creating user:" + userName;
         }
         return "User registered succesfully! (username = " + user.getUserName() + ")";
-    }
+    } */
 
    /*@RequestMapping("/update")
     @ResponseBody

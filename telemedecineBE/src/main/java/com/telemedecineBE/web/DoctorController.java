@@ -1,13 +1,10 @@
 package com.telemedecineBE.web;
 
 import com.telemedecineBE.dao.DoctorRepository;
-import com.telemedecineBE.entities.Appointment;
 import com.telemedecineBE.entities.Doctor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.print.Doc;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -62,11 +59,11 @@ public class DoctorController {
             Doctor updatedDoctor = fetchedDoctor.get();
             updatedDoctor.setFname(fname);
             updatedDoctor.setLname(lname);
-            updatedDoctor.setOffice(office);
+            updatedDoctor.setOfficeName(office);
             updatedDoctor.setSpecialty(specialty);
-            updatedDoctor.setPassword(password);
+            updatedDoctor.setUserpassword(password);
             updatedDoctor.setEmail(email);
-            updatedDoctor.setPhone(phone);
+            updatedDoctor.setCellphone(phone);
             return updatedDoctor;
         } else {
             throw new IllegalStateException("Doctor with id " + id + " does not exist.");
