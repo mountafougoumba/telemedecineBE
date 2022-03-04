@@ -15,7 +15,6 @@ uniqueConstraints = @UniqueConstraint(columnNames = "NAME"))
 @Getter
 @Setter
 @ToString
-@EqualsAndHashCode
 public class MedicalHistory implements Serializable {
 
 	private static final long serialVersionUID = 1L;

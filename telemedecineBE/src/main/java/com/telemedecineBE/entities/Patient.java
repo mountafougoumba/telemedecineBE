@@ -8,6 +8,7 @@ import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.telemedecineBE.enumeration.UserType;
 import com.telemedecineBE.web.UserController;
 import lombok.*;
 
@@ -16,33 +17,31 @@ import lombok.*;
 		uniqueConstraints = @UniqueConstraint(columnNames={"EMAIL", "PHONE"}))
 @Getter
 @Setter
-@ToString
-@EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
-public class Patient implements Serializable{
-	
-	/**
-	 * 
-	 */
+@Data
+public class Patient extends User{
+
 	private static final long serialVersionUID = 1L;
 	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
-
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name="PATIENT_ID")
+	private Integer id;
+	/*
 	@Column(name="FIRST_NAME")
 	private String Fname;
 	@Column(name="LAST_NAME")
     private String Lname;
-	@Column(name="DOB")
-    private String dob;
 	@Column(name="PHONE")
     private String phone;
 	@Column(name="EMAIL")
     private String email;
-    //private String BP;
+	 */
+
+	@Column(name="DOB")
+    private String dob;
 	@Column(name="IS_INSURED")
-    private Boolean isInsured;
+    private Boolean isInsured = false;
 	@Column(name="STATE")
     private Integer state=1;
 
@@ -58,11 +57,6 @@ public class Patient implements Serializable{
     @JoinColumn(name = "addressID")
 	private Address address;
 	
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "userID")
-	@JsonBackReference
-	private User user;
-	
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "appointmentID")
 	@JsonManagedReference
@@ -72,19 +66,17 @@ public class Patient implements Serializable{
 	@JoinColumn(name="prescriptionId")
 	private List<Priscriptions> prescriptions;
 
-	public Patient(String fname, String lname, String phone, String email) {
-		Fname = fname;
-		Lname = lname;
-		this.phone = phone;
-		this.email = email;
+	public Patient(String first, String last, String email, String phone, String password){
+		super(first, last, email, password, UserType.PATIENT, email, phone);
 	}
 
-	public static long getSerialversionuid() {
-		return serialVersionUID;
+	@Override
+	public String toString (){
+		return "Patient [id= " + id + ", fname= " + getFname() + ", lname= " + getLname() +
+				", username= " + getUserName() + ", userType= " + getUserType().getType() +
+				", email= " + getEmail() + ", cellphone= " + getCellphone() + ", dob= " + dob +
+				", isInsured= " + isInsured + ", habilitations= " + getHabilitations() + ", medicalHistory= " +
+				medicalHistory + ", insurance= " + insurance + ", address= " + address + ", appointments= " +
+				appointments + ", prescriptions= " + prescriptions + ", state= " + state + "]";
 	}
-
-	public Boolean getIsInsured(){ return isInsured; };
-
-	public void setIsInsured(boolean isInsured) { this.isInsured = isInsured; }
-
 }

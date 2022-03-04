@@ -9,6 +9,7 @@ import java.util.List;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.telemedecineBE.enumeration.UserType;
 import lombok.*;
 
 
@@ -17,9 +18,6 @@ import lombok.*;
 	uniqueConstraints = @UniqueConstraint(columnNames = {"EMAIL", "PHONE", "USERNAME"}))
 @Getter
 @Setter
-@ToString
-@AllArgsConstructor
-@NoArgsConstructor
 public class User implements Serializable{
 
 	/**
@@ -36,9 +34,6 @@ public class User implements Serializable{
 			inverseJoinColumns = @JoinColumn(name = "habilitationID")
 	)
 	private List<Habilitations> habilitations = new ArrayList<>();
-	@OneToOne(cascade = CascadeType.ALL,mappedBy = "user")
-	//@JsonBackReference
-	private Patient patient;
 
 	@Column(name="LAST_NAME")
 	private String lname;
@@ -49,7 +44,7 @@ public class User implements Serializable{
 	@Column(name="PASSWORD")
 	private String userpassword;
 	@Column(name="USER_TYPE")
-	private String userType;
+	private UserType userType;
 	@Column(name="EMAIL")
 	private String email;
 	@Column(name="PHONE")
@@ -57,15 +52,29 @@ public class User implements Serializable{
 	@Column(name="STATE")
 	private Integer state=1;
 
-	public User(String nom,  String prenom, String nomUtilisateur,
-				String motDePasse, String email, String cellphone) {
-		super();
-		this.lname = nom;
-		this.fname = prenom;
-		this.userName = nomUtilisateur;
-		this.userpassword = motDePasse;
+	public User(){}
+
+	public User(Integer id, List<Habilitations> habilitations, String lname, String fname, String userName, String userpassword, UserType userType, String email, String cellphone, Integer state) {
+		this.id = id;
+		this.habilitations = habilitations;
+		this.lname = lname;
+		this.fname = fname;
+		this.userName = email;
+		this.userpassword = userpassword;
+		this.userType = userType;
 		this.email = email;
 		this.cellphone = cellphone;
+		this.state = state;
+	}
+
+	public User(String first, String last, String email, String phone, String password) {
+		super();
+		this.lname = last;
+		this.fname = first;
+		this.userName = email;
+		this.userpassword = password;
+		this.email = email;
+		this.cellphone = phone;
 	}
 
 	public User(String userName, String password) {
@@ -73,15 +82,15 @@ public class User implements Serializable{
 		this.userpassword = password;
 	}
 
-	public User(String nom, String prenom,  String nomUtilisateur,
-				String motDePasse,  String typeUtilisateur,  String email,
+	public User(String first, String last, String userName,
+				String password,  UserType userType,  String email,
 				String cellphone) {
 		super();
-		this.lname = nom;
-		this.fname = prenom;
-		this.userName = nomUtilisateur;
-		this.userpassword = motDePasse;
-		this.userType = typeUtilisateur;
+		this.fname = first;
+		this.lname = last;
+		this.userName = userName;
+		this.userpassword = password;
+		this.userType = userType;
 		this.email = email;
 		this.cellphone = cellphone;
 	}
@@ -90,7 +99,12 @@ public class User implements Serializable{
 		return serialVersionUID;
 	}
 
-
+	@Override
+	public String toString() {
+		return "User [id= " + id + ", fname= " + fname + ", lname= " + lname + ", userName= " +
+		email + ", userType= " + userType.getType() + ", email= " + email + ", phone= " + cellphone
+		+ "]";
+	}
 
 
 }

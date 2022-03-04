@@ -2,15 +2,7 @@ package com.telemedecineBE.entities;
 
 import java.io.Serializable;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -24,7 +16,6 @@ import lombok.*;
 @Getter
 @Setter
 @ToString
-@EqualsAndHashCode
 public class Address implements Serializable{
 
 	/**
@@ -47,14 +38,15 @@ public class Address implements Serializable{
 	@Column(name="US_STATE")
 	private String usState;
 
-	//These caused the 415 error.
-	/* @OneToOne(cascade = CascadeType.ALL, mappedBy = "address")
-	 @JsonBackReference(value="patient-address")
+	@OneToOne(cascade = CascadeType.ALL, mappedBy = "address")
+	 //@JsonBackReference(value="patient-address")
+	@JoinColumn(name="patientID")
 	 private Patient patient;
 
-	 @OneToOne(cascade = CascadeType.ALL,mappedBy = "address")
-	 @JsonBackReference(value="doctor-address")
-	 private Doctor doctor; */
+	 @OneToOne(cascade = CascadeType.ALL,mappedBy = "officeAddress")
+	 //@JsonBackReference(value="doctor-address")
+	 @JoinColumn(name="doctorID")
+	 private Doctor doctor;
 
 	public Address(String zipcode, String streetAddress, String city, String usState) {
 		super();
@@ -69,7 +61,6 @@ public class Address implements Serializable{
 		return id;
 	}
 
-/*
 	public Patient getPatient() {
 		return patient;
 	}
@@ -88,9 +79,8 @@ public class Address implements Serializable{
 	public void setPatient(Patient patient) {
 		this.patient = patient;
 	}
-*/
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
-	}
+}
