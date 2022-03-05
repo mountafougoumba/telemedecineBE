@@ -66,8 +66,8 @@ public class Patient extends User{
 	@JoinColumn(name="prescriptionId")
 	private List<Priscriptions> prescriptions;
 
-	public Patient(String first, String last, String email, String phone, String password){
-		super(first, last, password, UserType.PATIENT, email, phone);
+	public Patient(String fname, String lname, String email, String cellphone, String userpassword){
+		super(fname, lname, userpassword, UserType.PATIENT, email, cellphone);
 	}
 
 	@Override
