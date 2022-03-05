@@ -117,6 +117,39 @@ public class PatientController {
 	}
 
 	@PutMapping("/patient/id={id}")
+	Patient updatePatientByIdWithRequestBody(@PathVariable(value = "id") Integer id,
+											 @RequestBody Patient patient) {
+		Boolean exists = patientRepository.existsById(id);
+		if(!exists){
+			throw new IllegalStateException(
+					"Patient with id " + id + " does not exist."
+			);
+		}
+
+		Patient currentPatient = patientRepository.findById(id);
+
+		if(patient.getFname() != null && patient.getFname().length() > 0 && currentPatient.getFname() != patient.getFname()){
+			currentPatient.setFname(patient.getFname());
+		}
+
+		if(patient.getLname() != null && patient.getLname().length() > 0 && currentPatient.getLname() != patient.getLname()){
+			currentPatient.setLname(patient.getLname());
+		}
+
+		if(patient.getCellphone() != null && patient.getCellphone().length() > 0 && currentPatient.getCellphone() != patient.getCellphone()){
+			currentPatient.setCellphone(patient.getCellphone());
+		}
+
+		if(patient.getEmail() != null && patient.getEmail().length() > 0  && currentPatient.getEmail() != patient.getEmail()){
+			currentPatient.setEmail(patient.getEmail());
+		}
+
+		System.out.println(currentPatient);
+		patientRepository.save(currentPatient);
+		return currentPatient;
+	}
+/*
+	@PutMapping("/patient/id={id}")
 	Patient updatePatientById(@PathVariable(value = "id")Integer id,
 							  @RequestParam(required = false) String fname,
 							  @RequestParam(required = false) String lname,
@@ -134,23 +167,23 @@ public class PatientController {
 
 		Patient patient = patientRepository.findById(id);
 
-		if(fname != null && fname.length() > 0 && !patient.getFname().equals(fname)){
+		if(fname != null && fname.length() > 0 && patient.getFname() != fname){
 			patient.setFname(fname);
 		}
 
-		if(lname != null && lname.length() > 0 && !patient.getLname().equals(lname)){
+		if(lname != null && lname.length() > 0 && patient.getLname() != lname){
 			patient.setLname(lname);
 		}
 
-		if(dob != null && dob.length() > 0 && !patient.getDob().equals(dob)){
+		if(dob != null && dob.length() > 0 && patient.getDob() != dob){
 			patient.setDob(dob);
 		}
 
-		if(tel != null && tel.length() > 0 && !patient.getCellphone().equals(tel)){
+		if(tel != null && tel.length() > 0 && patient.getCellphone() != tel){
 			patient.setCellphone(tel);
 		}
 
-		if(email != null && email.length() > 0  && !patient.getEmail().equals(email)){
+		if(email != null && email.length() > 0  && patient.getEmail() != email){
 			patient.setEmail(email);
 		}
 
@@ -158,7 +191,7 @@ public class PatientController {
 			patient.setIsInsured(isInsured);
 		}
 
-		if(state != null & !patient.getState().equals(state)){
+		if(state != null & patient.getState() != state){
 			patient.setState(state);
 		}
 
@@ -166,6 +199,8 @@ public class PatientController {
 		patientRepository.save(patient);
 		return patient;
 	}
+
+ */
 
 	@PutMapping("/patient/email={email}")
 	Patient updatePatientByEmail(@PathVariable(value = "email")String emailOriginal,
