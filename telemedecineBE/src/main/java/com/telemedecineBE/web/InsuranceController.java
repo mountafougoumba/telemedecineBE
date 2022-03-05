@@ -26,11 +26,11 @@ public class InsuranceController {
     //get insurance by name
     @GetMapping("/insurance/name={name}")
     Insurance getInsuranceByName(@PathVariable(value = "name") String name){
-        Boolean exists = insuranceRepository.existsByNom(name);
+        Boolean exists = insuranceRepository.existsByName(name);
         if(!exists){
             throw new IllegalStateException("insurance with name " + name + "does not exist.");
         }
-        Insurance insurance = insuranceRepository.findByNom(name);
+        Insurance insurance = insuranceRepository.findByName(name);
         System.out.println("getInsuranceByName");
         return insurance;
     }
@@ -50,9 +50,9 @@ public class InsuranceController {
     //add new Insurance object to repository
     @PostMapping("/insurance")
     Insurance newInsurance(@RequestBody Insurance insurance){
-        Boolean exists = insuranceRepository.existsByNom(insurance.getNom());
+        Boolean exists = insuranceRepository.existsByName(insurance.getName());
         if(exists){
-            throw new IllegalStateException("Insurance with name " + insurance.getNom() + " already exists");
+            throw new IllegalStateException("Insurance with name " + insurance.getName() + " already exists");
         }
         insuranceRepository.save(insurance);
         System.out.println("newInsurance");
@@ -62,12 +62,12 @@ public class InsuranceController {
     //delete insurance by name
     @DeleteMapping("/insurance/name={name}")
     void deleteInsuranceByName(@PathVariable(value = "name") String name) {
-        Boolean exists = insuranceRepository.existsByNom(name);
+        Boolean exists = insuranceRepository.existsByName(name);
         if (!exists) {
             throw new IllegalStateException("Insurance with name " + name + " does not exist.");
         }
         System.out.println("deleteInsuranceByName");
-        insuranceRepository.deleteByNom(name);
+        insuranceRepository.deleteByName(name);
     }
 
     //delete insurance by id
@@ -91,25 +91,25 @@ public class InsuranceController {
             @RequestParam(required = false)Integer state,
             @RequestParam(required = false)Double percentageAssurance){
         System.out.println("updateInsurance");
-        Boolean exists = insuranceRepository.existsByNom(name);
+        Boolean exists = insuranceRepository.existsByName(name);
         if(!exists){
             throw new IllegalStateException(
                     "Insurance with name " + nom + "does not exist."
             );
         }
-        Insurance insurance = insuranceRepository.findByNom(name);
+        Insurance insurance = insuranceRepository.findByName(name);
 
         if(nom != null && nom.length() > 0 &&
-        insurance.getNom() != name){
-            insurance.setNom(nom);
+        insurance.getName() != name){
+            insurance.setName(nom);
         }
 
-        if(insurance.getCouvreToutSoins() != couvreToutSoins && couvreToutSoins != null){
-            insurance.setCouvreToutSoins(couvreToutSoins);
+        if(insurance.getAllCareCoverage() != couvreToutSoins && couvreToutSoins != null){
+            insurance.setAllCareCoverage(couvreToutSoins);
         }
 
-        if(insurance.getCouvreFraisConsultation() != couvreFraisConsultation && couvreFraisConsultation != null){
-            insurance.setCouvreFraisConsultation(couvreFraisConsultation);
+        if(insurance.getConsultingFeesCovered() != couvreFraisConsultation && couvreFraisConsultation != null){
+            insurance.setConsultingFeesCovered(couvreFraisConsultation);
         }
 
         if(state != null && state > 0 && insurance.getState() != state){
@@ -117,8 +117,8 @@ public class InsuranceController {
         }
 
         if(percentageAssurance != null && percentageAssurance >= 0
-            && insurance.getPercentageAssurance() != percentageAssurance){
-            insurance.setPercentageAssurance(percentageAssurance);
+            && insurance.getPercentInsured() != percentageAssurance){
+            insurance.setPercentInsured(percentageAssurance);
         }
         System.out.println(insurance);
         insuranceRepository.save(insurance);
@@ -143,16 +143,16 @@ public class InsuranceController {
         }
         Insurance insurance = insuranceRepository.findById(id);
 
-        if(nom != null && nom.length() > 0 && insurance.getNom() != nom){
-            insurance.setNom(nom);
+        if(nom != null && nom.length() > 0 && insurance.getName() != nom){
+            insurance.setName(nom);
         }
 
-        if(insurance.getCouvreToutSoins() != couvreToutSoins && couvreToutSoins != null){
-            insurance.setCouvreToutSoins(couvreToutSoins);
+        if(insurance.getAllCareCoverage() != couvreToutSoins && couvreToutSoins != null){
+            insurance.setAllCareCoverage(couvreToutSoins);
         }
 
-        if(insurance.getCouvreFraisConsultation() != couvreFraisConsultation && couvreFraisConsultation != null){
-            insurance.setCouvreFraisConsultation(couvreFraisConsultation);
+        if(insurance.getConsultingFeesCovered() != couvreFraisConsultation && couvreFraisConsultation != null){
+            insurance.setConsultingFeesCovered(couvreFraisConsultation);
         }
 
         if(state != null && state > 0 && insurance.getState() != state){
@@ -160,8 +160,8 @@ public class InsuranceController {
         }
 
         if(percentageAssurance != null && percentageAssurance >= 0
-                && insurance.getPercentageAssurance() != percentageAssurance){
-            insurance.setPercentageAssurance(percentageAssurance);
+                && insurance.getPercentInsured() != percentageAssurance){
+            insurance.setPercentInsured(percentageAssurance);
         }
         System.out.println(insurance);
         insuranceRepository.save(insurance);

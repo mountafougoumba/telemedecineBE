@@ -1,25 +1,23 @@
 package com.telemedecineBE.entities;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.telemedecineBE.enumeration.UserType;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 
 @Entity
-@Table(name = "DOCTOR")
-public class Doctor implements Serializable{
+@Table(name = "DOCTOR",
+		uniqueConstraints = @UniqueConstraint(columnNames={"EMAIL", "PHONE"}))
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class Doctor extends User{
 
 	/**
 	 * 
@@ -27,116 +25,20 @@ public class Doctor implements Serializable{
 	private static final long serialVersionUID = 1L;
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
-	private String fname;
-	private String lname;
-	private String office;
+	private Integer id;
+	private String officeName;
 	private String specialty;
-	private String password;
-	private String email;
-	private String phone;
 	
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "addressID")
 	@JsonBackReference
-	private Address address;
+	private Address officeAddress;
 
-	public Doctor(Long iD, String fname, String lname, String office, String specialty, String password, String email,
-			String phone) {
-		super();
-		id = iD;
-		this.fname = fname;
-		this.lname = lname;
-		this.office = office;
+	public Doctor(String fname, String lname, String officeName, String specialty, String password, String email,
+				  String phone) {
+		super(fname, lname, password, UserType.DOCTOR, email, phone);
+		this.officeName = officeName;
 		this.specialty = specialty;
-		this.password = password;
-		this.email = email;
-		this.phone = phone;
-	}
-
-	public Doctor() {
-		// TODO Auto-generated constructor stub
-	}
-
-	public Long getID() {
-		return id;
-	}
-
-	public void setID(Long iD) {
-		id = iD;
-	}
-
-	public String getFname() {
-		return fname;
-	}
-	
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public Address getAddress() {
-		return address;
-	}
-
-	public void setAddress(Address address) {
-		this.address = address;
-	}
-
-	public void setFname(String fname) {
-		this.fname = fname;
-	}
-
-	public String getLname() {
-		return lname;
-	}
-
-	public void setLname(String lname) {
-		this.lname = lname;
-	}
-
-	public String getOffice() {
-		return office;
-	}
-
-	public void setOffice(String office) {
-		this.office = office;
-	}
-
-	public String getSpecialty() {
-		return specialty;
-	}
-
-	public void setSpecialty(String specialty) {
-		this.specialty = specialty;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getPhone() {
-		return phone;
-	}
-
-	public void setPhone(String phone) {
-		this.phone = phone;
 	}
 
 	public static long getSerialversionuid() {
@@ -145,8 +47,8 @@ public class Doctor implements Serializable{
 
 	@Override
 	public String toString() {
-		return "Doctor [ID=" + id + ", fname=" + fname + ", lname=" + lname + ", office=" + office + ", specialty="
-				+ specialty + ", password=" + password + ", email=" + email + ", phone=" + phone + "]";
+		return "Doctor [ID=" + id + ", fname=" + getFname() + ", lname=" + getLname() + ", office=" + officeName + ", specialty="
+				+ specialty + ", email=" + getEmail() + ", phone=" + getCellphone() + "]";
 	}
 	
 

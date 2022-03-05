@@ -1,7 +1,8 @@
 package com.telemedecineBE.entities;
 
+import lombok.*;
+
 import java.io.Serializable;
-import java.util.Objects;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,98 +12,44 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "INSURANCE")
-
+@ToString
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Insurance implements Serializable{
 	private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-    private String nom;
+    private String name;
 	//all care coverage
-    private Boolean couvreToutSoins;
+    private Boolean allCareCoverage;
 	//cover consulting fees
-    private Boolean couvreFraisConsultation;
+    private Boolean consultingFeesCovered;
     private Integer state =1;
-    private Double percentageAssurance;
+    private Double percentInsured;
 
-	public Insurance(String nom,Boolean couvreToutSoins,Boolean couvreFraisConsultation,
-			Integer state,Double percentageAssurance) {
+	public Insurance(String name, Boolean allCareCoverage, Boolean consultingFeesCovered,
+					 Integer state, Double percentInsured) {
 		super();
-		this.nom = nom;
-		this.couvreToutSoins = couvreToutSoins;
-		this.couvreFraisConsultation = couvreFraisConsultation;
+		this.name = name;
+		this.allCareCoverage = allCareCoverage;
+		this.consultingFeesCovered = consultingFeesCovered;
 		this.state = state;
-		this.percentageAssurance = percentageAssurance;
+		this.percentInsured = percentInsured;
 	}
-	public Insurance(String nom, Boolean couvreToutSoins, Boolean couvreFraisConsultation,
-			Double percentageAssurance) {
+	public Insurance(String name, Boolean allCareCoverage, Boolean consultingFeesCovered,
+					 Double percentInsured) {
 		super();
-		this.nom = nom;
-		this.couvreToutSoins = couvreToutSoins;
-		this.couvreFraisConsultation = couvreFraisConsultation;
-		this.percentageAssurance = percentageAssurance;
+		this.name = name;
+		this.allCareCoverage = allCareCoverage;
+		this.consultingFeesCovered = consultingFeesCovered;
+		this.percentInsured = percentInsured;
 	}
-	public Integer getId() {
-		return id;
-	}
-	public void setId(Integer id) {
-		this.id = id;
-	}
-	public String getNom() {
-		return nom;
-	}
-	public void setNom(String nom) {
-		this.nom = nom;
-	}
-	public Boolean getCouvreToutSoins() {
-		return couvreToutSoins;
-	}
-	public void setCouvreToutSoins(Boolean couvreToutSoins) {
-		this.couvreToutSoins = couvreToutSoins;
-	}
-	public Boolean getCouvreFraisConsultation() {
-		return couvreFraisConsultation;
-	}
-	public void setCouvreFraisConsultation(Boolean couvreFraisConsultation) {
-		this.couvreFraisConsultation = couvreFraisConsultation;
-	}
-	public Integer getState() {
-		return state;
-	}
-	public void setState(Integer state) {
-		this.state = state;
-	}
-	public Double getPercentageAssurance() {
-		return percentageAssurance;
-	}
-	public void setPercentageAssurance(Double percentageAssurance) {
-		this.percentageAssurance = percentageAssurance;
-	}
+
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
-	
-	public Insurance() {
-		super();
-	}
-	@Override
-	public String toString() {
-		return "Assurance id=" + id + " nom=" + nom + " couvreToutSoins=" + couvreToutSoins
-				+ " couvreFraisConsultation=" + couvreFraisConsultation + " state=" + state + " percentageAssurance="
-				+ percentageAssurance;
-	}
 
-
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (!(o instanceof Insurance)) return false;
-		Insurance insurance = (Insurance) o;
-		return getNom().equals(insurance.getNom()) && getCouvreToutSoins().equals(insurance.getCouvreToutSoins()) && getCouvreFraisConsultation().equals(insurance.getCouvreFraisConsultation()) && getPercentageAssurance().equals(insurance.getPercentageAssurance());
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(getNom(), getCouvreToutSoins(), getCouvreFraisConsultation(), getPercentageAssurance());
-	}
 }
