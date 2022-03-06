@@ -17,7 +17,7 @@ public class InsuranceController {
     }
 
     //get all insurance
-    @GetMapping("/insurance")
+    @GetMapping("/insurances")
     List<Insurance> getAllInsurance(){
         System.out.println("getAllInsurance");
         return insuranceRepository.findAll();
@@ -81,6 +81,45 @@ public class InsuranceController {
         insuranceRepository.deleteById(id);
     }
 
+    @PutMapping("/insurance/id={id}")
+    Insurance updateInsuranceById(
+            @PathVariable(value = "id") Integer id,
+            @RequestBody Insurance insurance){
+
+        System.out.println("updateInsurance");
+        Boolean exists = insuranceRepository.existsById(id);
+        if(!exists){
+            throw new IllegalStateException(
+                    "Insurance with id " + id + "does not exist."
+            );
+        }
+        Insurance currentInsurance = insuranceRepository.findById(id);
+
+        if(insurance.getName() != null && insurance.getName().length() > 0 && currentInsurance.getName() != insurance.getName()){
+            currentInsurance.setName(insurance.getName());
+        }
+
+        if(currentInsurance.getAllCareCoverage() != insurance.getAllCareCoverage() && insurance.getAllCareCoverage() != null){
+            currentInsurance.setAllCareCoverage(insurance.getAllCareCoverage());
+        }
+
+        if(currentInsurance.getConsultingFeesCovered() !=  insurance.getConsultingFeesCovered() && insurance.getConsultingFeesCovered() != null){
+            currentInsurance.setConsultingFeesCovered(insurance.getConsultingFeesCovered());
+        }
+
+        if(insurance.getState() != null && insurance.getState() > 0 && currentInsurance.getState() != insurance.getState() ){
+            currentInsurance.setState(insurance.getState() );
+        }
+
+        if(insurance.getPercentInsured() != null && insurance.getPercentInsured() >= 0
+                && currentInsurance.getPercentInsured() != insurance.getPercentInsured()){
+            currentInsurance.setPercentInsured(insurance.getPercentInsured());
+        }
+        System.out.println(currentInsurance);
+        insuranceRepository.save(currentInsurance);
+        return currentInsurance;
+    }
+
     //update by name
     @PutMapping("/insurance/name={name}")
     Insurance updateInsuranceByName(
@@ -125,6 +164,8 @@ public class InsuranceController {
         return insurance;
     }
 
+
+    /*
     //update by id
     @PutMapping("/insurance/id={id}")
     Insurance updateInsuranceById(
@@ -167,5 +208,8 @@ public class InsuranceController {
         insuranceRepository.save(insurance);
         return insurance;
     }
+
+
+     */
 
 }

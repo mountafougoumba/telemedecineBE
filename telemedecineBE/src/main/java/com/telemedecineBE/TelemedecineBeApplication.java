@@ -1,6 +1,10 @@
 package com.telemedecineBE;
 
+import com.telemedecineBE.dao.AddressRepository;
+import com.telemedecineBE.dao.InsuranceRepository;
 import com.telemedecineBE.dao.PatientRepository;
+import com.telemedecineBE.entities.Address;
+import com.telemedecineBE.entities.Insurance;
 import com.telemedecineBE.entities.Patient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -23,9 +27,14 @@ public class TelemedecineBeApplication implements CommandLineRunner {
 
 	@Autowired
 	private PatientRepository patientRepository;
+    @Autowired
+    private AddressRepository addressRepository;
+	@Autowired
+	private InsuranceRepository insuranceRepository;
 
 	@Override
 	public void run(String...args) throws Exception {
+        //Add patient entities
 		this.patientRepository.save(new Patient("Denise",
 							"Smith",
 							"dSmith@gmail.com",
@@ -41,6 +50,38 @@ public class TelemedecineBeApplication implements CommandLineRunner {
 						"stanleyG@gmail.com",
 						"345-453-2345",
 						"password"));
+
+        //Add address entities
+        this.addressRepository.save(new Address(
+                        "34212",
+                        "123 Developer Way",
+                        "Kennesaw",
+                        "GA"));
+        this.addressRepository.save(new Address(
+                        "23423",
+                        "456 Project Lane",
+                        "Marietta",
+                        "TX"));
+
+		//add insurance entities
+		this.insuranceRepository.save(new Insurance(
+						"State Farm",
+						true,
+						false,
+						3.42
+		));
+		this.insuranceRepository.save(new Insurance(
+						"Aetna",
+						false,
+						true,
+						5.42
+		));
+		this.insuranceRepository.save(new Insurance(
+						"Medicare",
+						true,
+						true,
+						95.50
+		));
 	}
 
 	//Had to add to get Angular, Spring Boot, and Chrome working
