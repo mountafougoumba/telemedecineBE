@@ -119,6 +119,37 @@ public class AddressController {
 
     @PutMapping("/address/id={id}")
     Address updateAddressById(@PathVariable(value = "id") Long id,
+                              @RequestBody Address address){
+        Boolean exists = addressRepository.existsById(id);
+        if(!exists){
+            throw new IllegalStateException("address with id " + id + " does not exist");
+        }
+        Address currentAddress = addressRepository.findById(id);
+
+        if(address.getZipcode() != null && address.getZipcode().length() > 0 && currentAddress.getZipcode() != address.getZipcode()){
+            currentAddress.setZipcode(address.getZipcode());
+        }
+
+        if(address.getStreetAddress() != null && address.getStreetAddress().length() > 0 && currentAddress.getStreetAddress() != address.getStreetAddress()){
+            currentAddress.setStreetAddress(address.getStreetAddress());
+        }
+
+        if(address.getCity() != null && address.getCity().length() > 0 && currentAddress.getCity() != address.getCity()){
+            currentAddress.setCity(address.getCity());
+        }
+
+        if(address.getUsState() != null && address.getUsState().length() > 0 && currentAddress.getUsState() != address.getUsState()){
+            currentAddress.setUsState(address.getUsState());
+        }
+
+        System.out.println("updateAddressById\n" + currentAddress);
+        addressRepository.save(currentAddress);
+        return currentAddress;
+    }
+
+    /*
+    @PutMapping("/address/id={id}")
+    Address updateAddressById(@PathVariable(value = "id") Long id,
                               @RequestParam(required = false)String zipcode,
                               @RequestParam(required = false)String streetAddress,
                               @RequestParam(required = false)String city,
@@ -149,6 +180,8 @@ public class AddressController {
         addressRepository.save(address);
         return address;
     }
+
+     */
 
     @PutMapping("/address/streetAddress={streetAddress}")
     Address updateAddressByStreetAddress(@PathVariable(value = "streetAddress") String searchStreetAddress,
