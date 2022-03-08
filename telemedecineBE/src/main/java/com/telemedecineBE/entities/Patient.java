@@ -1,15 +1,12 @@
 package com.telemedecineBE.entities;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.*;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.telemedecineBE.enumeration.UserType;
-import com.telemedecineBE.web.UserController;
 import lombok.*;
 
 @Entity
@@ -64,7 +61,7 @@ public class Patient extends User{
 
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name="prescriptionId")
-	private List<Priscriptions> prescriptions;
+	private List<Prescriptions> prescriptions;
 
 	public Patient(String fname, String lname, String email, String cellphone, String userpassword){
 		super(fname, lname, userpassword, UserType.PATIENT, email, cellphone);

@@ -142,40 +142,36 @@ public class MedicalHistoryController {
     @PutMapping("/medical_history/id={id}")
     MedicalHistory updateMedicalHistoryById(
             @PathVariable(value = "id") Integer id,
-            @RequestParam(required = false)String name,
-            @RequestParam(required = false)String doctorDiagnosed,
-            @RequestParam(required = false)String dateDiagnosed,
-            @RequestParam(required = false)String description,
-            @RequestParam(required = false)Integer state
+            @RequestBody MedicalHistory medicalHistory
     ){
         Boolean exists = medicalHistoryRepository.existsById(id);
         if(!exists){
             throw new IllegalStateException("Medical History with id " + id + " does not exist.");
         }
-        MedicalHistory medicalHistory = medicalHistoryRepository.findById(id);
+        MedicalHistory currentMedicalHistory = medicalHistoryRepository.findById(id);
 
-        if(name != null && name.length() > 0 && medicalHistory.getName() != name){
-            medicalHistory.setName(name);
+        if(medicalHistory.getName() != null && medicalHistory.getName().length() > 0 && currentMedicalHistory.getName() != medicalHistory.getName()){
+            currentMedicalHistory.setName(medicalHistory.getName());
         }
 
-        if(doctorDiagnosed != null && doctorDiagnosed.length() > 0 && medicalHistory.getDoctorDiagnosed() != doctorDiagnosed){
-            medicalHistory.setDoctorDiagnosed(doctorDiagnosed);
+        if(medicalHistory.getDoctorDiagnosed() != null && medicalHistory.getDoctorDiagnosed().length() > 0 && currentMedicalHistory.getDoctorDiagnosed() != medicalHistory.getDoctorDiagnosed()){
+            currentMedicalHistory.setDoctorDiagnosed(medicalHistory.getDoctorDiagnosed());
         }
 
-        if(dateDiagnosed != null && dateDiagnosed.length() > 0 && medicalHistory.getDateDiagnosed() != dateDiagnosed){
-            medicalHistory.setDateDiagnosed(dateDiagnosed);
+        if(medicalHistory.getDateDiagnosed() != null && medicalHistory.getDateDiagnosed().length() > 0 && currentMedicalHistory.getDateDiagnosed() != medicalHistory.getDateDiagnosed()){
+            currentMedicalHistory.setDateDiagnosed(medicalHistory.getDateDiagnosed());
         }
 
-        if(description != null && description.length() > 0 && medicalHistory.getDescription() != description){
-            medicalHistory.setDescription(description);
+        if(medicalHistory.getDescription() != null && medicalHistory.getDescription().length() > 0 && currentMedicalHistory.getDescription() != medicalHistory.getDescription()){
+            currentMedicalHistory.setDescription(medicalHistory.getDescription());
         }
 
-        if(state != null && state > 0 && state != medicalHistory.getState()){
-            medicalHistory.setState(state);
+        if(medicalHistory.getState() != null && medicalHistory.getState() > 0 && medicalHistory.getState() != currentMedicalHistory.getState()){
+            currentMedicalHistory.setState(medicalHistory.getState());
         }
 
-        System.out.println("updateMedicalHistoryById\n" + medicalHistory);
-        medicalHistoryRepository.save(medicalHistory);
-        return medicalHistory;
+        System.out.println("updateMedicalHistoryById\n" + currentMedicalHistory);
+        medicalHistoryRepository.save(currentMedicalHistory);
+        return currentMedicalHistory;
     }
 }

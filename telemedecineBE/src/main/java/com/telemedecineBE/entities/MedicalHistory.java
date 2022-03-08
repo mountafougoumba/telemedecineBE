@@ -45,6 +45,15 @@ public class MedicalHistory implements Serializable {
 		this.dateDiagnosed = dateDiagnosed;
 	}
 
+	public MedicalHistory(String name, String doctorDiagnosed,
+						  String dateDiagnosed, String description) {
+		super();
+		this.name = name;
+		this.doctorDiagnosed = doctorDiagnosed;
+		this.dateDiagnosed = dateDiagnosed;
+		this.description = description;
+	}
+
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
