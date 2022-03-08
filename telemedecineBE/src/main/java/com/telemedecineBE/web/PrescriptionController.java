@@ -1,7 +1,7 @@
 package com.telemedecineBE.web;
 
 import com.telemedecineBE.dao.PrescriptionRepository;
-import com.telemedecineBE.entities.Priscriptions;
+import com.telemedecineBE.entities.Prescriptions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,14 +16,14 @@ public class PrescriptionController {
         this.prescriptionRepository = prescriptionRepository;
     }
 
-    @GetMapping("/prescription")
-    List<Priscriptions> getAllPrescriptions(){
+    @GetMapping("/prescriptions")
+    List<Prescriptions> getAllPrescriptions(){
         System.out.println("getAllPrescriptions");
         return prescriptionRepository.findAll();
     }
 
     @GetMapping("/prescription/id={id}")
-    Priscriptions getPrescriptionById(@PathVariable(value = "id") Integer id){
+    Prescriptions getPrescriptionById(@PathVariable(value = "id") Integer id){
         Boolean exists = prescriptionRepository.existsById(id);
         if(!exists){
             throw new IllegalStateException("prescription with id " + id + " does not exist");
@@ -33,14 +33,14 @@ public class PrescriptionController {
     }
 
     @PostMapping("/prescription")
-    Priscriptions newPrescription(@RequestBody Priscriptions priscriptions){
-        Boolean exists = prescriptionRepository.existsById(priscriptions.getId());
+    Prescriptions newPrescription(@RequestBody Prescriptions prescriptions){
+        Boolean exists = prescriptionRepository.existsById(prescriptions.getId());
         if(exists){
-            throw new IllegalStateException("prescription with id " + priscriptions.getId() + " already exists");
+            throw new IllegalStateException("prescription with id " + prescriptions.getId() + " already exists");
         }
         System.out.println("newPrescription");
-        prescriptionRepository.save(priscriptions);
-        return priscriptions;
+        prescriptionRepository.save(prescriptions);
+        return prescriptions;
     }
 
     @DeleteMapping("/prescription/id={id}")
@@ -54,25 +54,29 @@ public class PrescriptionController {
     }
 
     @PutMapping("/prescription/id={id}")
-    Priscriptions updatePrescriptionById(@PathVariable(value = "id")Integer id,
-                                         @RequestParam(required = false)String dosages,
-                                         @RequestParam(required = false)String description){
+    Prescriptions updatePrescriptionById(@PathVariable(value = "id")Integer id,
+                                         @RequestBody Prescriptions prescriptions){
         Boolean exists = prescriptionRepository.existsById(id);
         if(!exists){
             throw new IllegalStateException("prescription with id " + id + " does not exist");
         }
         System.out.println("updatePrescriptionById");
-        Priscriptions priscriptions = prescriptionRepository.findById(id);
+        Prescriptions currentPrescription = prescriptionRepository.findById(id);
 
-        if(dosages != null && dosages.length() > 0 && priscriptions.getDosages() != dosages){
-            priscriptions.setDosages(dosages);
+        if(prescriptions.getName() != null && prescriptions.getName().length() > 0 && currentPrescription.getName() != prescriptions.getName()){
+            currentPrescription.setName(prescriptions.getName());
         }
 
-        if(description != null && description.length() > 0 && priscriptions.getDescription() != description){
-            priscriptions.setDescription(description);
+        if(prescriptions.getDosages() != null && prescriptions.getDosages().length() > 0 && currentPrescription.getDosages() != prescriptions.getDosages()){
+            currentPrescription.setDosages(prescriptions.getDosages());
         }
-        System.out.println(priscriptions);
-        prescriptionRepository.save(priscriptions);
-        return priscriptions;
+
+        if(prescriptions.getDescription() != null && prescriptions.getDescription().length() > 0 && currentPrescription.getDescription() != prescriptions.getDescription()){
+            currentPrescription.setDescription(prescriptions.getDescription());
+        }
+
+        System.out.println(currentPrescription);
+        prescriptionRepository.save(currentPrescription);
+        return currentPrescription;
     }
 }

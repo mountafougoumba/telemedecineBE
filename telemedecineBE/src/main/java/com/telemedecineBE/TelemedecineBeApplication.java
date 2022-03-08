@@ -1,11 +1,7 @@
 package com.telemedecineBE;
 
-import com.telemedecineBE.dao.AddressRepository;
-import com.telemedecineBE.dao.InsuranceRepository;
-import com.telemedecineBE.dao.PatientRepository;
-import com.telemedecineBE.entities.Address;
-import com.telemedecineBE.entities.Insurance;
-import com.telemedecineBE.entities.Patient;
+import com.telemedecineBE.dao.*;
+import com.telemedecineBE.entities.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -31,6 +27,10 @@ public class TelemedecineBeApplication implements CommandLineRunner {
     private AddressRepository addressRepository;
 	@Autowired
 	private InsuranceRepository insuranceRepository;
+	@Autowired
+	private PrescriptionRepository prescriptionRepository;
+	@Autowired
+	private MedicalHistoryRepository medicalHistoryRepository;
 
 	@Override
 	public void run(String...args) throws Exception {
@@ -81,6 +81,36 @@ public class TelemedecineBeApplication implements CommandLineRunner {
 						true,
 						true,
 						95.50
+		));
+
+		//add prescription entities
+		this.prescriptionRepository.save(new Prescriptions(
+						"Nyquill",
+						"10mg",
+						"Cold/Sleep Medication"
+		));
+		this.prescriptionRepository.save(new Prescriptions(
+				"Advil",
+				"25mg",
+				"Pain Medication"
+		));
+		this.prescriptionRepository.save(new Prescriptions(
+				"Claratin",
+				"15mg",
+				"Allergy Medication"
+		));
+
+		//add medicalHistory entities to database
+		this.medicalHistoryRepository.save(new MedicalHistory(
+				"Diabetes",
+				"Dr.Bill",
+				"2020-01-23"
+		));
+		this.medicalHistoryRepository.save(new MedicalHistory(
+				"Insomnia",
+				"Dr.Steve",
+				"1995-06-30",
+				"Averages 4 hours of sleep/day. Takes unisom for sleep."
 		));
 	}
 
