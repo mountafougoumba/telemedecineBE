@@ -67,6 +67,16 @@ public class User implements Serializable{
 		this.state = state;
 	}
 
+	public User(String lname, String fname, String userName, String userpassword, UserType userType, String email, String cellphone) {
+		this.lname = lname;
+		this.fname = fname;
+		this.userName = userName;
+		this.userpassword = userpassword;
+		this.userType = userType;
+		this.email = email;
+		this.cellphone = cellphone;
+	}
+
 	public User(String first, String last, String email, String phone, String password) {
 		super();
 		this.lname = last;

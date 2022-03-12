@@ -34,9 +34,9 @@ public class Doctor extends User{
 	@JsonBackReference
 	private Address officeAddress;
 
-	public Doctor(String fname, String lname, String officeName, String specialty, String password, String email,
-				  String phone) {
-		super(fname, lname, password, UserType.DOCTOR, email, phone);
+	public Doctor(String fname, String lname, String officeName, String specialty, String userpassword, String email,
+				  String cellphone) {
+		super(fname, lname, userpassword, UserType.DOCTOR, email, cellphone);
 		this.officeName = officeName;
 		this.specialty = specialty;
 	}
