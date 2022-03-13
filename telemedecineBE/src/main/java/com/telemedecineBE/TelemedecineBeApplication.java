@@ -31,6 +31,8 @@ public class TelemedecineBeApplication implements CommandLineRunner {
 	private PrescriptionRepository prescriptionRepository;
 	@Autowired
 	private MedicalHistoryRepository medicalHistoryRepository;
+	@Autowired
+	private DoctorRepository doctorRepository;
 
 	@Override
 	public void run(String...args) throws Exception {
@@ -111,6 +113,34 @@ public class TelemedecineBeApplication implements CommandLineRunner {
 				"Dr.Steve",
 				"1995-06-30",
 				"Averages 4 hours of sleep/day. Takes unisom for sleep."
+		));
+
+		this.doctorRepository.save(new Doctor(
+				"Benjamin",
+				"Button",
+				"Future Doctors Inc.",
+				"Pediatrics",
+				"password",
+				"benB@gmail.com",
+				"678-892-3234"
+		));
+		this.doctorRepository.save(new Doctor(
+				"Daisy",
+				"Hun",
+				"Baily's Dentistry",
+				"Dentist",
+				"password123",
+				"daisssyH@gmail.com",
+				"634-234-2143"
+		));
+		this.doctorRepository.save(new Doctor(
+				"Jackson",
+				"Cod",
+				"All Seeing Eye LTD.",
+				"Optomitrist",
+				"password123",
+				"jCod@gmail.com",
+				"453-234-4356"
 		));
 	}
 

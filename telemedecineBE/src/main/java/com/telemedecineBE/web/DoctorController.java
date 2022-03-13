@@ -1,7 +1,9 @@
 package com.telemedecineBE.web;
 
 import com.telemedecineBE.dao.DoctorRepository;
+import com.telemedecineBE.dao.UserDao;
 import com.telemedecineBE.entities.Doctor;
+import com.telemedecineBE.entities.User;
 import com.telemedecineBE.enumeration.UserType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -14,11 +16,15 @@ import java.util.Optional;
 public class DoctorController {
 
     private DoctorRepository doctorRepository;
+    private UserDao userDao;
 
     @Autowired
-    DoctorController(DoctorRepository doctorRepository) {this.doctorRepository = doctorRepository;}
+    DoctorController(DoctorRepository doctorRepository, UserDao userDao) {
+        this.doctorRepository = doctorRepository;
+        this.userDao = userDao;
+    }
 
-    @GetMapping("/doctor")
+    @GetMapping("/doctors")
     List<Doctor> getAll(){
         return doctorRepository.findAll();
     }
@@ -45,6 +51,7 @@ public class DoctorController {
         return doc;
     }
 
+    /*
     @PutMapping("/doctor/id={id}")
     Doctor update(
             @PathVariable Integer id,
@@ -72,6 +79,60 @@ public class DoctorController {
         } else {
             throw new IllegalStateException("Doctor with id " + id + " does not exist.");
         }
+    }
+    */
+    @PutMapping("/doctor/id={id}")
+    Doctor updateDoctorById(@PathVariable(value = "id")Integer id,
+                        @RequestBody Doctor doctor){
+        Boolean exists = doctorRepository.existsById(id);
+        if(!exists){
+            throw new IllegalStateException("Doctor with id " + id + " does not exist.");
+        }
+        Doctor currentDoctor = doctorRepository.findById(id).get();
+
+        if(doctor.getLname() != null && doctor.getLname().length() > 0 && doctor.getLname() != currentDoctor.getLname()){
+            currentDoctor.setLname(doctor.getLname());
+        }
+
+        if(doctor.getFname() != null && doctor.getFname().length() > 0 && doctor.getFname() != currentDoctor.getFname()){
+            currentDoctor.setFname(doctor.getFname());
+        }
+
+        if(doctor.getUserName() != null && doctor.getUserName() .length() > 0 && doctor.getUserName()  != currentDoctor.getUserName() && !userDao.existsByUserName(doctor.getUserName())){
+            currentDoctor.setUserName(doctor.getUserName() );
+        }
+
+        if(doctor.getUserpassword() != null && doctor.getUserpassword().length() > 0 && doctor.getUserpassword() != currentDoctor.getUserpassword()){
+            currentDoctor.setUserpassword(doctor.getUserpassword());
+        }
+
+        if(doctor.getUserType() != null && doctor.getUserType() != currentDoctor.getUserType()){
+            currentDoctor.setUserType(doctor.getUserType());
+        }
+
+        if(doctor.getEmail() != null && doctor.getEmail().length() > 0 && doctor.getEmail() != currentDoctor.getEmail() && !userDao.existsByEmail(doctor.getEmail())){
+            currentDoctor.setEmail(doctor.getEmail());
+        }
+
+        if(doctor.getCellphone() != null && doctor.getCellphone().length() > 0 && doctor.getCellphone() != currentDoctor.getCellphone() && !userDao.existsByCellphone(doctor.getCellphone())){
+            currentDoctor.setCellphone(doctor.getCellphone());
+        }
+
+        if(doctor.getOfficeName() != null && doctor.getOfficeName().length() > 0  && doctor.getOfficeName() != currentDoctor.getOfficeName()){
+            currentDoctor.setOfficeName(doctor.getOfficeName());
+        }
+
+        if(doctor.getSpecialty() != null && doctor.getSpecialty().length() > 0 && doctor.getSpecialty() != currentDoctor.getSpecialty()){
+            currentDoctor.setSpecialty(doctor.getSpecialty());
+        }
+
+        if(doctor.getState() != null && doctor.getState() > 0 && doctor.getState() != currentDoctor.getState()){
+            currentDoctor.setState(doctor.getState());
+        }
+
+        System.out.println("updateDoctorById");
+        doctorRepository.save(currentDoctor);
+        return currentDoctor;
     }
 
 }

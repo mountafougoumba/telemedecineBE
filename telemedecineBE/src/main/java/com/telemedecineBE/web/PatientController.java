@@ -1,6 +1,7 @@
 package com.telemedecineBE.web;
 
 import com.telemedecineBE.dao.PatientRepository;
+import com.telemedecineBE.dao.UserDao;
 import com.telemedecineBE.entities.*;
 import com.telemedecineBE.enumeration.UserType;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +13,12 @@ import java.util.List;
 public class PatientController {
 
 	private final PatientRepository patientRepository;
+	private final UserDao userDao;
 
 	@Autowired
-	public PatientController(PatientRepository patientRepository) {
+	public PatientController(PatientRepository patientRepository, UserDao userDao) {
 		this.patientRepository = patientRepository;
+		this.userDao = userDao;
 	}
 
 	@GetMapping("/patients")
@@ -136,12 +139,32 @@ public class PatientController {
 			currentPatient.setLname(patient.getLname());
 		}
 
-		if(patient.getCellphone() != null && patient.getCellphone().length() > 0 && currentPatient.getCellphone() != patient.getCellphone()){
+		if(patient.getEmail() != null && patient.getEmail().length() > 0 && patient.getEmail() != currentPatient.getEmail() && !userDao.existsByEmail(patient.getEmail())){
+			currentPatient.setEmail(patient.getEmail());
+		}
+
+		if(patient.getCellphone() != null && patient.getCellphone().length() > 0 && patient.getCellphone() != currentPatient.getCellphone() && !userDao.existsByCellphone(patient.getCellphone())){
 			currentPatient.setCellphone(patient.getCellphone());
 		}
 
-		if(patient.getEmail() != null && patient.getEmail().length() > 0  && currentPatient.getEmail() != patient.getEmail()){
-			currentPatient.setEmail(patient.getEmail());
+		if(patient.getUserName() != null && patient.getUserName() .length() > 0 && patient.getUserName()  != currentPatient.getUserName() && !userDao.existsByUserName(patient.getUserName())){
+			currentPatient.setUserName(patient.getUserName() );
+		}
+
+		if(patient.getUserpassword() != null && patient.getUserpassword().length() > 0 && patient.getUserpassword() != currentPatient.getUserpassword()){
+			currentPatient.setUserpassword(patient.getUserpassword());
+		}
+
+		if(patient.getUserType() != null && patient.getUserType() != currentPatient.getUserType()){
+			currentPatient.setUserType(patient.getUserType());
+		}
+
+		if(patient.getDob() != null && patient.getDob().length() > 0 && patient.getDob() != currentPatient.getDob()){
+			currentPatient.setDob(patient.getDob());
+		}
+
+		if(patient.getState() != null && patient.getState() > 0 && patient.getState() != currentPatient.getState()){
+			currentPatient.setState(patient.getState());
 		}
 
 		System.out.println(currentPatient);

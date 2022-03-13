@@ -11,20 +11,13 @@ public enum UserType {
         this.type=type;
     }
 
-    public UserType findByName(String name){
+    public static UserType findByName(String name){
         switch (name) {
             case "PATIENT":
-            case "patient":
                 return PATIENT;
             case "DOCTOR":
-            case "doctor":
-            case "NURSE":
-            case "nurse":
                 return DOCTOR;
             case "ADMIN":
-            case "ADMINISTRATOR":
-            case "admin":
-            case "administrator":
                 return ADMIN;
         }
         return null;
