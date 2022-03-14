@@ -1,7 +1,7 @@
 package com.telemedecineBE.Security;
 
 
-/*
+
 
 
 import org.springframework.context.annotation.Bean;
@@ -28,7 +28,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
         http
                 .authorizeRequests()
-                .antMatchers("/prescription").hasAnyRole("ADMIN")
+                .antMatchers("/register","/logout").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
@@ -36,6 +36,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .httpBasic()
                 .and()
                 .logout()
+                .logoutSuccessUrl("/login")
                 .permitAll();
     }
 
@@ -54,11 +55,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .roles("USER");
     }
 
+
+
     @Bean
     public PasswordEncoder passwordEncoder(){
+
         return  new BCryptPasswordEncoder();
     }
 }
 
 
- */
