@@ -49,8 +49,10 @@ public class Appointment implements Serializable {
 
 	public Appointment(String dateScheduled, String purpose, Doctor doctor){
 		super();
-		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
-		this.schedule = LocalDateTime.parse(dateScheduled, dateTimeFormatter);
+		if(dateScheduled.charAt(0) != 'T' && dateScheduled.charAt(dateScheduled.length() - 1) != 'T'){
+			DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+			this.schedule = LocalDateTime.parse(dateScheduled, dateTimeFormatter);
+		}
 		this.dateScheduled = dateScheduled;
 		this.purpose = purpose;
 		this.doctor = doctor;
@@ -58,16 +60,20 @@ public class Appointment implements Serializable {
 
 	public Appointment(String dateScheduled, Doctor doctor){
 		super();
-		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
-		this.schedule = LocalDateTime.parse(dateScheduled, dateTimeFormatter);
+		if(dateScheduled.charAt(0) != 'T' && dateScheduled.charAt(dateScheduled.length() - 1) != 'T'){
+			DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+			this.schedule = LocalDateTime.parse(dateScheduled, dateTimeFormatter);
+		}
 		this.dateScheduled = dateScheduled;
 		this.doctor = doctor;
 	}
 
 	public Appointment(String dateScheduled, String purpose, Patient patient, Doctor doctor){
 		super();
-		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
-		this.schedule = LocalDateTime.parse(dateScheduled, dateTimeFormatter);
+		if(dateScheduled.charAt(0) != 'T' && dateScheduled.charAt(dateScheduled.length() - 1) != 'T'){
+			DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+			this.schedule = LocalDateTime.parse(dateScheduled, dateTimeFormatter);
+		}
 		this.dateScheduled = dateScheduled;
 		this.purpose = purpose;
 		this.patient = patient;
@@ -84,7 +90,36 @@ public class Appointment implements Serializable {
 		this.doctor = doctor;
 	}
 
+	public Appointment(String dateScheduled){
+		if(dateScheduled.charAt(0) != 'T' && dateScheduled.charAt(dateScheduled.length() - 1) != 'T'){
+			DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+			this.schedule = LocalDateTime.parse(dateScheduled, dateTimeFormatter);
+		}
+		this.dateScheduled = dateScheduled;
+	}
+
 	public void setDateScheduled(String dateScheduled){
+		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+		this.schedule = LocalDateTime.parse(dateScheduled, dateTimeFormatter);
+		this.dateScheduled = dateScheduled;
+	}
+
+	public void setDate(String dateScheduled){
+		String hour = String.valueOf(schedule.getHour());
+		String min = String.valueOf(schedule.getMinute());
+		dateScheduled = dateScheduled + hour+ ":" + min;
+		System.out.println(dateScheduled);
+		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+		this.schedule = LocalDateTime.parse(dateScheduled, dateTimeFormatter);
+		this.dateScheduled = dateScheduled;
+	}
+
+	public void setTime(String dateScheduled){
+		String year = String.valueOf(schedule.getYear());
+		String month = String.valueOf(schedule.getMonth());
+		String day = String.valueOf(schedule.getDayOfMonth());
+		dateScheduled = year + "-" + month + "-" + day + "-" + dateScheduled;
+		System.out.println(dateScheduled);
 		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 		this.schedule = LocalDateTime.parse(dateScheduled, dateTimeFormatter);
 		this.dateScheduled = dateScheduled;

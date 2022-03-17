@@ -97,6 +97,15 @@ public class AppointmentController {
         {
             Appointment updatedAppointment = fetchedAppointment.get();
             if (appointment.getDateScheduled() != null) {
+                if(!appointment.getDateScheduled().equals("T")){
+                    if(appointment.getDateScheduled().charAt(0) == 'T'){
+                        updatedAppointment.setTime(appointment.getDateScheduled());
+                    } else if(appointment.getDateScheduled().charAt(appointment.getDateScheduled().length() - 1) == 'T'){
+                        updatedAppointment.setDate(appointment.getDateScheduled());
+                    } else {
+                        updatedAppointment.setDateScheduled(appointment.getDateScheduled());
+                    }
+                }
                 updatedAppointment.setDateScheduled(appointment.getDateScheduled());
             }
             if(appointment.getPurpose() != null && appointment.getPurpose().length() > 0 && appointment.getPurpose() != updatedAppointment.getPurpose() )
