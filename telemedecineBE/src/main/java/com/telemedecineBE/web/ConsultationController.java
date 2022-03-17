@@ -34,7 +34,7 @@ public class ConsultationController {
         );
     }
 
-    @PostMapping("/report")
+    @PostMapping("/consultation")
     Consultation post(
             @RequestParam(required = false) String description,
             @RequestParam(required = false) String upload
