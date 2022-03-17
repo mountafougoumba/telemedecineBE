@@ -29,25 +29,21 @@ public class Message  implements Serializable{
 	private String content;
 	@Column(name="DATE")
 	private LocalDate date;
-	@Column(name="TIME")
-	private String time;
 	@Column(name="SENDER_ID")
 	private Integer sender_id;
 	@Column(name="RECEIVER_ID")
 	private Integer receiver_id;
 
-	public Message(String content, LocalDate date, LocalTime time){
+	public Message(String content, LocalDate date){
 		super();
 		this.content = content;
 		this.date = date;
-		this.time = time.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
 	}
 
 	public Message(String content){
 		super();
 		this.content = content;
 		this.date = LocalDate.now();
-		this.time = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
 	}
 
 	public static long getSerialversionuid() {

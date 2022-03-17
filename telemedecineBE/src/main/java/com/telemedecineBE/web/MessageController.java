@@ -46,9 +46,6 @@ public class MessageController {
     Message newMessage(@RequestBody Message message){
         //set date now
         message.setDate(LocalDate.now());
-        //set time to now and format
-        message.setTime(LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")));
-
         messageRepository.save(message);
         System.out.println("newMessage");
         return message;
@@ -76,8 +73,6 @@ public class MessageController {
         if(content != null && content.length() > 0 && !content.equals(message.getContent())){
             message.setContent(content);
             message.setDate(LocalDate.now());
-            //set time to now and format
-            message.setTime(LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")));
         }
 
         messageRepository.save(message);
