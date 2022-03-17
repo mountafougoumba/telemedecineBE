@@ -3,11 +3,14 @@ package com.telemedecineBE.entities;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.telemedecineBE.enumeration.UserType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 
 @Entity
@@ -29,10 +32,13 @@ public class Doctor extends User{
 	private String officeName;
 	private String specialty;
 	
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "addressID")
-	@JsonBackReference
+	@OneToOne(cascade = CascadeType.ALL, mappedBy = "doctor", fetch = FetchType.LAZY)
+	@JsonManagedReference(value = "doctor-address")
 	private Address officeAddress;
+
+	@OneToMany(mappedBy="doctor", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JsonManagedReference(value = "doctor-appointments")
+	private List<Appointment> appointments;
 
 	public Doctor(String fname, String lname, String officeName, String specialty, String userpassword, String email,
 				  String cellphone) {
