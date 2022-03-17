@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200/return")
 public class UserController {
 
     @Autowired
@@ -20,6 +21,16 @@ public class UserController {
     private PasswordEncoder passwordEncoder;
      */
 
+    
+    @PostMapping("/login")
+    public ResponseEntity<?> loginUser(User userData){
+        System.out.println(userData);
+        User user= userDao.findByUserName(userData.getUserName());
+        if(user.getUserpassword().equals(userData.getUserpassword()))
+            return ResponseEntity.ok(user);
+        return (ResponseEntity<?>) ResponseEntity.internalServerError();
+    }
+    
     @GetMapping("/users")
     List<User> getAllUsers(){
         System.out.println("getAllUsers");
