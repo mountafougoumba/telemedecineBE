@@ -12,6 +12,9 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Arrays;
 
 @SpringBootApplication(exclude = { SecurityAutoConfiguration.class })
@@ -33,6 +36,8 @@ public class TelemedecineBeApplication implements CommandLineRunner {
 	private MedicalHistoryRepository medicalHistoryRepository;
 	@Autowired
 	private DoctorRepository doctorRepository;
+	@Autowired
+	private AppointmentRepository appointmentRepository;
 
 	@Override
 	public void run(String...args) throws Exception {
@@ -142,7 +147,22 @@ public class TelemedecineBeApplication implements CommandLineRunner {
 				"jCod@gmail.com",
 				"453-234-4356"
 		));
+
+		this.appointmentRepository.save(new Appointment(
+				LocalDateTime.of(2022, 5, 25, 10, 30),
+				"Check-up/Physical",
+				patientRepository.findByEmail("dSmith@gmail.com"),
+				doctorRepository.findByEmail("benB@gmail.com")
+		));
+
+		this.appointmentRepository.save(new Appointment(
+				LocalDateTime.of(2022, 8, 18, 12, 45),
+				"Cleaning",
+				patientRepository.findByEmail("stanleyG@gmail.com"),
+				doctorRepository.findByEmail("daisssyH@gmail.com")
+		));
 	}
+
 
 	//Had to add to get Angular, Spring Boot, and Chrome working
 	@Bean

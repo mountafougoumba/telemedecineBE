@@ -38,13 +38,13 @@ public class Address implements Serializable{
 	@Column(name="US_STATE")
 	private String usState;
 
-	@OneToOne(cascade = CascadeType.ALL, mappedBy = "address")
-	 //@JsonBackReference(value="patient-address")
+	@OneToOne
+	@JsonBackReference(value="patient-address")
 	@JoinColumn(name="patientID")
 	 private Patient patient;
 
-	 @OneToOne(cascade = CascadeType.ALL,mappedBy = "officeAddress")
-	 //@JsonBackReference(value="doctor-address")
+	 @OneToOne
+	 @JsonBackReference(value="doctor-address")
 	 @JoinColumn(name="doctorID")
 	 private Doctor doctor;
 

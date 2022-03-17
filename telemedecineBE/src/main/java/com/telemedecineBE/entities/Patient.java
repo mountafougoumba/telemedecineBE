@@ -50,13 +50,12 @@ public class Patient extends User{
     @JoinColumn(name = "insuranceID")
     private List<Insurance> insurance;
 	
-	@OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "addressID")
+	@OneToOne(cascade = CascadeType.ALL, mappedBy = "patient", fetch = FetchType.LAZY)
+	@JsonManagedReference(value = "patient-address")
 	private Address address;
 	
-	@OneToMany(cascade = CascadeType.ALL)
-	@JoinColumn(name = "appointmentID")
-	@JsonManagedReference
+	@OneToMany(mappedBy = "patient", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JsonManagedReference(value = "patient-appointments")
 	private List<Appointment> appointments;
 
 	@OneToMany(cascade = CascadeType.ALL)
