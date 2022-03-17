@@ -31,6 +31,10 @@ public class Message  implements Serializable{
 	private LocalDate date;
 	@Column(name="TIME")
 	private String time;
+	@Column(name="SENDER_ID")
+	private Integer sender_id;
+	@Column(name="RECEIVER_ID")
+	private Integer receiver_id;
 
 	public Message(String content, LocalDate date, LocalTime time){
 		super();

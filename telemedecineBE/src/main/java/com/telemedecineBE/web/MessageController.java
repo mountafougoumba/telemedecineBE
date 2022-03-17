@@ -27,6 +27,11 @@ public class MessageController {
         return messageRepository.findAll();
     }
 
+    @GetMapping("/messages/sender_id={sender_id}")
+    List<Message> getAllMessagesBySender(@PathVariable(value="sender_id")Integer sender_id){
+        return messageRepository.findBySender(sender_id);
+    }
+
     @GetMapping("/message/id={id}")
     Message getMessageById(@PathVariable(value="id")Integer id){
         Boolean exists = messageRepository.existsById(id);
