@@ -27,6 +27,17 @@ public class PatientController {
 		return patientRepository.findAll();
 	}
 
+	@GetMapping("patient/id={id}/appointments")
+	List<Appointment> getAppointments(@PathVariable(value = "id")Integer id){
+		System.out.println("getPatientAppointments");
+		Boolean exists = patientRepository.existsById(id);
+		if(!exists){
+			throw new IllegalStateException("Patient with id " + id + " does not exist.");
+		}
+		Patient patient = patientRepository.findById(id);
+		return patient.getAppointments();
+	}
+
 	@GetMapping("/patient/id={id}")
 	Patient getPatientById(@PathVariable(value = "id")Integer id){
 		Boolean exists = patientRepository.existsById(id);

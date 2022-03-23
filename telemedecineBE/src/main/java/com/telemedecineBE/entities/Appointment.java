@@ -58,13 +58,14 @@ public class Appointment implements Serializable {
 		this.doctor = doctor;
 	}
 
-	public Appointment(String dateScheduled, Doctor doctor){
+	public Appointment(String dateScheduled, Patient patient, Doctor doctor){
 		super();
 		if(dateScheduled.charAt(0) != 'T' && dateScheduled.charAt(dateScheduled.length() - 1) != 'T'){
 			DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 			this.schedule = LocalDateTime.parse(dateScheduled, dateTimeFormatter);
 		}
 		this.dateScheduled = dateScheduled;
+		this.patient = patient;
 		this.doctor = doctor;
 	}
 
