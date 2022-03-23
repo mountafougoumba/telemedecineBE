@@ -94,17 +94,20 @@ public class TelemedecineBeApplication implements CommandLineRunner {
 		this.prescriptionRepository.save(new Prescriptions(
 						"Nyquill",
 						"10mg",
-						"Cold/Sleep Medication"
+						"Cold/Sleep Medication",
+						patientRepository.findByEmail("dSmith@gmail.com")
 		));
 		this.prescriptionRepository.save(new Prescriptions(
 				"Advil",
 				"25mg",
-				"Pain Medication"
+				"Pain Medication",
+				patientRepository.findByEmail("dSmith@gmail.com")
 		));
 		this.prescriptionRepository.save(new Prescriptions(
 				"Claratin",
 				"15mg",
-				"Allergy Medication"
+				"Allergy Medication",
+				patientRepository.findByEmail("stanleyG@gmail.com")
 		));
 
 		//add medicalHistory entities to database
