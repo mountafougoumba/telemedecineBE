@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200/return")
@@ -23,12 +24,22 @@ public class UserController {
 
     
     @PostMapping("/login")
-    public ResponseEntity<?> loginUser(User userData){
-        System.out.println(userData);
-        User user= userDao.findByUserName(userData.getUserName());
-        if(user.getUserpassword().equals(userData.getUserpassword()))
-            return ResponseEntity.ok(user);
-        return (ResponseEntity<?>) ResponseEntity.internalServerError();
+    User loginUser(@RequestBody Map<String, String> userMap){
+        String email = userMap.get("email");
+        String password = userMap.get("password");
+        Boolean validUser = userDao.existsByEmail(email);
+
+        if(!validUser) {
+            throw new IllegalStateException("User with email " + email + " does not exist");
+        }
+
+        User user = userDao.findByEmail(email);
+
+        if(user.getUserpassword() != password) {
+            throw new IllegalStateException("Incorrect password");
+        }
+
+        return user;
     }
     
     @GetMapping("/users")
