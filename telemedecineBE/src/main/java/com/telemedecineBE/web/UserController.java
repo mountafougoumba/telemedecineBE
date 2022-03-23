@@ -34,8 +34,7 @@ public class UserController {
         }
 
         User user = userDao.findByEmail(email);
-
-        if(user.getUserpassword() != password) {
+        if(!user.getUserpassword().equals(password)) {
             throw new IllegalStateException("Incorrect password");
         }
 

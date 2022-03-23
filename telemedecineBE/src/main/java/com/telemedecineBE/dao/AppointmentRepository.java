@@ -18,4 +18,5 @@ public interface AppointmentRepository
     public List<Appointment> findAllApps();
 
     public Boolean existsByDateScheduledAndPatient(String dateScheduled, Patient patient);
-    }
+
+}
