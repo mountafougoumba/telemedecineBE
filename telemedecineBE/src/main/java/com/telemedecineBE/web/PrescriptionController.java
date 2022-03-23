@@ -49,8 +49,9 @@ public class PrescriptionController {
         if(!exists){
             throw new IllegalStateException("prescription with id " + id + " does not exist");
         }
+        Prescriptions p = prescriptionRepository.findById(id);
         System.out.println("deletePrescriptionById");
-        prescriptionRepository.deleteById(id);
+        prescriptionRepository.delete(p);
     }
 
     @PutMapping("/prescription/id={id}")

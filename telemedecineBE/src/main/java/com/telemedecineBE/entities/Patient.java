@@ -58,8 +58,8 @@ public class Patient extends User{
 	@JsonManagedReference(value = "patient-appointments")
 	private List<Appointment> appointments;
 
-	@OneToMany(cascade = CascadeType.ALL)
-	@JoinColumn(name="prescriptionId")
+	@OneToMany(mappedBy = "patient", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JsonManagedReference(value = "patient-prescriptions")
 	private List<Prescriptions> prescriptions;
 
 	public Patient(String fname, String lname, String email, String cellphone, String userpassword){
