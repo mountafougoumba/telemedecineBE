@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.telemedecineBE.enumeration.UserType;
 import lombok.*;
@@ -62,8 +63,21 @@ public class Patient extends User{
 	@JsonManagedReference(value = "patient-prescriptions")
 	private List<Prescriptions> prescriptions;
 
+	@ManyToMany
+	@JoinColumn(name="doctorID")
+	private List<Doctor> doctors;
+
 	public Patient(String fname, String lname, String email, String cellphone, String userpassword){
 		super(fname, lname, userpassword, UserType.PATIENT, email, cellphone);
+	}
+
+	public Doctor addDoctor(Doctor doctor){
+		if(!this.doctors.contains(doctor)){
+			this.doctors.add(doctor);
+			return doctor;
+		} else {
+			return null;
+		}
 	}
 
 	@Override
