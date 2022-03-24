@@ -12,4 +12,5 @@ public interface DoctorRepository  extends JpaRepository<Doctor, Serializable> {
     @Query("select d from Doctor d")
     public List<Doctor> findAllDoctors();
     public Doctor findByEmail(String email);
+    public Boolean existsByEmail(String email);
 }

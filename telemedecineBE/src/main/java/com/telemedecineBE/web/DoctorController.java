@@ -2,7 +2,9 @@ package com.telemedecineBE.web;
 
 import com.telemedecineBE.dao.DoctorRepository;
 import com.telemedecineBE.dao.UserDao;
+import com.telemedecineBE.entities.Appointment;
 import com.telemedecineBE.entities.Doctor;
+import com.telemedecineBE.entities.Patient;
 import com.telemedecineBE.entities.User;
 import com.telemedecineBE.enumeration.UserType;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +42,54 @@ public class DoctorController {
     {
         Optional<Doctor> doc = doctorRepository.findById(id);
         doc.ifPresent(d -> doctorRepository.delete(d));
+    }
+
+    @GetMapping("doctor/id={id}/appointments")
+    List<Appointment> getAppointments(@PathVariable(value = "id")Integer id){
+        System.out.println("getDoctorAppointments");
+        Boolean exists = doctorRepository.existsById(id);
+        if(!exists){
+            throw new IllegalStateException("Doctor with id " + id + " does not exist.");
+        }
+        Doctor doctor = doctorRepository.findById(id).get();
+        return doctor.getAppointments();
+    }
+
+    @GetMapping("doctor/id={id}/patients")
+    List<Patient> getPatients(@PathVariable(value = "id")Integer id){
+        System.out.println("getDoctorPatients");
+        Boolean exists = doctorRepository.existsById(id);
+        if(!exists){
+            throw new IllegalStateException("Doctor with id " + id + " does not exist.");
+        }
+        Doctor doctor = doctorRepository.findById(id).get();
+        return doctor.getPatients();
+    }
+
+    @PutMapping("doctor/id={id}/patients")
+    Patient addPatient(@PathVariable(value = "id")Integer id, @RequestBody Patient patient){
+        System.out.println("getDoctorPatients");
+        Boolean exists = doctorRepository.existsById(id);
+        if(!exists){
+            throw new IllegalStateException("Doctor with id " + id + " does not exist.");
+        }
+        Doctor doctor = doctorRepository.findById(id).get();
+        doctor.addPatient(patient);
+        doctorRepository.save(doctor);
+        return patient;
+    }
+
+    @PutMapping("doctor/id={id}/patients-remove")
+    Patient removePatient(@PathVariable(value = "id")Integer id, @RequestBody Patient patient){
+        System.out.println("removeDoctorPatients");
+        Boolean exists = doctorRepository.existsById(id);
+        if(!exists){
+            throw new IllegalStateException("Doctor with id " + id + " does not exist.");
+        }
+        Doctor doctor = doctorRepository.findById(id).get();
+        doctor.removePatient(patient);
+        doctorRepository.save(doctor);
+        return patient;
     }
 
     @PostMapping("/doctor")

@@ -40,11 +40,30 @@ public class Doctor extends User{
 	@JsonManagedReference(value = "doctor-appointments")
 	private List<Appointment> appointments;
 
+	@ManyToMany
+	@JoinColumn(name = "patientID")
+	private List<Patient> patients;
+
 	public Doctor(String fname, String lname, String officeName, String specialty, String userpassword, String email,
 				  String cellphone) {
 		super(fname, lname, userpassword, UserType.DOCTOR, email, cellphone);
 		this.officeName = officeName;
 		this.specialty = specialty;
+	}
+
+	public Patient addPatient(Patient patient){
+		if(!this.patients.contains(patient)){
+			this.patients.add(patient);
+			return patient;
+		} else {
+			return null;
+		}
+	}
+
+	public void removePatient(Patient patient){
+		if(this.patients.contains(patient)) {
+			this.patients.remove(patient);
+		}
 	}
 
 	public static long getSerialversionuid() {
