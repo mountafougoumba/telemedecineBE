@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.cors.CorsConfiguration;
@@ -38,6 +39,8 @@ public class TelemedecineBeApplication implements CommandLineRunner {
 	private DoctorRepository doctorRepository;
 	@Autowired
 	private AppointmentRepository appointmentRepository;
+	@Autowired
+	private AdminRepository adminRepository;
 
 	@Override
 	public void run(String...args) throws Exception {
@@ -164,6 +167,39 @@ public class TelemedecineBeApplication implements CommandLineRunner {
 				patientRepository.findByEmail("stanleyG@gmail.com"),
 				doctorRepository.findByEmail("daisssyH@gmail.com")
 		));
+
+		this.adminRepository.save(new Admin(
+				"Faith",
+				"Swetnam",
+				"fswetnam@gmail.com",
+				"567-823-1244",
+				"password"
+		));
+
+		this.adminRepository.save(new Admin(
+				"Aubrey",
+				"Lewis",
+				"aLewis@gmail.com",
+				"435-123-1245",
+				"password"
+		));
+
+		this.adminRepository.save(new Admin(
+				"Brandon",
+				"Lewis",
+				"bLewis@gmail.com",
+				"231-154-5346",
+				"password"
+		));
+
+		this.adminRepository.save(new Admin(
+				"Barry",
+				"Mamadou Mountagha",
+				"bMM@gmail.com",
+				"346-235-1351",
+				"password"
+		));
+
 	}
 
 
