@@ -35,6 +35,10 @@ public class Appointment implements Serializable {
 	@JsonBackReference(value = "patient-appointments")
 	private Patient patient;
 	private Integer state;
+	@ManyToOne
+	@JoinColumn(name="adminID")
+	@JsonBackReference(value="admin-appointment-request")
+	private Admin admin;
 
 	public Appointment()
 	{

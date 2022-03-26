@@ -44,6 +44,10 @@ public class Doctor extends User{
 	@JoinColumn(name = "patientID")
 	private List<Patient> patients;
 
+	@OneToMany(mappedBy="doctor", cascade=CascadeType.ALL, fetch = FetchType.LAZY)
+	@JsonManagedReference(value = "doctor-requested-medications")
+	private List<Prescriptions> requestedPrescriptions;
+
 	public Doctor(String fname, String lname, String officeName, String specialty, String userpassword, String email,
 				  String cellphone) {
 		super(fname, lname, userpassword, UserType.DOCTOR, email, cellphone);

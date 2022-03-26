@@ -25,6 +25,10 @@ public class Prescriptions implements Serializable{
 	@JoinColumn(name = "patientID")
 	@JsonBackReference(value = "patient-prescriptions")
 	private Patient patient;
+	@ManyToOne
+	@JoinColumn(name="doctorID")
+	@JsonBackReference(value = "doctor-requested-medications")
+	private Doctor doctor;
 
 	public Prescriptions() {
 		// TODO Auto-generated constructor stub
