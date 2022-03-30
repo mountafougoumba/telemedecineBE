@@ -2,20 +2,19 @@ package com.telemedecineBE;
 
 import com.telemedecineBE.dao.*;
 import com.telemedecineBE.entities.*;
+import com.telemedecineBE.enumeration.RequestStatus;
+import com.telemedecineBE.enumeration.RequestType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.Arrays;
 
 @SpringBootApplication(exclude = { SecurityAutoConfiguration.class })
@@ -41,6 +40,8 @@ public class TelemedecineBeApplication implements CommandLineRunner {
 	private AppointmentRepository appointmentRepository;
 	@Autowired
 	private AdminRepository adminRepository;
+	@Autowired
+	private RequestRepository requestRepository;
 
 	@Override
 	public void run(String...args) throws Exception {
@@ -91,26 +92,6 @@ public class TelemedecineBeApplication implements CommandLineRunner {
 						true,
 						true,
 						95.50
-		));
-
-		//add prescription entities
-		this.prescriptionRepository.save(new Prescriptions(
-						"Nyquill",
-						"10mg",
-						"Cold/Sleep Medication",
-						patientRepository.findByEmail("dSmith@gmail.com")
-		));
-		this.prescriptionRepository.save(new Prescriptions(
-				"Advil",
-				"25mg",
-				"Pain Medication",
-				patientRepository.findByEmail("dSmith@gmail.com")
-		));
-		this.prescriptionRepository.save(new Prescriptions(
-				"Claratin",
-				"15mg",
-				"Allergy Medication",
-				patientRepository.findByEmail("stanleyG@gmail.com")
 		));
 
 		//add medicalHistory entities to database
@@ -200,6 +181,54 @@ public class TelemedecineBeApplication implements CommandLineRunner {
 				"password"
 		));
 
+
+		//add prescription entities
+		this.prescriptionRepository.save(new Prescriptions(
+				"Nyquill",
+				"10mg",
+				"Cold/Sleep Medication",
+				patientRepository.findByEmail("dSmith@gmail.com"),
+				doctorRepository.findByEmail("benB@gmail.com")
+		));
+		this.prescriptionRepository.save(new Prescriptions(
+				"Advil",
+				"25mg",
+				"Pain Medication",
+				patientRepository.findByEmail("stanleyG@gmail.com"),
+				doctorRepository.findByEmail("daisssyH@gmail.com")
+		));
+		this.prescriptionRepository.save(new Prescriptions(
+				"Claratin",
+				"15mg",
+				"Allergy Medication",
+				patientRepository.findByEmail("dLewis@gmail.com"),
+				doctorRepository.findByEmail("jCod@gmail.com")
+		));
+
+		this.requestRepository.save(new Requests(
+				this.prescriptionRepository.findById(20),
+				RequestType.PRESCRIPTION_REQUEST,
+				RequestStatus.WAITING,
+				patientRepository.findByEmail("dSmith@gmail.com"),
+				doctorRepository.findByEmail("benB@gmail.com")
+		));
+
+		this.requestRepository.save(new Requests(
+				this.prescriptionRepository.findById(21),
+				RequestType.PRESCRIPTION_REQUEST,
+				RequestStatus.DENIED,
+				patientRepository.findByEmail("stanleyG@gmail.com"),
+				doctorRepository.findByEmail("daisssyH@gmail.com")
+		));
+
+		this.requestRepository.save(new Requests(
+				this.prescriptionRepository.findById(22),
+				RequestType.PRESCRIPTION_REQUEST,
+				RequestStatus.CONFIRMED,
+				patientRepository.findByEmail("dLewis@gmail.com"),
+				doctorRepository.findByEmail("jCod@gmail.com")
+		));
+
 	}
 
 
@@ -212,7 +241,7 @@ public class TelemedecineBeApplication implements CommandLineRunner {
 		corsConfiguration.setAllowedOrigins(Arrays.asList("http://localhost:4200"));
 		corsConfiguration.setAllowedHeaders(Arrays.asList("Origin", "Access-Control-Allow-Origin", "Content-Type",
 				"Accept", "Jwt-Token", "Authorization", "Origin, Accept", "X-Requested-With",
-				"Access-Control-Request-Method", "Access-Control-Request-Headers"));
+				"Access-Control-Requests-Method", "Access-Control-Requests-Headers"));
 		corsConfiguration.setExposedHeaders(Arrays.asList("Origin", "Content-Type", "Accept", "Jwt-Token", "Authorization",
 				"Access-Control-Allow-Origin", "Access-Control-Allow-Origin", "Access-Control-Allow-Credentials", "Filename"));
 		corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));

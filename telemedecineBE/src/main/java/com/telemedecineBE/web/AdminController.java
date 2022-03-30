@@ -21,20 +21,9 @@ public class AdminController {
     }
 
     @GetMapping("/admins")
-    List<Admin> getAllAdmins(){
+    List<Admin> getAllAdmins() {
         System.out.println("getAllAdmins");
         return adminRepository.findAll();
-    }
-
-    @GetMapping("/admins/id={id}/appointments")
-    List<Appointment> getRequestedAppointments(@PathVariable(value = "id") Integer id){
-        System.out.println("getAdminRequestedAppointments");
-        Boolean exists = adminRepository.existsById(id);
-        if(!exists){
-            throw new IllegalStateException("Admin with id " + id + " does not exist.");
-        }
-        Admin admin = adminRepository.findById(id);
-        return admin.getRequestedAppointments();
     }
 
     @GetMapping("/admin/id={id}")

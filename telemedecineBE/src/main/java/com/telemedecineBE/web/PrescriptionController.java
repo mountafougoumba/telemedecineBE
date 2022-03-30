@@ -1,6 +1,8 @@
 package com.telemedecineBE.web;
 
 import com.telemedecineBE.dao.PrescriptionRepository;
+import com.telemedecineBE.entities.Doctor;
+import com.telemedecineBE.entities.Patient;
 import com.telemedecineBE.entities.Prescriptions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -30,6 +32,29 @@ public class PrescriptionController {
         }
         System.out.println("getPrescriptionById");
         return prescriptionRepository.findById(id);
+    }
+
+    @GetMapping("/prescription/id={id}/doctor")
+    Doctor getPrescriptionDoctor(@PathVariable(value = "id") Integer id){
+        Boolean exists = prescriptionRepository.existsById(id);
+        if(!exists){
+            throw new IllegalStateException("prescription with id " + id + " does not exist");
+        }
+        System.out.println("getPrescriptionById");
+        Prescriptions ps = prescriptionRepository.findById(id);
+        System.out.println(ps.getDoctorPrescribed());
+        return ps.getDoctorPrescribed();
+    }
+
+    @GetMapping("/prescription/id={id}/patient")
+    Patient getPrescriptionPatient(@PathVariable(value = "id") Integer id){
+        Boolean exists = prescriptionRepository.existsById(id);
+        if(!exists){
+            throw new IllegalStateException("prescription with id " + id + " does not exist");
+        }
+        System.out.println("getPrescriptionById");
+        Prescriptions ps = prescriptionRepository.findById(id);
+        return ps.getPatient();
     }
 
     @PostMapping("/prescription")

@@ -18,6 +18,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+
 public class Patient extends User{
 
 	private static final long serialVersionUID = 1L;
@@ -64,8 +65,12 @@ public class Patient extends User{
 	private List<Prescriptions> prescriptions;
 
 	@ManyToMany
-	@JoinColumn(name="doctorID")
+	@JoinColumn(name="doctorId")
 	private List<Doctor> doctors;
+
+	@OneToMany(mappedBy = "requestingPatient", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JsonManagedReference("patient-request")
+	private List<Requests> requestedPrescriptions;
 
 	public Patient(String fname, String lname, String email, String cellphone, String userpassword){
 		super(fname, lname, userpassword, UserType.PATIENT, email, cellphone);
