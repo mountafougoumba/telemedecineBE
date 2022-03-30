@@ -20,6 +20,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+
 public class Doctor extends User{
 
 	/**
@@ -28,6 +29,7 @@ public class Doctor extends User{
 	private static final long serialVersionUID = 1L;
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name="DOCTOR_ID")
 	private Integer id;
 	private String officeName;
 	private String specialty;
@@ -40,13 +42,16 @@ public class Doctor extends User{
 	@JsonManagedReference(value = "doctor-appointments")
 	private List<Appointment> appointments;
 
-	@ManyToMany
-	@JoinColumn(name = "patientID")
+	@ManyToMany(mappedBy="doctors", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Patient> patients;
 
-	@OneToMany(mappedBy="doctor", cascade=CascadeType.ALL, fetch = FetchType.LAZY)
-	@JsonManagedReference(value = "doctor-requested-medications")
-	private List<Prescriptions> requestedPrescriptions;
+	@OneToMany(mappedBy="doctor", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JsonManagedReference("doctor-request")
+	private List<Requests> requestedPrescriptions;
+
+	@OneToMany(mappedBy="doctorPrescribed", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JsonManagedReference(value = "doctor-prescriptions")
+	private List<Prescriptions> prescribedPrescriptions;
 
 	public Doctor(String fname, String lname, String officeName, String specialty, String userpassword, String email,
 				  String cellphone) {
@@ -69,6 +74,7 @@ public class Doctor extends User{
 			this.patients.remove(patient);
 		}
 	}
+
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;

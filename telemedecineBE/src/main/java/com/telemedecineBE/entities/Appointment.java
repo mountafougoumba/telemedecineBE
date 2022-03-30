@@ -9,6 +9,7 @@ import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -35,10 +36,6 @@ public class Appointment implements Serializable {
 	@JsonBackReference(value = "patient-appointments")
 	private Patient patient;
 	private Integer state;
-	@ManyToOne
-	@JoinColumn(name="adminID")
-	@JsonBackReference(value="admin-appointment-request")
-	private Admin admin;
 
 	public Appointment()
 	{

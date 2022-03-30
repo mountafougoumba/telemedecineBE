@@ -1,7 +1,6 @@
 package com.telemedecineBE.web;
 
 import com.telemedecineBE.dao.PatientRepository;
-import com.telemedecineBE.dao.PrescriptionRepository;
 import com.telemedecineBE.dao.UserDao;
 import com.telemedecineBE.entities.*;
 import com.telemedecineBE.enumeration.UserType;
@@ -29,10 +28,10 @@ public class PatientController {
 	}
 
 	@GetMapping("patient/id={id}/appointments")
-	List<Appointment> getAppointments(@PathVariable(value = "id")Integer id){
+	List<Appointment> getAppointments(@PathVariable(value = "id")Integer id) {
 		System.out.println("getPatientAppointments");
 		Boolean exists = patientRepository.existsById(id);
-		if(!exists){
+		if (!exists) {
 			throw new IllegalStateException("Patient with id " + id + " does not exist.");
 		}
 		Patient patient = patientRepository.findById(id);
@@ -48,6 +47,17 @@ public class PatientController {
 		}
 		Patient patient = patientRepository.findById(id);
 		return patient.getPrescriptions();
+	}
+
+	@GetMapping("patient/id={id}/requested-prescriptions")
+	List<Requests> getRequestedPrescriptions(@PathVariable(value = "id")Integer id){
+		System.out.println("getPatientPrescriptions");
+		Boolean exists = patientRepository.existsById(id);
+		if(!exists){
+			throw new IllegalStateException("Patient with id " + id + " does not exist.");
+		}
+		Patient patient = patientRepository.findById(id);
+		return patient.getRequestedPrescriptions();
 	}
 
 	@GetMapping("/patient/id={id}")

@@ -2,10 +2,7 @@ package com.telemedecineBE.web;
 
 import com.telemedecineBE.dao.DoctorRepository;
 import com.telemedecineBE.dao.UserDao;
-import com.telemedecineBE.entities.Appointment;
-import com.telemedecineBE.entities.Doctor;
-import com.telemedecineBE.entities.Patient;
-import com.telemedecineBE.entities.User;
+import com.telemedecineBE.entities.*;
 import com.telemedecineBE.enumeration.UserType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -32,9 +29,9 @@ public class DoctorController {
     }
 
     @GetMapping("/doctor/id={id}")
-    Optional<Doctor> get(@PathVariable Integer id)
+    Doctor get(@PathVariable Integer id)
     {
-        return doctorRepository.findById(id);
+        return doctorRepository.findById(id).get();
     }
 
     @DeleteMapping("/doctor/id={id}")
@@ -53,6 +50,28 @@ public class DoctorController {
         }
         Doctor doctor = doctorRepository.findById(id).get();
         return doctor.getAppointments();
+    }
+
+    @GetMapping("doctor/id={id}/prescribed-prescriptions")
+    List<Prescriptions> getPrescriptions(@PathVariable(value = "id")Integer id){
+        System.out.println("getDoctorPrescribedPrescriptions");
+        Boolean exists = doctorRepository.existsById(id);
+        if(!exists){
+            throw new IllegalStateException("Doctor with id " + id + " does not exist.");
+        }
+        Doctor doctor = doctorRepository.findById(id).get();
+        return doctor.getPrescribedPrescriptions();
+    }
+
+    @GetMapping("doctor/id={id}/requested-prescriptions")
+    List<Requests> getRequestedPrescriptions(@PathVariable(value = "id")Integer id){
+        System.out.println("getDoctorRequestedPrescriptions");
+        Boolean exists = doctorRepository.existsById(id);
+        if(!exists){
+            throw new IllegalStateException("Doctor with id " + id + " does not exist.");
+        }
+        Doctor doctor = doctorRepository.findById(id).get();
+        return doctor.getRequestedPrescriptions();
     }
 
     @GetMapping("doctor/id={id}/patients")

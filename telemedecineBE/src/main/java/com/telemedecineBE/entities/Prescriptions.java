@@ -1,6 +1,7 @@
 package com.telemedecineBE.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import java.io.Serializable;
 
@@ -21,14 +22,16 @@ public class Prescriptions implements Serializable{
 	private String dosages;
 	private String description;
 	private String name;
+
 	@ManyToOne
 	@JoinColumn(name = "patientID")
 	@JsonBackReference(value = "patient-prescriptions")
 	private Patient patient;
+
 	@ManyToOne
-	@JoinColumn(name="doctorID")
-	@JsonBackReference(value = "doctor-requested-medications")
-	private Doctor doctor;
+	@JoinColumn(name = "doctorID")
+	@JsonBackReference(value="doctor-prescriptions")
+	private Doctor doctorPrescribed;
 
 	public Prescriptions() {
 		// TODO Auto-generated constructor stub
@@ -47,11 +50,12 @@ public class Prescriptions implements Serializable{
 		this.description = description;
 	}
 
-	public Prescriptions(String name, String dosages, String description, Patient patient){
+	public Prescriptions(String name, String dosages, String description, Patient patient, Doctor doctor){
 		this.name = name;
 		this.dosages = dosages;
 		this.description = description;
 		this.patient = patient;
+		this.doctorPrescribed = doctor;
 	}
 
 	public Integer getId() {
@@ -84,9 +88,19 @@ public class Prescriptions implements Serializable{
 	public void setPatient(Patient patient) {this.patient = patient; }
 	public Patient getPatient(){return this.patient;}
 
+	public Doctor getDoctorPrescribed() {
+		return doctorPrescribed;
+	}
+
+	public void setDoctorPrescribed(Doctor doctorPrescribed) {
+		this.doctorPrescribed = doctorPrescribed;
+	}
+
+
 	@Override
 	public String toString() {
-		return "Prescriptions [id=" + id + ", dosages=" + dosages + ", description=" + description + "]";
+		return "Prescriptions [id=" + id + ", dosages=" + dosages + ", description=" + description +
+				", doctorPrescribed: " + doctorPrescribed + "]";
 	}
 	
 
