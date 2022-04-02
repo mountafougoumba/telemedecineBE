@@ -1,13 +1,12 @@
 package com.telemedecineBE.web;
 
+import  com.telemedecineBE.TelemedecineBeApplication;
 import com.telemedecineBE.entities.User;
 import com.telemedecineBE.dao.UserDao;
 import com.telemedecineBE.enumeration.UserType;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import java.util.List;
 import java.util.Map;
 
@@ -21,8 +20,6 @@ public class UserController {
     @Autowired
     private PasswordEncoder passwordEncoder;
      */
-
-    
     @PostMapping("/login")
     User loginUser(@RequestBody Map<String, String> userMap){
         String email = userMap.get("email");
@@ -33,8 +30,10 @@ public class UserController {
             throw new IllegalStateException("User with email " + email + " does not exist");
         }
 
+        String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt(TelemedecineBeApplication.strength));
         User user = userDao.findByEmail(email);
-        if(!user.getUserpassword().equals(password)) {
+
+        if(!BCrypt.checkpw(password, hashedPassword)) {
             throw new IllegalStateException("Incorrect password");
         }
 

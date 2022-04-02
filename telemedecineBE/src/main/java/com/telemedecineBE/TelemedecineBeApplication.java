@@ -43,6 +43,8 @@ public class TelemedecineBeApplication implements CommandLineRunner {
 	@Autowired
 	private RequestRepository requestRepository;
 
+	public static Integer strength = 10;
+
 	@Override
 	public void run(String...args) throws Exception {
         //Add patient entities

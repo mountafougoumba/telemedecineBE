@@ -1,12 +1,13 @@
 package com.telemedecineBE.web;
 
+import com.telemedecineBE.TelemedecineBeApplication;
 import com.telemedecineBE.dao.PatientRepository;
 import com.telemedecineBE.dao.UserDao;
 import com.telemedecineBE.entities.*;
 import com.telemedecineBE.enumeration.UserType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
@@ -101,6 +102,11 @@ public class PatientController {
 		}
 		patient.setUserName(patient.getEmail());
 		patient.setUserType(UserType.PATIENT);
+
+		// Encode password
+		String encodedPassword = BCrypt.hashpw(patient.getUserpassword(), BCrypt.gensalt(TelemedecineBeApplication.strength));
+		patient.setUserpassword(encodedPassword);
+
 		patient.setUserpassword(patient.getUserpassword());
 		patientRepository.save(patient);
 		System.out.println("newPatient");
