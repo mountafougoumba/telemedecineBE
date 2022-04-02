@@ -10,6 +10,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
@@ -52,17 +53,17 @@ public class TelemedecineBeApplication implements CommandLineRunner {
 							"Smith",
 							"dSmith@gmail.com",
 							"123-456-7890",
-							"password"));
+				BCrypt.hashpw("password", BCrypt.gensalt(TelemedecineBeApplication.strength))));
 		this.patientRepository.save(new Patient("Daniel",
 						"Lewis",
 						"dLewis@gmail.com",
 						"098-765-4321",
-						"password123"));
+				BCrypt.hashpw("password123", BCrypt.gensalt(TelemedecineBeApplication.strength))));
 		this.patientRepository.save(new Patient("Stanley",
 						"Goodman",
 						"stanleyG@gmail.com",
 						"345-453-2345",
-						"password"));
+				BCrypt.hashpw("password", BCrypt.gensalt(TelemedecineBeApplication.strength))));
 
         //Add address entities
         this.addressRepository.save(new Address(
@@ -114,7 +115,7 @@ public class TelemedecineBeApplication implements CommandLineRunner {
 				"Button",
 				"Future Doctors Inc.",
 				"Pediatrics",
-				"password",
+				BCrypt.hashpw("password", BCrypt.gensalt(TelemedecineBeApplication.strength)),
 				"benB@gmail.com",
 				"678-892-3234"
 		));
@@ -123,7 +124,7 @@ public class TelemedecineBeApplication implements CommandLineRunner {
 				"Hun",
 				"Baily's Dentistry",
 				"Dentist",
-				"password123",
+				BCrypt.hashpw("password123", BCrypt.gensalt(TelemedecineBeApplication.strength)),
 				"daisssyH@gmail.com",
 				"634-234-2143"
 		));
@@ -132,7 +133,7 @@ public class TelemedecineBeApplication implements CommandLineRunner {
 				"Cod",
 				"All Seeing Eye LTD.",
 				"Optomitrist",
-				"password123",
+				BCrypt.hashpw("password", BCrypt.gensalt(TelemedecineBeApplication.strength)),
 				"jCod@gmail.com",
 				"453-234-4356"
 		));
@@ -156,7 +157,7 @@ public class TelemedecineBeApplication implements CommandLineRunner {
 				"Swetnam",
 				"fswetnam@gmail.com",
 				"567-823-1244",
-				"password"
+				BCrypt.hashpw("password", BCrypt.gensalt(TelemedecineBeApplication.strength))
 		));
 
 		this.adminRepository.save(new Admin(
@@ -164,7 +165,7 @@ public class TelemedecineBeApplication implements CommandLineRunner {
 				"Lewis",
 				"aLewis@gmail.com",
 				"435-123-1245",
-				"password"
+				BCrypt.hashpw("password", BCrypt.gensalt(TelemedecineBeApplication.strength))
 		));
 
 		this.adminRepository.save(new Admin(
@@ -172,7 +173,7 @@ public class TelemedecineBeApplication implements CommandLineRunner {
 				"Lewis",
 				"bLewis@gmail.com",
 				"231-154-5346",
-				"password"
+				BCrypt.hashpw("password", BCrypt.gensalt(TelemedecineBeApplication.strength))
 		));
 
 		this.adminRepository.save(new Admin(
@@ -180,7 +181,7 @@ public class TelemedecineBeApplication implements CommandLineRunner {
 				"Mamadou Mountagha",
 				"bMM@gmail.com",
 				"346-235-1351",
-				"password"
+				BCrypt.hashpw("password", BCrypt.gensalt(TelemedecineBeApplication.strength))
 		));
 
 
