@@ -2,6 +2,7 @@ package com.telemedecineBE;
 
 import com.telemedecineBE.dao.*;
 import com.telemedecineBE.entities.*;
+import com.telemedecineBE.enumeration.AppointmentType;
 import com.telemedecineBE.enumeration.RequestStatus;
 import com.telemedecineBE.enumeration.RequestType;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -138,20 +139,6 @@ public class TelemedecineBeApplication implements CommandLineRunner {
 				"453-234-4356"
 		));
 
-		this.appointmentRepository.save(new Appointment(
-				LocalDateTime.of(2022, 5, 25, 10, 30),
-				"Check-up/Physical",
-				patientRepository.findByEmail("dSmith@gmail.com"),
-				doctorRepository.findByEmail("benB@gmail.com")
-		));
-
-		this.appointmentRepository.save(new Appointment(
-				LocalDateTime.of(2022, 8, 18, 12, 45),
-				"Cleaning",
-				patientRepository.findByEmail("stanleyG@gmail.com"),
-				doctorRepository.findByEmail("daisssyH@gmail.com")
-		));
-
 		this.adminRepository.save(new Admin(
 				"Faith",
 				"Swetnam",
@@ -231,6 +218,55 @@ public class TelemedecineBeApplication implements CommandLineRunner {
 				patientRepository.findByEmail("dLewis@gmail.com"),
 				doctorRepository.findByEmail("jCod@gmail.com")
 		));
+
+
+        this.requestRepository.save(new Requests(
+                new Appointment(
+                        LocalDateTime.of(2022, 4, 5, 10, 30),
+                        "Check-up/Physical",
+                        patientRepository.findByEmail("d@Lewis@gmail.com"),
+                        doctorRepository.findByEmail("jCod@gmail.com"),
+						AppointmentType.IN_PERSON
+                ),
+                RequestType.APPOINTMENT_REQUEST,
+                RequestStatus.CONFIRMED,
+                AppointmentType.IN_PERSON,
+                patientRepository.findByEmail("dLewis@gmail.com"),
+                doctorRepository.findByEmail("jCod@gmail.com"),
+                adminRepository.findByEmail("fswetnam@gmail.com")
+        ));
+
+        this.requestRepository.save(new Requests(
+                new Appointment(
+                        LocalDateTime.of(2022, 4, 2, 12, 45),
+                        "Cleaning",
+                        patientRepository.findByEmail("stanleyG@gmail.com"),
+                        doctorRepository.findByEmail("daisssyH@gmail.com"),
+						AppointmentType.IN_PERSON
+                ),
+                RequestType.APPOINTMENT_REQUEST,
+                RequestStatus.DENIED,
+                AppointmentType.IN_PERSON,
+                patientRepository.findByEmail("stanleyG@gmail.com"),
+                doctorRepository.findByEmail("daisssyH@gmail.com"),
+                adminRepository.findByEmail("fswetnam@gmail.com")
+        ));
+
+        this.requestRepository.save(new Requests(
+                new Appointment(
+                        LocalDateTime.of(2022, 5, 25, 10, 30),
+                        "Check-up/Physical",
+                        patientRepository.findByEmail("dSmith@gmail.com"),
+                        doctorRepository.findByEmail("benB@gmail.com"),
+						AppointmentType.ONLINE
+                ),
+                RequestType.APPOINTMENT_REQUEST,
+                RequestStatus.WAITING,
+                AppointmentType.ONLINE,
+                patientRepository.findByEmail("dSmith@gmail.com"),
+                doctorRepository.findByEmail("benB@gmail.com"),
+                adminRepository.findByEmail("fswetnam@gmail.com")
+        ));
 
 	}
 

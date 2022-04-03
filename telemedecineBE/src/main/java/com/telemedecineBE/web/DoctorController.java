@@ -63,15 +63,15 @@ public class DoctorController {
         return doctor.getPrescribedPrescriptions();
     }
 
-    @GetMapping("doctor/id={id}/requested-prescriptions")
-    List<Requests> getRequestedPrescriptions(@PathVariable(value = "id")Integer id){
+    @GetMapping("doctor/id={id}/requests")
+    List<Requests> getRequests(@PathVariable(value = "id")Integer id){
         System.out.println("getDoctorRequestedPrescriptions");
         Boolean exists = doctorRepository.existsById(id);
         if(!exists){
             throw new IllegalStateException("Doctor with id " + id + " does not exist.");
         }
         Doctor doctor = doctorRepository.findById(id).get();
-        return doctor.getRequestedPrescriptions();
+        return doctor.getRequests();
     }
 
     @GetMapping("doctor/id={id}/patients")

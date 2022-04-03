@@ -2,7 +2,6 @@ package com.telemedecineBE.entities;
 
 import javax.persistence.*;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.telemedecineBE.enumeration.UserType;
 import lombok.AllArgsConstructor;
@@ -47,7 +46,7 @@ public class Doctor extends User{
 
 	@OneToMany(mappedBy="doctor", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JsonManagedReference("doctor-request")
-	private List<Requests> requestedPrescriptions;
+	private List<Requests> requests;
 
 	@OneToMany(mappedBy="doctorPrescribed", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JsonManagedReference(value = "doctor-prescriptions")

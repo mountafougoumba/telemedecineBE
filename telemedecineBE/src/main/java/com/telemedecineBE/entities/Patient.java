@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.persistence.*;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.telemedecineBE.enumeration.UserType;
 import lombok.*;
@@ -70,7 +69,7 @@ public class Patient extends User{
 
 	@OneToMany(mappedBy = "requestingPatient", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JsonManagedReference("patient-request")
-	private List<Requests> requestedPrescriptions;
+	private List<Requests> requests;
 
 	public Patient(String fname, String lname, String email, String cellphone, String userpassword){
 		super(fname, lname, userpassword, UserType.PATIENT, email, cellphone);

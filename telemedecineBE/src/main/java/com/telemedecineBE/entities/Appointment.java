@@ -10,6 +10,7 @@ import javax.persistence.*;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.telemedecineBE.enumeration.AppointmentType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -35,7 +36,11 @@ public class Appointment implements Serializable {
 	@JoinColumn(name = "patientID")
 	@JsonBackReference(value = "patient-appointments")
 	private Patient patient;
+	private AppointmentType appointmentType;
 	private Integer state;
+
+	@OneToOne
+	private Requests appointmentRequest;
 
 	public Appointment()
 	{
@@ -59,7 +64,7 @@ public class Appointment implements Serializable {
 		this.doctor = doctor;
 	}
 
-	public Appointment(String dateScheduled, Patient patient, Doctor doctor){
+	public Appointment(String dateScheduled, Patient patient, Doctor doctor, AppointmentType appointmentType){
 		super();
 		if(dateScheduled.charAt(0) != 'T' && dateScheduled.charAt(dateScheduled.length() - 1) != 'T'){
 			DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
@@ -68,9 +73,10 @@ public class Appointment implements Serializable {
 		this.dateScheduled = dateScheduled;
 		this.patient = patient;
 		this.doctor = doctor;
+		this.appointmentType = appointmentType;
 	}
 
-	public Appointment(String dateScheduled, String purpose, Patient patient, Doctor doctor){
+	public Appointment(String dateScheduled, String purpose, Patient patient, Doctor doctor, AppointmentType appointmentType){
 		super();
 		if(dateScheduled.charAt(0) != 'T' && dateScheduled.charAt(dateScheduled.length() - 1) != 'T'){
 			DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
@@ -80,9 +86,10 @@ public class Appointment implements Serializable {
 		this.purpose = purpose;
 		this.patient = patient;
 		this.doctor = doctor;
+		this.appointmentType = appointmentType;
 	}
 
-	public Appointment(LocalDateTime dateScheduled, String purpose, Patient patient, Doctor doctor){
+	public Appointment(LocalDateTime dateScheduled, String purpose, Patient patient, Doctor doctor, AppointmentType appointmentType){
 		super();
 		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 		this.schedule = LocalDateTime.parse(dateScheduled.toString(), dateTimeFormatter);
@@ -90,6 +97,7 @@ public class Appointment implements Serializable {
 		this.purpose = purpose;
 		this.patient = patient;
 		this.doctor = doctor;
+		this.appointmentType = appointmentType;
 	}
 
 	public Appointment(String dateScheduled){
