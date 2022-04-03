@@ -1,7 +1,8 @@
 package com.telemedecineBE.web;
 
 import com.telemedecineBE.dao.UserRepository;
-import com.telemedecineBE.entities.User;
+import com.telemedecineBE.dao.PatientRepository;
+import com.telemedecineBE.entities.*;
 import com.telemedecineBE.dao.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -25,15 +26,16 @@ public class UserController {
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    private PasswordEncoder passwordEncoder;
+    private PatientRepository patientRepository;
 
 
 
     //login
+    //@CrossOrigin(origins = "http://localhost:4200/login")
     @RequestMapping("/login")
     public String login(String userName, String userpassword){
         try {
-            User user= userDao.findUserByUserNameAndUserpassword(userName,passwordEncoder.encode(userpassword));
+            User user= userDao.findUserByUserNameAndUserpassword(userName,userpassword);
         }
         catch (Exception ex) {
             return "Error Invalid User Name or Password for: " + userName;
@@ -51,6 +53,25 @@ public class UserController {
         return "redirect:/login";
     }
 
+
+
+    @PostMapping("/user")
+    User newUser(@RequestBody User user){
+        Boolean exists = userDao.existsByEmail(user.getEmail());
+        //Boolean exists2 = patientRepository.existsByPhone(patient.getPhone());
+        if(exists){
+            throw new IllegalStateException("Patient with email " + user.getEmail() + " already exists.");
+        } //else if(exists2){
+        //throw new IllegalStateException("Patient with phone " + patient.getPhone() + " already exists.");
+        //}
+        String test;
+        user.setUserType("PATIENT");
+
+        userDao.save(user);
+        System.out.println("newPatient");
+
+        return user;
+    }
     // Create User
     @GetMapping("/register")
     @ResponseBody
