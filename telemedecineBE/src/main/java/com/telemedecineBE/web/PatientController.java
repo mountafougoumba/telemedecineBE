@@ -58,7 +58,7 @@ public class PatientController {
 			throw new IllegalStateException("Patient with id " + id + " does not exist.");
 		}
 		Patient patient = patientRepository.findById(id);
-		return patient.getRequestedPrescriptions();
+		return patient.getRequests();
 	}
 
 	@GetMapping("/patient/id={id}")

@@ -22,6 +22,10 @@ public class Admin extends User {
     @Column(name="ADMIN_ID")
     private Integer id;
 
+    @OneToMany(mappedBy="admin", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference("admin-request")
+    private List<Requests> requestedAppointments;
+
     public Admin(String fname, String lname, String email, String cellphone, String userpassword){
         super(fname, lname, userpassword, UserType.ADMIN, email, cellphone);
     }

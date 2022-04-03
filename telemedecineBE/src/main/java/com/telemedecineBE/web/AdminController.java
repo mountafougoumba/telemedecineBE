@@ -4,6 +4,7 @@ import com.telemedecineBE.dao.AdminRepository;
 import com.telemedecineBE.dao.UserDao;
 import com.telemedecineBE.entities.Admin;
 import com.telemedecineBE.entities.Appointment;
+import com.telemedecineBE.entities.Requests;
 import com.telemedecineBE.enumeration.UserType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +25,16 @@ public class AdminController {
     List<Admin> getAllAdmins() {
         System.out.println("getAllAdmins");
         return adminRepository.findAll();
+    }
+
+    @GetMapping("admin/id={id}/requests")
+    List<Requests> getAppointmentRequests(@PathVariable(value = "id")Integer id){
+        Boolean exists = adminRepository.existsById(id);
+        if(!exists){
+            throw new IllegalStateException("Admin with id " + id + " does not exist.");
+        }
+        Admin admin = adminRepository.findById(id);
+        return admin.getRequestedAppointments();
     }
 
     @GetMapping("/admin/id={id}")
