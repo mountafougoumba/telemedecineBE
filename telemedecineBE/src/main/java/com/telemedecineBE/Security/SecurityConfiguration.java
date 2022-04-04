@@ -1,7 +1,7 @@
 package com.telemedecineBE.Security;
 
 
-/*
+
 
 
 import org.springframework.context.annotation.Bean;
@@ -26,16 +26,22 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(HttpSecurity http) throws Exception{
 
+
         http
+
+                .csrf().disable()
+                .cors().disable()
                 .authorizeRequests()
-                .antMatchers("/prescription").hasAnyRole("ADMIN")
+                .antMatchers("/register","/logout",
+                        "/patient","/user").permitAll()
                 .anyRequest().authenticated()
-                .and()
-                .formLogin()
+               // .and()
+                //.formLogin()
                 .and()
                 .httpBasic()
                 .and()
                 .logout()
+                .logoutSuccessUrl("/login")
                 .permitAll();
     }
 
@@ -54,11 +60,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .roles("USER");
     }
 
+
+
     @Bean
     public PasswordEncoder passwordEncoder(){
+
         return  new BCryptPasswordEncoder();
     }
 }
 
 
- */

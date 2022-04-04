@@ -15,6 +15,8 @@ public interface UserDao extends JpaRepository<User, Serializable> {
 
     public User findByUserName(String username);
 
+    public User findUserByUserNameAndUserpassword(String username, String password);
+
     public User findById(Integer id);
 
     public User findByEmail(String email);

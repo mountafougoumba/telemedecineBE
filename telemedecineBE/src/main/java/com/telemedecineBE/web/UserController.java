@@ -1,14 +1,33 @@
 package com.telemedecineBE.web;
 
+
 import  com.telemedecineBE.TelemedecineBeApplication;
 import com.telemedecineBE.entities.User;
+
+import com.telemedecineBE.dao.UserRepository;
+import com.telemedecineBE.dao.PatientRepository;
+import com.telemedecineBE.entities.*;
+
 import com.telemedecineBE.dao.UserDao;
 import com.telemedecineBE.enumeration.UserType;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
+
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200/return")
@@ -16,6 +35,7 @@ public class UserController {
 
     @Autowired
     private UserDao userDao;
+
     /*
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -46,78 +66,27 @@ public class UserController {
         return userDao.findAll();
     }
 
-    @GetMapping("/user/id={id}")
-    User getUserById(@PathVariable(value="id")Integer id){
-        Boolean exists = userDao.existsById(id);
-        if(!exists){
-            throw new IllegalStateException("User with id " + id + " does not exist");
-        }
-        System.out.println("getUserById");
-        return userDao.findById(id);
-    }
+    
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
-    @GetMapping("/user/email={email}")
-    User getUserByEmail(@PathVariable(value="email")String email){
-        Boolean exists = userDao.existsByEmail(email);
-        if(!exists){
-            throw new IllegalStateException("User with email " + email + " does not exist");
-        }
-        System.out.println("getUserByEmail");
-        return userDao.findByEmail(email);
-    }
+    @Autowired
+    private PatientRepository patientRepository;
 
-    @GetMapping("/user/phone={phone}")
-    User getUserByCellPhone(@PathVariable(value="phone")String phone){
-        Boolean exists = userDao.existsByCellphone(phone);
-        if(!exists){
-            throw new IllegalStateException("User with phone " + phone + " does not exist");
-        }
-        System.out.println("getUserByCellphone");
-        return userDao.findByCellphone(phone);
-    }
 
-    @PostMapping("/user")
-    User newUser(@RequestBody User user){
-        Boolean exists = userDao.existsByEmail(user.getEmail());
-        Boolean exists2 = userDao.existsByCellphone(user.getCellphone());
-        if(exists){
-            throw new IllegalStateException("User with email " + user.getEmail() + " already exists");
-        } else if(exists2){
-            throw new IllegalStateException("User with phone " + user.getCellphone() + " already exists");
-        }
-        userDao.save(user);
-        System.out.println("newUser");
-        return user;
-    }
 
-    @DeleteMapping("/user/id={id}")
-    void deleteUserById(@PathVariable(value = "id")Integer id){
-        Boolean exists = userDao.existsById(id);
-        if(!exists){
-            throw new IllegalStateException("User with id " + id + " does not exist");
-        }
-        System.out.println("deleteUserById");
-        userDao.deleteById(id);
-    }
 
-    @DeleteMapping("/user/email={email}")
-    void deleteUserByEmail(@PathVariable(value = "email")String email){
-        Boolean exists = userDao.existsByEmail(email);
-        if(!exists){
-            throw new IllegalStateException("User with email " + email + " does not exist");
+    //login
+    //@CrossOrigin(origins = "http://localhost:4200/login")
+    @RequestMapping("/login")
+    public String login(String userName, String userpassword){
+        try {
+            User user= userDao.findUserByUserNameAndUserpassword(userName,userpassword);
         }
-        System.out.println("deleteUserByEmail");
-        userDao.deleteByEmail(email);
-    }
-
-    @DeleteMapping("/user/phone={phone}")
-    void deleteUserByCellphone(@PathVariable(value = "phone")String phone){
-        Boolean exists = userDao.existsByCellphone(phone);
-        if(!exists){
-            throw new IllegalStateException("User with phone " + phone + " does not exist");
+        catch (Exception ex) {
+            return "Error Invalid User Name or Password for: " + userName;
         }
-        System.out.println("deleteUserByCellphone");
-        userDao.deleteByCellphone(phone);
+        return "Login Page";
     }
 
     @PutMapping("/user/id={id}")
@@ -181,10 +150,17 @@ public class UserController {
             throw new IllegalStateException("User with email " + currentEmail + " does not exist.");
         }
         User user = userDao.findByEmail(currentEmail);
-
-        if(lName != null && lName.length() > 0 && lName != user.getLname()){
-            user.setLname(lName);
+    //logout
+    @RequestMapping(value = "/logout", method = RequestMethod.POST)
+    public String logoutPage(HttpServletRequest request, HttpServletResponse response) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null){
+            new SecurityContextLogoutHandler().logout(request, response, auth);
         }
+        return "redirect:/login";
+    }
+
+
 
         if(fName != null && fName.length() > 0 && fName != user.getFname()){
             user.setFname(fName);
@@ -213,8 +189,18 @@ public class UserController {
         if(state != null && state > 0 && state != user.getState()){
             user.setState(state);
         }
+    @PostMapping("/user")
+    User newUser(@RequestBody User user){
+        Boolean exists = userDao.existsByEmail(user.getEmail());
+        //Boolean exists2 = patientRepository.existsByPhone(patient.getPhone());
+        if(exists){
+            throw new IllegalStateException("Patient with email " + user.getEmail() + " already exists.");
+        } //else if(exists2){
+        //throw new IllegalStateException("Patient with phone " + patient.getPhone() + " already exists.");
+        //}
+        String test;
+        user.setUserType("PATIENT");
 
-        System.out.println("updateUserByEmail");
         userDao.save(user);
         return user;
     }
@@ -286,6 +272,12 @@ public class UserController {
     }
 
      /*Create User. Edit to add encoded passwords to database
+
+        System.out.println("newPatient");
+
+        return user;
+    }
+    // Create User
     @GetMapping("/register")
     @ResponseBody
     public String create(String userName, String userpassword){

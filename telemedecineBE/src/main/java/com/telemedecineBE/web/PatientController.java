@@ -94,6 +94,7 @@ public class PatientController {
 	@PostMapping("/patient")
 	Patient newPatient(@RequestBody Patient patient){
 		Boolean exists = patientRepository.existsByEmail(patient.getEmail());
+
 		Boolean exists2 = patientRepository.existsByCellphone(patient.getCellphone());
 		if(exists){
 			throw new IllegalStateException("Patient with email " + patient.getEmail() + " already exists.");
@@ -108,6 +109,14 @@ public class PatientController {
 		patient.setUserpassword(encodedPassword);
 
 		patient.setUserpassword(patient.getUserpassword());
+
+		//Boolean exists2 = patientRepository.existsByPhone(patient.getPhone());
+		if(exists){
+			throw new IllegalStateException("Patient with email " + patient.getEmail() + " already exists.");
+		} //else if(exists2){
+			//throw new IllegalStateException("Patient with phone " + patient.getPhone() + " already exists.");
+		//}
+
 		patientRepository.save(patient);
 		System.out.println("newPatient");
 		return patient;

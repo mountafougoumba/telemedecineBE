@@ -17,6 +17,7 @@ public interface PatientRepository
 	
 	public Patient findByEmail(String email);
 
+
 	public Patient findById(Integer id);
 	
 	public Boolean existsByCellphone(String phone);
