@@ -34,10 +34,10 @@ public class ConsultationController {
         );
     }
 
-
+/*
     @PostMapping("/consultation")
 
-   /* @PostMapping("/report")
+    @PostMapping("/report")
 
     Consultation post(
             @RequestParam(required = false) String description,
