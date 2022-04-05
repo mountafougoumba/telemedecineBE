@@ -73,22 +73,6 @@ public class UserController {
     @Autowired
     private PatientRepository patientRepository;
 
-
-
-
-    //login
-    //@CrossOrigin(origins = "http://localhost:4200/login")
-    @RequestMapping("/login")
-    public String login(String userName, String userpassword){
-        try {
-            User user= userDao.findUserByUserNameAndUserpassword(userName,userpassword);
-        }
-        catch (Exception ex) {
-            return "Error Invalid User Name or Password for: " + userName;
-        }
-        return "Login Page";
-    }
-
     @PutMapping("/user/id={id}")
     User updateUserById(@PathVariable(value = "id")Integer id,
                         @RequestBody User user){
@@ -135,6 +119,17 @@ public class UserController {
         return currentUser;
     }
 
+    //logout
+    @RequestMapping(value = "/logout", method = RequestMethod.POST)
+    public String logoutPage(HttpServletRequest request, HttpServletResponse response) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null){
+            new SecurityContextLogoutHandler().logout(request, response, auth);
+        }
+        return "redirect:/login";
+    }
+
+
     @PutMapping("/user/email={email}")
     User updateUserByEmail(@PathVariable(value = "email")String currentEmail,
                         @RequestParam(required = false)String lName,
@@ -150,16 +145,6 @@ public class UserController {
             throw new IllegalStateException("User with email " + currentEmail + " does not exist.");
         }
         User user = userDao.findByEmail(currentEmail);
-    //logout
-    @RequestMapping(value = "/logout", method = RequestMethod.POST)
-    public String logoutPage(HttpServletRequest request, HttpServletResponse response) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth != null){
-            new SecurityContextLogoutHandler().logout(request, response, auth);
-        }
-        return "redirect:/login";
-    }
-
 
 
         if(fName != null && fName.length() > 0 && fName != user.getFname()){
@@ -189,23 +174,26 @@ public class UserController {
         if(state != null && state > 0 && state != user.getState()){
             user.setState(state);
         }
+        userDao.save(user);
+        return user;
+    }
+
+    /*
     @PostMapping("/user")
-    User newUser(@RequestBody User user){
+    User newUser(@RequestBody User user) {
         Boolean exists = userDao.existsByEmail(user.getEmail());
         //Boolean exists2 = patientRepository.existsByPhone(patient.getPhone());
-        if(exists){
+        if (exists) {
             throw new IllegalStateException("Patient with email " + user.getEmail() + " already exists.");
         } //else if(exists2){
         //throw new IllegalStateException("Patient with phone " + patient.getPhone() + " already exists.");
         //}
         String test;
         user.setUserType("PATIENT");
-
-        userDao.save(user);
-        return user;
     }
+*/
 
-    @PutMapping("/user/phone={phone}")
+        @PutMapping("/user/phone={phone}")
     User updateUserByPhone(@PathVariable(value = "phone")String currentPhone,
                            @RequestParam(required = false)String lName,
                            @RequestParam(required = false)String fName,
