@@ -254,19 +254,67 @@ public class TelemedecineBeApplication implements CommandLineRunner {
 
         this.requestRepository.save(new Requests(
                 new Appointment(
-                        LocalDateTime.of(2022, 5, 25, 10, 30),
+                        LocalDateTime.of(2022, 4, 7, 10, 30),
                         "Check-up/Physical",
                         patientRepository.findByEmail("dSmith@gmail.com"),
                         doctorRepository.findByEmail("benB@gmail.com"),
 						AppointmentType.ONLINE
                 ),
                 RequestType.APPOINTMENT_REQUEST,
-                RequestStatus.WAITING,
+                RequestStatus.CONFIRMED,
                 AppointmentType.ONLINE,
                 patientRepository.findByEmail("dSmith@gmail.com"),
                 doctorRepository.findByEmail("benB@gmail.com"),
                 adminRepository.findByEmail("fswetnam@gmail.com")
         ));
+
+		this.requestRepository.save(new Requests(
+				new Appointment(
+						LocalDateTime.of(2022, 4, 6, 12, 0),
+						"Check-up/Physical",
+						patientRepository.findByEmail("dSmith@gmail.com"),
+						doctorRepository.findByEmail("benB@gmail.com"),
+						AppointmentType.ONLINE
+				),
+				RequestType.APPOINTMENT_REQUEST,
+				RequestStatus.WAITING,
+				AppointmentType.ONLINE,
+				patientRepository.findByEmail("dSmith@gmail.com"),
+				doctorRepository.findByEmail("benB@gmail.com"),
+				adminRepository.findByEmail("fswetnam@gmail.com")
+		));
+
+		this.requestRepository.save(new Requests(
+				new Appointment(
+						LocalDateTime.of(2022, 4, 6, 14, 30),
+						"Check-up/Physical",
+						patientRepository.findByEmail("stanleyG@gmail.com"),
+						doctorRepository.findByEmail("benB@gmail.com"),
+						AppointmentType.ONLINE
+				),
+				RequestType.APPOINTMENT_REQUEST,
+				RequestStatus.CONFIRMED,
+				AppointmentType.ONLINE,
+				patientRepository.findByEmail("stanleyG@gmail.com"),
+				doctorRepository.findByEmail("benB@gmail.com"),
+				adminRepository.findByEmail("fswetnam@gmail.com")
+		));
+
+		this.requestRepository.save(new Requests(
+				new Appointment(
+						LocalDateTime.of(2022, 4, 6, 9, 30),
+						"Blood Work",
+						patientRepository.findByEmail("dLewis@gmail.com"),
+						doctorRepository.findByEmail("benB@gmail.com"),
+						AppointmentType.IN_PERSON
+				),
+				RequestType.APPOINTMENT_REQUEST,
+				RequestStatus.WAITING,
+				AppointmentType.ONLINE,
+				patientRepository.findByEmail("dLewis@gmail.com"),
+				doctorRepository.findByEmail("benB@gmail.com"),
+				adminRepository.findByEmail("fswetnam@gmail.com")
+		));
 
 	}
 

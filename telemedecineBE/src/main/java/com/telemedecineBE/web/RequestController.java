@@ -56,6 +56,16 @@ public class RequestController {
         return requests.getDoctor();
     }
 
+    @GetMapping("request/id={id}/appointment")
+    Appointment getAppointmentRequest (@PathVariable Integer id){
+        Boolean exists = requestRepository.existsById(id);
+        if(!exists){
+            throw new IllegalStateException("Requests with id " + id + " does not exist.");
+        }
+        Requests requests = requestRepository.findById(id);
+        return requests.getAppointmentRequest();
+    }
+
     @PutMapping("/request/appointment")
     Requests getRequestByAppointment(@RequestBody Appointment appointment){
         Boolean exists = appointmentRepository.existsById(appointment.getId());
