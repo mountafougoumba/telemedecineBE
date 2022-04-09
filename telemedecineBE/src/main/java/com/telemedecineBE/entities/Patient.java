@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.telemedecineBE.enumeration.UserType;
 import lombok.*;
@@ -44,15 +45,15 @@ public class Patient extends User{
     private Integer state=1;
 
 	@OneToMany(cascade=CascadeType.ALL)
-	@JoinColumn(name="medicalHistoryId")
+	@JsonManagedReference(value="patient-medical-history")
 	private List<MedicalHistory> medicalHistory = new ArrayList<>();
-	
-	@OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "insuranceID")
-    private List<Insurance> insurance;
-	
-	@OneToOne(cascade = CascadeType.ALL, mappedBy = "patient", fetch = FetchType.LAZY)
-	@JsonManagedReference(value = "patient-address")
+
+	@OneToMany(mappedBy = "patient", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JsonManagedReference(value = "patient-insurance")
+	private List<Insurance> insurance;
+
+	@OneToOne(mappedBy = "patient", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JsonManagedReference("patient-address")
 	private Address address;
 	
 	@OneToMany(mappedBy = "patient", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -73,6 +74,11 @@ public class Patient extends User{
 
 	public Patient(String fname, String lname, String email, String cellphone, String userpassword){
 		super(fname, lname, userpassword, UserType.PATIENT, email, cellphone);
+	}
+
+	public Patient(String fname, String lname, String email, String cellphone, Address address, String userpassword){
+		super(fname, lname, userpassword, UserType.PATIENT, email, cellphone);
+		this.address = address;
 	}
 
 	public Doctor addDoctor(Doctor doctor){

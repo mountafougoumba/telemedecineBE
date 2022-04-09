@@ -1,6 +1,7 @@
 package com.telemedecineBE.web;
 
 import com.telemedecineBE.TelemedecineBeApplication;
+import com.telemedecineBE.dao.InsuranceRepository;
 import com.telemedecineBE.dao.PatientRepository;
 import com.telemedecineBE.dao.UserDao;
 import com.telemedecineBE.entities.*;
@@ -15,11 +16,13 @@ public class PatientController {
 
 	private final PatientRepository patientRepository;
 	private final UserDao userDao;
+    private final InsuranceRepository insuranceRepository;
 
 	@Autowired
-	public PatientController(PatientRepository patientRepository, UserDao userDao) {
+	public PatientController(PatientRepository patientRepository, UserDao userDao, InsuranceRepository insuranceRepository) {
 		this.patientRepository = patientRepository;
 		this.userDao = userDao;
+        this.insuranceRepository = insuranceRepository;
 	}
 
 	@GetMapping("/patients")
@@ -50,7 +53,7 @@ public class PatientController {
 		return patient.getPrescriptions();
 	}
 
-	@GetMapping("patient/id={id}/requested-prescriptions")
+	@GetMapping("patient/id={id}/requests")
 	List<Requests> getRequestedPrescriptions(@PathVariable(value = "id")Integer id){
 		System.out.println("getPatientPrescriptions");
 		Boolean exists = patientRepository.existsById(id);
@@ -120,6 +123,39 @@ public class PatientController {
 		patientRepository.save(patient);
 		System.out.println("newPatient");
 		return patient;
+	}
+
+	@GetMapping("patient/id={id}/address")
+	Address getAddress(@PathVariable(value = "id")Integer id){
+		System.out.println("getPatientAddress");
+		Boolean exists = patientRepository.existsById(id);
+		if(!exists){
+			throw new IllegalStateException("Patient with id " + id + " does not exist.");
+		}
+		Patient patient = patientRepository.findById(id);
+		return patient.getAddress();
+	}
+
+	@GetMapping("patient/id={id}/insurance")
+	List<Insurance> getInsurance(@PathVariable(value = "id")Integer id){
+		System.out.println("getPatientInsurance");
+		Boolean exists = patientRepository.existsById(id);
+		if(!exists){
+			throw new IllegalStateException("Patient with id " + id + " does not exist.");
+		}
+		Patient patient = patientRepository.findById(id);
+		return patient.getInsurance();
+	}
+
+	@GetMapping("patient/id={id}/medical-history")
+	List<MedicalHistory> getMedicalHistory(@PathVariable(value = "id")Integer id){
+		System.out.println("getPatientInsurance");
+		Boolean exists = patientRepository.existsById(id);
+		if(!exists){
+			throw new IllegalStateException("Patient with id " + id + " does not exist.");
+		}
+		Patient patient = patientRepository.findById(id);
+		return patient.getMedicalHistory();
 	}
 
 	@PostMapping("/patients")
@@ -272,6 +308,81 @@ public class PatientController {
 	}
 
  */
+
+	@PutMapping("/patient/id={id}/add-medical-history")
+	MedicalHistory addPatientInsurance(@PathVariable Integer id,
+								  @RequestBody MedicalHistory medicalHistory){
+		Boolean exists = patientRepository.existsById(id);
+		if(!exists){
+			throw new IllegalStateException("Patient with id " + id + " does not exist.");
+		}
+		Patient patient = patientRepository.findById(id);
+		List<MedicalHistory> mHList= patient.getMedicalHistory();
+		mHList.add(medicalHistory);
+		patient.setMedicalHistory(mHList);
+		patientRepository.save(patient);
+		return medicalHistory;
+	}
+
+	@PutMapping("/patient/id={id}/add-insurance")
+	Insurance addPatientInsurance(@PathVariable Integer id,
+								  @RequestBody Insurance insurance){
+		Boolean exists = patientRepository.existsById(id);
+		if(!exists){
+			throw new IllegalStateException("Patient with id " + id + " does not exist.");
+		}
+		Patient patient = patientRepository.findById(id);
+		List<Insurance> insuranceList= patient.getInsurance();
+		insuranceList.add(insurance);
+		patient.setInsurance(insuranceList);
+		patientRepository.save(patient);
+		return insurance;
+	}
+
+	@PutMapping("/patient/id={id}/add-address")
+	Address addPatientAddress(@PathVariable Integer id,
+								  @RequestBody Address address){
+		System.out.println(address);
+		Boolean exists = patientRepository.existsById(id);
+		if(!exists){
+			throw new IllegalStateException("Patient with id " + id + " does not exist.");
+		}
+		Patient patient = patientRepository.findById(id);
+		patient.setAddress(address);
+		patientRepository.save(patient);
+		return address;
+	}
+
+	@PutMapping("/patient/id={id}/address")
+	Patient updatePatientAddress(@PathVariable Integer id,
+								 @RequestBody Address address){
+		Boolean exists = patientRepository.existsById(id);
+		if(!exists){
+			throw new IllegalStateException("Patient with id " + id + " does not exist.");
+		}
+		Patient patient = patientRepository.findById(id);
+		Address currAddress = patient.getAddress();
+
+		if(address.getZipcode() != null && address.getZipcode().length() > 0 && address.getZipcode() != currAddress.getZipcode()){
+			currAddress.setZipcode(address.getZipcode());
+		}
+
+		if(address.getStreetAddress() != null && address.getStreetAddress().length() > 0 && address.getStreetAddress() != currAddress.getStreetAddress()){
+			currAddress.setStreetAddress(address.getStreetAddress());
+		}
+
+		if(address.getCity() != null && address.getCity().length() > 0 && address.getCity() != currAddress.getCity()){
+			currAddress.setCity(address.getCity());
+		}
+
+		if(address.getUsState() != null && address.getUsState().length() > 0 && address.getUsState() != currAddress.getUsState()) {
+			currAddress.setUsState(address.getUsState());
+		}
+
+		patient.setAddress(currAddress);
+		patientRepository.save(patient);
+		return patient;
+	}
 
 	@PutMapping("/patient/email={email}")
 	Patient updatePatientByEmail(@PathVariable(value = "email")String emailOriginal,

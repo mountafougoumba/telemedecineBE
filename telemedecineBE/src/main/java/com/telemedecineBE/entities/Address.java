@@ -15,38 +15,33 @@ import lombok.*;
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString
 public class Address implements Serializable{
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	//private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
-	private Long id;
-	
-	@Column(name = "ZIPCODE")
+	private Integer id;
+
 	private String zipcode;
 
-	@Column(name="STREET_ADDRESS")
 	private String streetAddress;
 
-	@Column(name="CITY")
 	private String city;
 
-	@Column(name="US_STATE")
 	private String usState;
 
 	@OneToOne
-	@JsonBackReference(value="patient-address")
 	@JoinColumn(name="patientID")
-	 private Patient patient;
+	@JsonBackReference("patient-address")
+	private Patient patient;
 
-	 @OneToOne
-	 @JsonBackReference(value="doctor-address")
-	 @JoinColumn(name="doctorID")
-	 private Doctor doctor;
+	@OneToOne
+	@JoinColumn(name="doctorID")
+	@JsonBackReference("doctor-address")
+	private Doctor doctor;
 
 	public Address(String zipcode, String streetAddress, String city, String usState) {
 		super();
@@ -56,31 +51,73 @@ public class Address implements Serializable{
 		this.usState=usState;
 	}
 
+	public Address(String zipcode, String streetAddress, String city, String usState, Patient patient) {
+		super();
+		this.zipcode = zipcode;
+		this.streetAddress=streetAddress;
+		this.city=city;
+		this.usState=usState;
+		this.patient = patient;
+	}
 
-	public Long getId() {
+
+	public Integer getId() {
 		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public String getZipcode() {
+		return zipcode;
+	}
+
+	public void setZipcode(String zipcode) {
+		this.zipcode = zipcode;
+	}
+
+	public String getStreetAddress() {
+		return streetAddress;
+	}
+
+	public void setStreetAddress(String streetAddress) {
+		this.streetAddress = streetAddress;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public String getUsState() {
+		return usState;
+	}
+
+	public void setUsState(String usState) {
+		this.usState = usState;
 	}
 
 	public Patient getPatient() {
 		return patient;
 	}
 
-
-	public Doctor getDoctor() {
-		return doctor;
-	}
-
-
-	public void setDoctor(Doctor doctor) {
-		this.doctor = doctor;
-	}
-
-
 	public void setPatient(Patient patient) {
 		this.patient = patient;
 	}
 
-	public static long getSerialversionuid() {
-		return serialVersionUID;
+
+	@Override
+	public String toString() {
+		return "Address{" +
+				"id=" + id +
+				", zipcode='" + zipcode + '\'' +
+				", streetAddress='" + streetAddress + '\'' +
+				", city='" + city + '\'' +
+				", usState='" + usState + '\'' +
+				'}';
 	}
 }

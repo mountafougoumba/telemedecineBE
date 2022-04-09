@@ -1,5 +1,6 @@
 package com.telemedecineBE.web;
 
+import com.telemedecineBE.TelemedecineBeApplication;
 import com.telemedecineBE.dao.AdminRepository;
 import com.telemedecineBE.dao.UserDao;
 import com.telemedecineBE.entities.Admin;
@@ -7,6 +8,7 @@ import com.telemedecineBE.entities.Appointment;
 import com.telemedecineBE.entities.Requests;
 import com.telemedecineBE.enumeration.UserType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -68,7 +70,8 @@ public class AdminController {
         }
         admin.setUserName(admin.getEmail());
         admin.setUserType(UserType.ADMIN);
-        admin.setUserpassword(admin.getUserpassword());
+        String encodedPassword = BCrypt.hashpw(admin.getUserpassword(), BCrypt.gensalt(TelemedecineBeApplication.strength));
+        admin.setUserpassword(encodedPassword);
         adminRepository.save(admin);
         System.out.println("newAdmin");
         return admin;
