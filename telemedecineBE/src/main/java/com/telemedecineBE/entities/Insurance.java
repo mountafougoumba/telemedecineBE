@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 
 import java.io.Serializable;
-import java.util.List;
 
 import javax.persistence.*;
 
@@ -20,6 +19,7 @@ public class Insurance implements Serializable{
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     private String name;
+	private String memberId;
 	//all care coverage
     private Boolean allCareCoverage;
 	//cover consulting fees
@@ -32,28 +32,31 @@ public class Insurance implements Serializable{
 	@JsonBackReference(value = "patient-insurance")
 	private Patient patient;
 
-	public Insurance(String name, Boolean allCareCoverage, Boolean consultingFeesCovered,
+	public Insurance(String name, String memberId, Boolean allCareCoverage, Boolean consultingFeesCovered,
 					 Integer state, Double percentInsured) {
 		super();
 		this.name = name;
+		this.memberId = memberId;
 		this.allCareCoverage = allCareCoverage;
 		this.consultingFeesCovered = consultingFeesCovered;
 		this.state = state;
 		this.percentInsured = percentInsured;
 	}
-	public Insurance(String name, Boolean allCareCoverage, Boolean consultingFeesCovered,
+	public Insurance(String name, String memberId, Boolean allCareCoverage, Boolean consultingFeesCovered,
 					 Double percentInsured) {
 		super();
 		this.name = name;
+		this.memberId = memberId;
 		this.allCareCoverage = allCareCoverage;
 		this.consultingFeesCovered = consultingFeesCovered;
 		this.percentInsured = percentInsured;
 	}
 
-	public Insurance(String name, Boolean allCareCoverage, Boolean consultingFeesCovered,
+	public Insurance(String name, String memberId, Boolean allCareCoverage, Boolean consultingFeesCovered,
 					 Double percentInsured, Patient patient) {
 		super();
 		this.name = name;
+		this.memberId = memberId;
 		this.allCareCoverage = allCareCoverage;
 		this.consultingFeesCovered = consultingFeesCovered;
 		this.percentInsured = percentInsured;
@@ -69,6 +72,7 @@ public class Insurance implements Serializable{
 		return "Insurance{" +
 				"id=" + id +
 				", name='" + name + '\'' +
+				", memberID='" + memberId + '\'' +
 				", allCareCoverage=" + allCareCoverage +
 				", consultingFeesCovered=" + consultingFeesCovered +
 				", state=" + state +

@@ -99,6 +99,10 @@ public class InsuranceController {
             currentInsurance.setName(insurance.getName());
         }
 
+        if(insurance.getMemberId() != null && insurance.getMemberId().length() > 0 && currentInsurance.getMemberId() != insurance.getMemberId()){
+            currentInsurance.setMemberId(insurance.getMemberId());
+        }
+
         if(currentInsurance.getAllCareCoverage() != insurance.getAllCareCoverage() && insurance.getAllCareCoverage() != null){
             currentInsurance.setAllCareCoverage(insurance.getAllCareCoverage());
         }
