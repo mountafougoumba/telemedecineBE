@@ -10,7 +10,7 @@ import java.util.List;
 @Transactional
 public interface AddressRepository extends JpaRepository<Address, Serializable> {
 
-    public Address findById(Long id);
+    public Address findById(Integer id);
 
     public Address findByStreetAddress(String streetAddress);
 
@@ -20,7 +20,7 @@ public interface AddressRepository extends JpaRepository<Address, Serializable> 
 
     public List<Address> findAddressesByUsState(String usState);
 
-    public Boolean existsById(Long id);
+    public Boolean existsById(Integer id);
 
     public Boolean existsByStreetAddress(String streetAddress);
 

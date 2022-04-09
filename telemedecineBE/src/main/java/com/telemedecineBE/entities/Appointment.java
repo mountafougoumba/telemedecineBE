@@ -142,7 +142,7 @@ public class Appointment implements Serializable {
 	@Override
 	public String toString() {
 		return "Appointment [id=" + id + ", scheduled" + schedule.toString() + ", purpose=" + purpose
-				+ ", state=" + state + ", doctor=Dr." + doctor.getLname() + "]";
+				+ ", state=" + state + ", doctor= " + doctor + "]";
 	}
 
 }

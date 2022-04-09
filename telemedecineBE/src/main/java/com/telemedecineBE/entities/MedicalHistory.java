@@ -1,20 +1,24 @@
 package com.telemedecineBE.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import javax.persistence.*;
+import javax.swing.text.DateFormatter;
 
 @Entity
-@Table(name = "MEDICALHISTORY",
-uniqueConstraints = @UniqueConstraint(columnNames = "NAME"))
+@Table(name = "MEDICALHISTORY")
 @Getter
 @Setter
-@ToString
 public class MedicalHistory implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -22,16 +26,17 @@ public class MedicalHistory implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
-	@Column(name="NAME")
 	private String name;
-	@Column(name="DOCTOR_DIAGNOSED")
 	private String doctorDiagnosed;
-	@Column(name="DATE_DIAGNOSED")
-	private String dateDiagnosed;
-	@Column(name="STATE")
+	@JsonFormat(pattern = "uuuu-MM-dd")
+	private LocalDate dateDiagnosed;
 	private Integer state = 1;
-	@Column(name="DESCRIPTION")
 	private String description;
+
+	@ManyToOne
+	@JoinColumn(name="patientID")
+	@JsonBackReference(value = "patient-medical-history")
+	private Patient patient;
 
 	public MedicalHistory() {
 		super();
@@ -42,7 +47,8 @@ public class MedicalHistory implements Serializable {
 		super();
 		this.name = name;
 		this.doctorDiagnosed = doctorDiagnosed;
-		this.dateDiagnosed = dateDiagnosed;
+		DateTimeFormatter dateFormatter = DateTimeFormatter.ISO_LOCAL_DATE;
+		this.dateDiagnosed = LocalDate.parse(dateDiagnosed, dateFormatter);
 	}
 
 	public MedicalHistory(String name, String doctorDiagnosed,
@@ -50,7 +56,8 @@ public class MedicalHistory implements Serializable {
 		super();
 		this.name = name;
 		this.doctorDiagnosed = doctorDiagnosed;
-		this.dateDiagnosed = dateDiagnosed;
+		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ISO_LOCAL_DATE;
+		this.dateDiagnosed = LocalDate.parse(dateDiagnosed, dateTimeFormatter);
 		this.description = description;
 	}
 
@@ -58,4 +65,15 @@ public class MedicalHistory implements Serializable {
 		return serialVersionUID;
 	}
 
+	@Override
+	public String toString() {
+		return "MedicalHistory{" +
+				"id=" + id +
+				", name='" + name + '\'' +
+				", doctorDiagnosed='" + doctorDiagnosed + '\'' +
+				", dateDiagnosed='" + dateDiagnosed + '\'' +
+				", state=" + state +
+				", description='" + description + '\'' +
+				'}';
+	}
 }

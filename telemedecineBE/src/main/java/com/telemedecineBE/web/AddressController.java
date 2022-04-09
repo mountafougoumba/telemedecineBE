@@ -24,7 +24,7 @@ public class AddressController {
     }
 
     @GetMapping("/address/id={id}")
-    Address getAddressById(@PathVariable(value = "id") Long id){
+    Address getAddressById(@PathVariable(value = "id") Integer id){
         Boolean exists = addressRepository.existsById(id);
         if(!exists){
             throw new IllegalStateException("address with id " + id + " does not exist");
@@ -94,7 +94,7 @@ public class AddressController {
     }
 
     @DeleteMapping("/address/id={id}")
-    void deleteAddressById(@PathVariable(value = "id")Long id){
+    void deleteAddressById(@PathVariable(value = "id")Integer id){
         Boolean exists = addressRepository.existsById(id);
         if(!exists){
             throw new IllegalStateException("Address with id " + id + " does not exist.");
@@ -114,7 +114,7 @@ public class AddressController {
     }
 
     @PutMapping("/address/id={id}")
-    Address updateAddressById(@PathVariable(value = "id") Long id,
+    Address updateAddressById(@PathVariable(value = "id") Integer id,
                               @RequestBody Address address){
         Boolean exists = addressRepository.existsById(id);
         if(!exists){

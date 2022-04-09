@@ -1,11 +1,12 @@
 package com.telemedecineBE.web;
 
 import com.telemedecineBE.dao.MedicalHistoryRepository;
-import com.telemedecineBE.entities.Address;
 import com.telemedecineBE.entities.MedicalHistory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -102,7 +103,7 @@ public class MedicalHistoryController {
             @PathVariable(value = "name") String name,
             @RequestParam(required = false)String newName,
             @RequestParam(required = false)String doctorDiagnosed,
-            @RequestParam(required = false)String dateDiagnosed,
+            @RequestParam(required = false) LocalDate dateDiagnosed,
             @RequestParam(required = false)String description,
             @RequestParam(required = false)Integer state
 
@@ -121,7 +122,7 @@ public class MedicalHistoryController {
             medicalHistory.setDoctorDiagnosed(doctorDiagnosed);
         }
 
-        if(dateDiagnosed != null && dateDiagnosed.length() > 0 && medicalHistory.getDateDiagnosed() != dateDiagnosed){
+        if(dateDiagnosed != null){
             medicalHistory.setDateDiagnosed(dateDiagnosed);
         }
 
@@ -158,7 +159,7 @@ public class MedicalHistoryController {
             currentMedicalHistory.setDoctorDiagnosed(medicalHistory.getDoctorDiagnosed());
         }
 
-        if(medicalHistory.getDateDiagnosed() != null && medicalHistory.getDateDiagnosed().length() > 0 && currentMedicalHistory.getDateDiagnosed() != medicalHistory.getDateDiagnosed()){
+        if(medicalHistory.getDateDiagnosed() != null && currentMedicalHistory.getDateDiagnosed() != medicalHistory.getDateDiagnosed()){
             currentMedicalHistory.setDateDiagnosed(medicalHistory.getDateDiagnosed());
         }
 

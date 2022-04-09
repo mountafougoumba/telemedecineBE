@@ -17,7 +17,9 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 @SpringBootApplication(exclude = { SecurityAutoConfiguration.class })
 public class TelemedecineBeApplication implements CommandLineRunner {
@@ -47,6 +49,7 @@ public class TelemedecineBeApplication implements CommandLineRunner {
 
 	public static Integer strength = 10;
 
+
 	@Override
 	public void run(String...args) throws Exception {
         //Add patient entities
@@ -54,6 +57,11 @@ public class TelemedecineBeApplication implements CommandLineRunner {
 							"Smith",
 							"dSmith@gmail.com",
 							"123-456-7890",
+					new Address("30042",
+							"1234 Developer Street",
+							"Marietta",
+							"GA"
+							),
 				BCrypt.hashpw("password", BCrypt.gensalt(TelemedecineBeApplication.strength))));
 		this.patientRepository.save(new Patient("Daniel",
 						"Lewis",
@@ -78,7 +86,7 @@ public class TelemedecineBeApplication implements CommandLineRunner {
                         "Marietta",
                         "TX"));
 
-		//add insurance entities
+		/*add insurance entities
 		this.insuranceRepository.save(new Insurance(
 						"State Farm",
 						true,
@@ -98,6 +106,7 @@ public class TelemedecineBeApplication implements CommandLineRunner {
 						95.50
 		));
 
+
 		//add medicalHistory entities to database
 		this.medicalHistoryRepository.save(new MedicalHistory(
 				"Diabetes",
@@ -110,7 +119,7 @@ public class TelemedecineBeApplication implements CommandLineRunner {
 				"1995-06-30",
 				"Averages 4 hours of sleep/day. Takes unisom for sleep."
 		));
-
+		*/
 		this.doctorRepository.save(new Doctor(
 				"Benjamin",
 				"Button",
