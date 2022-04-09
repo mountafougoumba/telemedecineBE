@@ -52,6 +52,17 @@ public class DoctorController {
         return doctor.getAppointments();
     }
 
+    @GetMapping("doctor/id={id}/address")
+    Address getAddress(@PathVariable(value = "id")Integer id){
+        System.out.println("getPatientAddress");
+        Boolean exists = doctorRepository.existsById(id);
+        if(!exists){
+            throw new IllegalStateException("Patient with id " + id + " does not exist.");
+        }
+        Doctor doctor = doctorRepository.findById(id).get();
+        return doctor.getOfficeAddress();
+    }
+
     @GetMapping("doctor/id={id}/prescribed-prescriptions")
     List<Prescriptions> getPrescriptions(@PathVariable(value = "id")Integer id){
         System.out.println("getDoctorPrescribedPrescriptions");
@@ -109,6 +120,20 @@ public class DoctorController {
         doctor.removePatient(patient);
         doctorRepository.save(doctor);
         return patient;
+    }
+
+    @PutMapping("/doctor/id={id}/add-address")
+    Address addOfficeAddress(@PathVariable Integer id,
+                              @RequestBody Address address){
+        System.out.println(address);
+        Boolean exists = doctorRepository.existsById(id);
+        if(!exists){
+            throw new IllegalStateException("Patient with id " + id + " does not exist.");
+        }
+        Doctor doctor = doctorRepository.findById(id).get();
+        doctor.setOfficeAddress(address);
+        doctorRepository.save(doctor);
+        return address;
     }
 
     @PostMapping("/doctor")

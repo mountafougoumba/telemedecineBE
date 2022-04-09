@@ -310,7 +310,7 @@ public class PatientController {
  */
 
 	@PutMapping("/patient/id={id}/add-medical-history")
-	MedicalHistory addPatientInsurance(@PathVariable Integer id,
+	MedicalHistory addPatientMedicalHistory(@PathVariable Integer id,
 								  @RequestBody MedicalHistory medicalHistory){
 		Boolean exists = patientRepository.existsById(id);
 		if(!exists){
