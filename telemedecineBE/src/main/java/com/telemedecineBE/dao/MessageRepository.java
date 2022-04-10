@@ -11,7 +11,7 @@ import java.util.List;
 @Transactional
 public interface MessageRepository extends JpaRepository<Message, Serializable> {
 
-    @Query("select m from Message m where m.sender_id = ?1")
+    @Query("select m from Message m where m.sender_id = ?1 or m.receiver_id = ?1")
     public List<Message> findBySender(Integer sender_id);
 
     public Message findById(Integer id);
