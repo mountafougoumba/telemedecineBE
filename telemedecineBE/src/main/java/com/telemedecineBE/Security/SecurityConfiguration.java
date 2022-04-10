@@ -50,7 +50,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         "/doctors", "/doctor", "/doctor/**",
                         "/admin", "/admins", "/admin/**",
                         "/request", "/requests", "/request/**",
-                        "/message", "/messages", "/message/**",
+                        "/message", "/messages", "/message/**","/messages/**",
                         "/prescriptions", "/prescription", "/prescription/**",
                         "/appointment", "/appointments", "/appointment/**").permitAll()
                 .anyRequest().authenticated()
