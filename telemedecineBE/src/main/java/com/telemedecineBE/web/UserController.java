@@ -57,6 +57,12 @@ public class UserController {
             throw new IllegalStateException("Incorrect password");
         }
 
+        /**
+         * Setting the password to this string so it doesn't display the hash on the front end
+         * Do not save this. Only used to hide the password on the frontend
+         */
+        user.setUserpassword("*****");
+
         return user;
     }
     

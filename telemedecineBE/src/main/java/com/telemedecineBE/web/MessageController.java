@@ -4,16 +4,13 @@ import com.telemedecineBE.entities.Message;
 import org.springframework.web.bind.annotation.*;
 import com.telemedecineBE.dao.MessageRepository;
 
-import java.sql.Time;
+import com.telemedecineBE.Security.AES;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.List;
 
 @RestController
 public class MessageController {
+    final String secretKey = "ssshhhhhhhhhhh!!!!";
 
     private MessageRepository messageRepository;
 
@@ -23,13 +20,20 @@ public class MessageController {
 
     @GetMapping("/messages")
     List<Message> getAllMessages(){
-        System.out.println("getAllMessages");
-        return messageRepository.findAll();
+        List<Message> messages = messageRepository.findAll();
+        messages.forEach(message -> {
+            message.setContent(AES.decrypt(message.getContent(), this.secretKey));
+        });
+        return messages;
     }
 
     @GetMapping("/messages/sender_id={sender_id}")
     List<Message> getAllMessagesBySender(@PathVariable(value="sender_id")Integer sender_id){
-        return messageRepository.findBySender(sender_id);
+        List<Message> messages = messageRepository.findBySender(sender_id);
+        messages.forEach(message -> {
+            message.setContent(AES.decrypt(message.getContent(), this.secretKey));
+        });
+        return messages;
     }
 
     @GetMapping("/message/id={id}")
@@ -46,8 +50,9 @@ public class MessageController {
     Message newMessage(@RequestBody Message message){
         //set date now
         message.setDate(LocalDate.now());
+        String encodedMessage = AES.encrypt(message.getContent(), this.secretKey);
+        message.setContent(encodedMessage);
         messageRepository.save(message);
-        System.out.println("newMessage");
         return message;
     }
 
