@@ -1,33 +1,21 @@
 package com.telemedecineBE.web;
 
-
 import  com.telemedecineBE.TelemedecineBeApplication;
 import com.telemedecineBE.entities.User;
-
-import com.telemedecineBE.dao.UserRepository;
 import com.telemedecineBE.dao.PatientRepository;
-import com.telemedecineBE.entities.*;
-
 import com.telemedecineBE.dao.UserDao;
 import com.telemedecineBE.enumeration.UserType;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
-
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200/return")
@@ -50,10 +38,9 @@ public class UserController {
             throw new IllegalStateException("User with email " + email + " does not exist");
         }
 
-        String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt(TelemedecineBeApplication.strength));
         User user = userDao.findByEmail(email);
 
-        if(!BCrypt.checkpw(password, hashedPassword)) {
+        if(!BCrypt.checkpw(password, user.getUserpassword())) {
             throw new IllegalStateException("Incorrect password");
         }
 
@@ -184,22 +171,7 @@ public class UserController {
         return user;
     }
 
-    /*
-    @PostMapping("/user")
-    User newUser(@RequestBody User user) {
-        Boolean exists = userDao.existsByEmail(user.getEmail());
-        //Boolean exists2 = patientRepository.existsByPhone(patient.getPhone());
-        if (exists) {
-            throw new IllegalStateException("Patient with email " + user.getEmail() + " already exists.");
-        } //else if(exists2){
-        //throw new IllegalStateException("Patient with phone " + patient.getPhone() + " already exists.");
-        //}
-        String test;
-        user.setUserType("PATIENT");
-    }
-*/
-
-        @PutMapping("/user/phone={phone}")
+    @PutMapping("/user/phone={phone}")
     User updateUserByPhone(@PathVariable(value = "phone")String currentPhone,
                            @RequestParam(required = false)String lName,
                            @RequestParam(required = false)String fName,
@@ -264,42 +236,4 @@ public class UserController {
         }
         return "Login Page";
     }
-
-     /*Create User. Edit to add encoded passwords to database
-
-        System.out.println("newPatient");
-
-        return user;
-    }
-    // Create User
-    @GetMapping("/register")
-    @ResponseBody
-    public String create(String userName, String userpassword){
-        User user = null;
-        try {
-            user = new User(userName, passwordEncoder.encode(userpassword));
-            userDao.save(user);
-        }
-        catch (Exception ex){
-            return "Error creating user:" + userName;
-        }
-        return "User registered succesfully! (username = " + user.getUserName() + ")";
-    } */
-
-   /*@RequestMapping("/update")
-    @ResponseBody
-    public String updateUser(Integer id,String username, String name) {
-        User user = (User) userDao.findByUserName(username);
-        userDao.save(user);
-        // user.setUserName(username);
-        user.setFname(name);
-        return "User succesfully updated: ";
-    }
-
-    */
-
-
-
-
-
 }
