@@ -76,6 +76,11 @@ public class Patient extends User{
 		super(fname, lname, userpassword, UserType.PATIENT, email, cellphone);
 	}
 
+	public Patient(String fname, String lname, String email, String cellphone, String dob, String userpassword){
+		super(fname, lname, userpassword, UserType.PATIENT, email, cellphone);
+		this.dob = dob;
+	}
+
 	public Patient(String fname, String lname, String email, String cellphone, Address address, String userpassword){
 		super(fname, lname, userpassword, UserType.PATIENT, email, cellphone);
 		this.address = address;
