@@ -57,21 +57,19 @@ public class TelemedecineBeApplication implements CommandLineRunner {
 							"Smith",
 							"dSmith@gmail.com",
 							"123-456-7890",
-					new Address("30042",
-							"1234 Developer Street",
-							"Marietta",
-							"GA"
-							),
+				"1997-11-22",
 				BCrypt.hashpw("password", BCrypt.gensalt(TelemedecineBeApplication.strength))));
 		this.patientRepository.save(new Patient("Daniel",
 						"Lewis",
 						"dLewis@gmail.com",
 						"098-765-4321",
+				"1996-10-21",
 				BCrypt.hashpw("password123", BCrypt.gensalt(TelemedecineBeApplication.strength))));
 		this.patientRepository.save(new Patient("Stanley",
 						"Goodman",
 						"stanleyG@gmail.com",
 						"345-453-2345",
+				"1995-09-20",
 				BCrypt.hashpw("password", BCrypt.gensalt(TelemedecineBeApplication.strength))));
 
         //Add address entities
