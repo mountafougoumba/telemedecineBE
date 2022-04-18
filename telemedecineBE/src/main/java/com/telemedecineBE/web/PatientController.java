@@ -1,5 +1,6 @@
 package com.telemedecineBE.web;
 
+import com.telemedecineBE.Security.AES;
 import com.telemedecineBE.TelemedecineBeApplication;
 import com.telemedecineBE.dao.InsuranceRepository;
 import com.telemedecineBE.dao.PatientRepository;
@@ -71,7 +72,9 @@ public class PatientController {
 			throw new IllegalStateException("Patient with id " + id + " does not exist.");
 		}
 		System.out.println("getPatientById");
-		return patientRepository.findById(id);
+		Patient p = patientRepository.findById(id);
+		p.decryptUserData();
+		return p;
 	}
 
 	@GetMapping("/patient/email={email}")
@@ -80,8 +83,9 @@ public class PatientController {
 		if(!exists){
 			throw new IllegalStateException("Patient with email " + email + " does not exist.");
 		}
-		System.out.println("getPatientByEmail");
-		return patientRepository.findByEmail(email);
+		Patient p = patientRepository.findByEmail(email);
+		p.decryptUserData();
+		return p;
 	}
 
 	@GetMapping("/patient/tel={tel}")
@@ -120,8 +124,9 @@ public class PatientController {
 			//throw new IllegalStateException("Patient with phone " + patient.getPhone() + " already exists.");
 		//}
 
+		patient.encryptUserData();
 		patientRepository.save(patient);
-		System.out.println("newPatient");
+		patient.decryptUserData();
 		return patient;
 	}
 
@@ -251,8 +256,9 @@ public class PatientController {
 			currentPatient.setState(patient.getState());
 		}
 
-		System.out.println(currentPatient);
+		currentPatient.encryptUserData();
 		patientRepository.save(currentPatient);
+		currentPatient.decryptUserData();
 		return currentPatient;
 	}
 /*

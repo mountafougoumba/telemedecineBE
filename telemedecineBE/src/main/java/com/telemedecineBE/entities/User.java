@@ -5,6 +5,7 @@ package com.telemedecineBE.entities;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import com.telemedecineBE.Security.AES;
 
 import javax.persistence.*;
 
