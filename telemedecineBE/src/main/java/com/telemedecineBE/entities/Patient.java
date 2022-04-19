@@ -2,10 +2,8 @@ package com.telemedecineBE.entities;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import com.telemedecineBE.Security.AES;
 import javax.persistence.*;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.telemedecineBE.enumeration.UserType;
 import lombok.*;
@@ -20,6 +18,8 @@ import lombok.*;
 @Data
 
 public class Patient extends User{
+
+	private final String secretKey = "total_user_secret";
 
 	private static final long serialVersionUID = 1L;
 	@Id
@@ -106,5 +106,32 @@ public class Patient extends User{
 				", isInsured= " + isInsured + ", habilitations= " + getHabilitations() + ", medicalHistory= " +
 				medicalHistory + ", insurance= " + insurance + ", address= " + address + ", appointments= " +
 				appointments + ", prescriptions= " + prescriptions + ", state= " + state + "]";
+	}
+
+	public void encryptUserData() {
+		/**
+		 * Encrypting the following:
+		 * first name
+		 * last name
+		 * email
+		 * username
+		 * phone
+		 * dob
+		 */
+		this.setFname(AES.encrypt(this.getFname(), secretKey));
+		this.setLname(AES.encrypt(this.getLname(), secretKey));
+		this.setEmail(AES.encrypt(this.getEmail(), secretKey));
+		this.setUserName(AES.encrypt(this.getUserName(), secretKey));
+		this.setCellphone(AES.encrypt(this.getCellphone(), secretKey));
+		this.setDob(AES.encrypt(this.getDob(), secretKey));
+	}
+
+	public void decryptUserData() {
+		this.setFname(AES.decrypt(this.getFname(), secretKey));
+		this.setLname(AES.decrypt(this.getLname(), secretKey));
+		this.setEmail(AES.decrypt(this.getEmail(), secretKey));
+		this.setUserName(AES.decrypt(this.getUserName(), secretKey));
+		this.setCellphone(AES.decrypt(this.getCellphone(), secretKey));
+		this.setDob(AES.decrypt(this.getDob(), secretKey));
 	}
 }
