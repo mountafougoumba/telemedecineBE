@@ -26,6 +26,9 @@ public class Admin extends User {
     @JsonManagedReference("admin-request")
     private List<Requests> requestedAppointments;
 
+    @ElementCollection
+    private List<Integer> reportIds;
+
     public Admin(String fname, String lname, String email, String cellphone, String userpassword){
         super(fname, lname, userpassword, UserType.ADMIN, email, cellphone);
     }

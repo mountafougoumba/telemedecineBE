@@ -1,16 +1,18 @@
 package com.telemedecineBE.entities;
 
-import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.*;
 
 
 @Entity
 @Table(name = "REPORT")
+@AllArgsConstructor
 public class Report implements Serializable{
 
 	/**
@@ -20,48 +22,85 @@ public class Report implements Serializable{
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-	private String description;
-	private String doctor_upload;
+	private String name;
+	private String type;
+	private String url;
+	private long size;
+	@JsonIgnore
+	@Lob
+	private byte[] data;
+	@ElementCollection
+	private List<Integer> userIds = new ArrayList<>();
+
 
 	public Report() { super(); }
 
-	public Report(Integer id, String description, String doctor_upload) {
-		super();
-		this.id = id;
-		this.description = description;
-		this.doctor_upload = doctor_upload;
-		
-		
+	public Report(String name, String type, byte[] data){
+		this.name = name;
+		this.type = type;
+		this.data = data;
 	}
+
 	public Integer getId() {
 		return id;
 	}
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	public String getDescription() {
-		return description;
+	public String getName() {
+		return name;
 	}
-	public void setDescription(String description) {
-		this.description = description;
+	public void setName(String description) {
+		this.name = description;
 	}
-	public String getDoctor_upload() {
-		return doctor_upload;
+
+	public String getType() {
+		return type;
 	}
-	public void setDoctor_upload(String doctor_upload) {
-		this.doctor_upload = doctor_upload;
+
+	public void setType(String type) {
+		this.type = type;
 	}
-	public static long getSerialversionuid() {
-		return serialVersionUID;
+
+	public byte[] getData() {
+		return data;
 	}
+
+	public void setData(byte[] data) {
+		this.data = data;
+	}
+
+	public long getSize() {
+		return size;
+	}
+
+	public void setSize(long size) {
+		this.size = size;
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	public List<Integer> getUserIds() {
+		return userIds;
+	}
+
+	public void setUserIds(List<Integer> userIds) {
+		this.userIds = userIds;
+	}
+
 	@Override
 	public String toString() {
-		return "Report [id=" + id + ", description=" + description + ", doctor_upload=" + doctor_upload + ", getId()="
-				+ getId() + ", getDescription()=" + getDescription() + ", getDoctor_upload()=" + getDoctor_upload()
-				+ ", getClass()=" + getClass() + ", hashCode()=" + hashCode() + ", toString()=" + super.toString()
-				+ "]";
+		return "Report{" +
+				"id=" + id +
+				", name='" + name + '\'' +
+				", type='" + type + '\'' +
+				", size=" + size +
+				'}';
 	}
-	
-	
-
 }

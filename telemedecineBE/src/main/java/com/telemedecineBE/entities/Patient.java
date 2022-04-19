@@ -72,6 +72,9 @@ public class Patient extends User{
 	@JsonManagedReference("patient-request")
 	private List<Requests> requests;
 
+	@ElementCollection
+	private List<Integer> reportIds;
+
 	public Patient(String fname, String lname, String email, String cellphone, String userpassword){
 		super(fname, lname, userpassword, UserType.PATIENT, email, cellphone);
 	}
