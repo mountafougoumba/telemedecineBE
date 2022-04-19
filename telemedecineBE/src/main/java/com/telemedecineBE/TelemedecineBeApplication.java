@@ -33,15 +33,9 @@ public class TelemedecineBeApplication implements CommandLineRunner {
     @Autowired
     private AddressRepository addressRepository;
 	@Autowired
-	private InsuranceRepository insuranceRepository;
-	@Autowired
 	private PrescriptionRepository prescriptionRepository;
 	@Autowired
-	private MedicalHistoryRepository medicalHistoryRepository;
-	@Autowired
 	private DoctorRepository doctorRepository;
-	@Autowired
-	private AppointmentRepository appointmentRepository;
 	@Autowired
 	private AdminRepository adminRepository;
 	@Autowired
@@ -84,40 +78,6 @@ public class TelemedecineBeApplication implements CommandLineRunner {
                         "Marietta",
                         "TX"));
 
-		/*add insurance entities
-		this.insuranceRepository.save(new Insurance(
-						"State Farm",
-						true,
-						false,
-						3.42
-		));
-		this.insuranceRepository.save(new Insurance(
-						"Aetna",
-						false,
-						true,
-						5.42
-		));
-		this.insuranceRepository.save(new Insurance(
-						"Medicare",
-						true,
-						true,
-						95.50
-		));
-
-
-		//add medicalHistory entities to database
-		this.medicalHistoryRepository.save(new MedicalHistory(
-				"Diabetes",
-				"Dr.Bill",
-				"2020-01-23"
-		));
-		this.medicalHistoryRepository.save(new MedicalHistory(
-				"Insomnia",
-				"Dr.Steve",
-				"1995-06-30",
-				"Averages 4 hours of sleep/day. Takes unisom for sleep."
-		));
-		*/
 		this.doctorRepository.save(new Doctor(
 				"Benjamin",
 				"Button",

@@ -52,6 +52,9 @@ public class Doctor extends User{
 	@JsonManagedReference(value = "doctor-prescriptions")
 	private List<Prescriptions> prescribedPrescriptions;
 
+	@ElementCollection
+	private List<Integer> reportIds;
+
 	public Doctor(String fname, String lname, String officeName, String specialty, String userpassword, String email,
 				  String cellphone) {
 		super(fname, lname, userpassword, UserType.DOCTOR, email, cellphone);

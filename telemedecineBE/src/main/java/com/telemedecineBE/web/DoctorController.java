@@ -85,41 +85,15 @@ public class DoctorController {
         return doctor.getRequests();
     }
 
-    @GetMapping("doctor/id={id}/patients")
-    List<Patient> getPatients(@PathVariable(value = "id")Integer id){
-        System.out.println("getDoctorPatients");
+    @GetMapping("/doctor/id={id}/reports")
+    List<Integer> getReportIds(@PathVariable Integer id){
+        System.out.println("getDoctorReportIds");
         Boolean exists = doctorRepository.existsById(id);
         if(!exists){
             throw new IllegalStateException("Doctor with id " + id + " does not exist.");
         }
         Doctor doctor = doctorRepository.findById(id).get();
-        return doctor.getPatients();
-    }
-
-    @PutMapping("doctor/id={id}/patients")
-    Patient addPatient(@PathVariable(value = "id")Integer id, @RequestBody Patient patient){
-        System.out.println("getDoctorPatients");
-        Boolean exists = doctorRepository.existsById(id);
-        if(!exists){
-            throw new IllegalStateException("Doctor with id " + id + " does not exist.");
-        }
-        Doctor doctor = doctorRepository.findById(id).get();
-        doctor.addPatient(patient);
-        doctorRepository.save(doctor);
-        return patient;
-    }
-
-    @PutMapping("doctor/id={id}/patients-remove")
-    Patient removePatient(@PathVariable(value = "id")Integer id, @RequestBody Patient patient){
-        System.out.println("removeDoctorPatients");
-        Boolean exists = doctorRepository.existsById(id);
-        if(!exists){
-            throw new IllegalStateException("Doctor with id " + id + " does not exist.");
-        }
-        Doctor doctor = doctorRepository.findById(id).get();
-        doctor.removePatient(patient);
-        doctorRepository.save(doctor);
-        return patient;
+        return doctor.getReportIds();
     }
 
     @PutMapping("/doctor/id={id}/add-address")
