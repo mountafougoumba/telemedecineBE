@@ -52,8 +52,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         "/request", "/requests", "/request/**",
                         "/message", "/messages", "/message/**","/messages/**",
                         "/prescriptions", "/prescription", "/prescription/**",
-                        "/appointment", "/appointments", "/appointment/**",
-                        "/report", "/reports", "/report/**").permitAll()
+                        "/appointment", "/appointments", "/appointment/**", "/video-chat-room", "/video-chat-room/**",
+                            "/report", "/reports", "/report/**").permitAll()
                 .anyRequest().authenticated()
                // .and()
                 //.formLogin()
