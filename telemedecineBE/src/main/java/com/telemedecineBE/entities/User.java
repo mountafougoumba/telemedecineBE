@@ -3,15 +3,14 @@ package com.telemedecineBE.entities;
 
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import com.telemedecineBE.Security.AES;
+import java.util.*;
 
 import javax.persistence.*;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.telemedecineBE.enumeration.UserType;
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 
 @Entity
@@ -19,7 +18,7 @@ import lombok.*;
 		uniqueConstraints = @UniqueConstraint(columnNames = {"EMAIL", "PHONE", "USERNAME"}))
 @Getter
 @Setter
-public class User implements Serializable{
+public class User implements Serializable, UserDetails {
 
 	/**
 	 *
@@ -35,6 +34,9 @@ public class User implements Serializable{
 			inverseJoinColumns = @JoinColumn(name = "habilitationID")
 	)
 	private List<Habilitations> habilitations = new ArrayList<>();
+
+	@ManyToMany(fetch = FetchType.EAGER)
+	private Collection<com.telemedecineBE.entities.Role> roles = new ArrayList<>();
 
 	@Column(name="LAST_NAME")
 	private String lname;
@@ -53,7 +55,26 @@ public class User implements Serializable{
 	@Column(name="STATE")
 	private Integer state=1;
 
+	//Spring Security
+
+
+
 	public User(){}
+
+	// For adding user role
+	public User(Integer id, List<Habilitations> habilitations, Collection<com.telemedecineBE.entities.Role> roles, String lname, String fname, String userName, String userpassword, UserType userType, String email, String cellphone, Integer state) {
+		this.id = id;
+		this.habilitations = habilitations;
+		this.roles = roles;
+		this.lname = lname;
+		this.fname = fname;
+		this.userName = userName;
+		this.userpassword = userpassword;
+		this.userType = userType;
+		this.email = email;
+		this.cellphone = cellphone;
+		this.state = state;
+	}
 
 	public User(Integer id, List<Habilitations> habilitations, String lname, String fname, String userName, String userpassword, UserType userType, String email, String cellphone, Integer state) {
 		this.id = id;
@@ -107,10 +128,11 @@ public class User implements Serializable{
 		if(userType == null){
 			throw new IllegalStateException("user type " + userType + "does not exist");
 		}
+
 	}
 
 	public User(String first, String last,
-				String password,  UserType userType,  String email,
+				String password, UserType userType, String email,
 				String cellphone) {
 		super();
 		this.fname = first;
@@ -133,5 +155,65 @@ public class User implements Serializable{
 				+ "]";
 	}
 
+	public Collection<com.telemedecineBE.entities.Role> getRoles() {
+		return roles;
+	}
 
+	public void setRoles(Set<com.telemedecineBE.entities.Role> roles) {
+		this.roles = roles;
+	}
+
+	public void addRole(com.telemedecineBE.entities.Role role) {
+		this.roles.add(role);
+	}
+
+	// For Spring Security
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+
+		List<GrantedAuthority> roles = new ArrayList<>();
+		roles.add(new com.telemedecineBE.entities.Role("ROLE_PATIENT"));
+		roles.add(new com.telemedecineBE.entities.Role("ROLE_DOCTOR"));
+		roles.add(new com.telemedecineBE.entities.Role("ROLE_ADMIN"));
+		return roles;
+	}
+
+	public Collection<com.telemedecineBE.entities.Role> setRole(){
+		return this.roles;
+	}
+	// For Spring Security
+	@Override
+	public String getPassword() {
+		return this.userpassword;
+	}
+
+	// For Spring Security
+	@Override
+	public String getUsername() {
+		return this.userName;
+	}
+
+	// For Spring Security
+	@Override
+	public boolean isAccountNonExpired() {
+		return true;
+	}
+
+	// For Spring Security
+	@Override
+	public boolean isAccountNonLocked() {
+		return true;
+	}
+
+	// For Spring Security
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
+
+	// For Spring Security
+	@Override
+	public boolean isEnabled() {
+		return true;
+	}
 }
