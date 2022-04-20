@@ -1,32 +1,32 @@
 package com.telemedecineBE.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-
-/*
-public enum Role {
-    USER, ADMIN
-}
-
- */
+import javax.persistence.*;
 
 
 @Entity
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class Role  {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+@Table(name = "role")
+public class Role implements GrantedAuthority {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
+    private String authority;
 
-    private String name;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    public Role(){}
+
+    public Role (String role){
+        this.authority = role;
+    }
+
+    @Override
+    public String getAuthority() {
+        return null;
+    }
 
     public Integer getId() {
         return id;
@@ -36,14 +36,15 @@ public class Role  {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public void setAuthority(String authority) {
+        this.authority = authority;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public User getUser() {
+        return user;
     }
 
-
+    public void setUser(User user) {
+        this.user = user;
+    }
 }
-
