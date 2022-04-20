@@ -172,9 +172,9 @@ public class User implements Serializable, UserDetails {
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 
 		List<GrantedAuthority> roles = new ArrayList<>();
-		roles.add(new com.telemedecineBE.entities.Role("ROLE_PATIENT"));
-		roles.add(new com.telemedecineBE.entities.Role("ROLE_DOCTOR"));
-		roles.add(new com.telemedecineBE.entities.Role("ROLE_ADMIN"));
+		//roles.add(new com.telemedecineBE.entities.Role("ROLE_PATIENT"));
+		//roles.add(new com.telemedecineBE.entities.Role("ROLE_DOCTOR"));
+		//roles.add(new com.telemedecineBE.entities.Role("ROLE_ADMIN"));
 		return roles;
 	}
 
