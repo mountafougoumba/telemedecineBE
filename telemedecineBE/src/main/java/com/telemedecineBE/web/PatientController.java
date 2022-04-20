@@ -247,8 +247,8 @@ public class PatientController {
 			currentPatient.setCellphone(patient.getCellphone());
 		}
 
-		if(patient.getUserName() != null && patient.getUserName() .length() > 0 && patient.getUserName()  != currentPatient.getUserName() && !userDao.existsByUserName(patient.getUserName())){
-			currentPatient.setUserName(patient.getUserName() );
+		if(patient.getUsername() != null && patient.getUsername() .length() > 0 && patient.getUsername()  != currentPatient.getUsername() && !userDao.existsByUserName(patient.getUsername())){
+			currentPatient.setUserName(patient.getUsername() );
 		}
 
 		if(patient.getUserpassword() != null && patient.getUserpassword().length() > 0 && patient.getUserpassword() != currentPatient.getUserpassword()){
