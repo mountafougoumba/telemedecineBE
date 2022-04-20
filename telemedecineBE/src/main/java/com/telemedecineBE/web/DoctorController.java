@@ -166,8 +166,8 @@ public class DoctorController {
             currentDoctor.setFname(doctor.getFname());
         }
 
-        if(doctor.getUserName() != null && doctor.getUserName() .length() > 0 && doctor.getUserName()  != currentDoctor.getUserName() && !userDao.existsByUserName(doctor.getUserName())){
-            currentDoctor.setUserName(doctor.getUserName() );
+        if(doctor.getUsername() != null && doctor.getUsername() .length() > 0 && doctor.getUsername()  != currentDoctor.getUsername() && !userDao.existsByUserName(doctor.getUsername())){
+            currentDoctor.setUserName(doctor.getUsername() );
         }
 
         if(doctor.getUserpassword() != null && doctor.getUserpassword().length() > 0 && doctor.getUserpassword() != currentDoctor.getUserpassword()){

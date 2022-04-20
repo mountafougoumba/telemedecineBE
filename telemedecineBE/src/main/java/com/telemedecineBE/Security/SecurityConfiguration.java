@@ -76,11 +76,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
         http
                 .authorizeRequests()
-                .antMatchers("/validate","/authenticate").permitAll()
-                .antMatchers(HttpMethod.OPTIONS,"/**").permitAll()
+                .antMatchers("/validate","/authenticate", "/report/download/**").permitAll()
+                .antMatchers(HttpMethod.OPTIONS,"/**","/report/download/**").permitAll()
                 .antMatchers(HttpMethod.POST,
-                        "/login", "/logout").permitAll()
-                .antMatchers(HttpMethod.PUT, "/register").permitAll()
+                        "/login", "/logout", "/report/download/**").permitAll()
+                .antMatchers(HttpMethod.PUT, "/register", "/report/download/**").permitAll()
                 .anyRequest().authenticated()
                // .and()
                 //.formLogin()

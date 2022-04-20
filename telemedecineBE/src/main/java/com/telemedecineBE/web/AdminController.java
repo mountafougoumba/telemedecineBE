@@ -137,8 +137,8 @@ public class AdminController {
             currentAdmin.setCellphone(admin.getCellphone());
         }
 
-        if(admin.getUserName() != null && admin.getUserName() .length() > 0 && admin.getUserName()  != currentAdmin.getUserName() && !userDao.existsByUserName(admin.getUserName())){
-            currentAdmin.setUserName(admin.getUserName() );
+        if(admin.getUsername() != null && admin.getUsername() .length() > 0 && admin.getUsername()  != currentAdmin.getUsername() && !userDao.existsByUserName(admin.getUsername())){
+            currentAdmin.setUserName(admin.getUsername() );
         }
 
         if(admin.getUserpassword() != null && admin.getUserpassword().length() > 0 && admin.getUserpassword() != currentAdmin.getUserpassword()){
