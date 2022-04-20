@@ -20,7 +20,14 @@ public class VideoChatController {
             @PathVariable(value="doctor_id")Integer doctor_id,
             @PathVariable(value="patient_id")Integer patient_id
     ) {
-        return this.vcr.findVideoChatRoom(doctor_id, patient_id);
+        VideoChat vc = this.vcr.findVideoChatRoom(doctor_id, patient_id);
+
+        if(vc == null) {
+            vc = new VideoChat(doctor_id, patient_id);
+            this.vcr.save(vc);
+        }
+
+        return vc;
     }
 
     @PostMapping("/video-chat-room/{doctor_id}/{patient_id}")
@@ -33,14 +40,4 @@ public class VideoChatController {
         return vc;
     }
 
-    void verifyDoctorAndPatient(Integer doctor_id, Integer patient_id) {
-        Boolean doctorExist = this.vcr.existsById(doctor_id);
-        if(!doctorExist){
-            throw new IllegalStateException("Doctor with id " + doctor_id + " does not exist");
-        }
-        Boolean patientExist = this.vcr.existsById(patient_id);
-        if(!patientExist){
-            throw new IllegalStateException("Patient with id " + patientExist + " does not exist");
-        }
-    }
 }
