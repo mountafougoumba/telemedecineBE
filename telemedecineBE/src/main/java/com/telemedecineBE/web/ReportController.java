@@ -51,7 +51,7 @@ public class ReportController {
         Optional<Report> test = reportRep.findById(id);
         if(test.isPresent()){
             Report report = test.get();
-            report.setUrl(AES.decrypt(report.getUrl(), this.secretKey));
+            //report.setUrl(AES.decrypt(report.getUrl(), this.secretKey));
             return report;
         } else {
             throw new IllegalStateException("Report with id " + id + " does not exist!");
@@ -76,7 +76,7 @@ public class ReportController {
     List<Report> getReports (){
         List<Report> reports = reportRep.findAll();
         for(Report rep: reports){
-            rep.setUrl(AES.decrypt(rep.getUrl(), this.secretKey));
+            //rep.setUrl(AES.decrypt(rep.getUrl(), this.secretKey));
         }
         return reports;
     }
@@ -216,7 +216,7 @@ public class ReportController {
         rep = this.sendReport(userId, rep);
         rep.setSize(rep.getData().length);
         System.out.println(rep.getData());
-        rep.setUrl(AES.encrypt(rep.getUrl(), this.secretKey));
+        //rep.setUrl(AES.encrypt(rep.getUrl(), this.secretKey));
         reportRep.save(rep);
         return rep;
     }

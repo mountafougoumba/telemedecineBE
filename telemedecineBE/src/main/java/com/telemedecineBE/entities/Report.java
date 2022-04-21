@@ -26,7 +26,6 @@ public class Report implements Serializable{
 	private String type;
 	private String url;
 	private long size;
-	@JsonIgnore
 	@Lob
 	private byte[] data;
 	@ElementCollection
