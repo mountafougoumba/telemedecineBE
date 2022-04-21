@@ -66,6 +66,17 @@ public class MessageController {
         return message;
     }
 
+    @PostMapping("/message/messageType={messageType}")
+    Message newMessage(@PathVariable(value="messageType") MessageType messageType, @RequestBody Message message){
+        //set date now
+        message.setDate(LocalDate.now());
+        String encodedMessage = AES.encrypt(message.getContent(), this.secretKey);
+        message.setContent(encodedMessage);
+        message.setMessageType(messageType);
+        messageRepository.save(message);
+        return message;
+    }
+
     @DeleteMapping("/message/id={id}")
     void deleteMessageById(@PathVariable(value="id") Integer id){
         Boolean exists = messageRepository.existsById(id);

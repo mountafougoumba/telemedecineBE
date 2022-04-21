@@ -76,6 +76,23 @@ public class UserController {
         return user;
     }
 
+    @GetMapping("/user/email={email}")
+    User getUserByEmail(@PathVariable String email){
+        Boolean exists = userDao.existsByEmail(email);
+        if(!exists){
+            throw new IllegalStateException("User with email " + email + " does not exist!");
+        }
+        return userDao.findByEmail(email);
+    }
+
+    @GetMapping("/user/id={id}")
+    User getUser(@PathVariable Integer id){
+        Boolean exists = userDao.existsById(id);
+        if(!exists){
+            throw new IllegalStateException("User with id " + id + " does not exist!");
+        }
+        return userDao.findById(id);
+    }
 
 
     @PostMapping("/authenticate")

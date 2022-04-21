@@ -36,6 +36,8 @@ public class Message  implements Serializable{
 	private Integer receiver_id;
 	@Column(name="MESSAGE_TYPE")
 	private MessageType messageType;
+	@Column(name="SUBJECT")
+	private String subject;
 
 	public Message(String content, LocalDate date){
 		super();
@@ -54,6 +56,14 @@ public class Message  implements Serializable{
 		this.content = content;
 		this.messageType = messageType;
 		this.date = LocalDate.now();
+	}
+
+	public Message(String content, MessageType messageType, String subject){
+		super();
+		this.content = content;
+		this.messageType = messageType;
+		this.date = LocalDate.now();
+		this.subject = subject;
 	}
 
 	public static long getSerialversionuid() {
