@@ -5,6 +5,7 @@ import com.telemedecineBE.dao.*;
 import com.telemedecineBE.entities.*;
 import com.telemedecineBE.enumeration.UserType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -15,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.transaction.Transactional;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -58,16 +60,16 @@ public class ReportController {
 
 
     @GetMapping("/report/download/id={id}")
-    public ResponseEntity<byte[]> downloadReport(@PathVariable Integer id){
+    public ResponseEntity<ByteArrayResource> downloadReport(@PathVariable Integer id){
         Boolean exists = reportRep.existsById(id);
         if(!exists){
             throw new IllegalStateException("Report with id " + id + " does not exist!");
         }
         Report report = reportRep.findById(id).get();
-        HttpHeaders httpHeaders =  new HttpHeaders();
-        httpHeaders.set(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_OCTET_STREAM_VALUE);
-        httpHeaders.set(HttpHeaders.CONTENT_DISPOSITION, ContentDisposition.attachment().filename(report.getName()).build().toString());
-        return ResponseEntity.ok().headers(httpHeaders).body(report.getData());
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(report.getType()))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + report.getName() + "\"")
+                .body(new ByteArrayResource(report.getData()));
     }
 
     @GetMapping("/reports")
