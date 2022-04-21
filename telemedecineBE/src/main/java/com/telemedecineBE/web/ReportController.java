@@ -206,7 +206,7 @@ public class ReportController {
             @PathVariable(value="userId")Integer userId
             ) throws IOException {
         String fileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
-        Report rep = new Report(fileName, file.getContentType(), file.getBytes());
+        Report rep = new Report(fileName, file.getContentType(), file.getInputStream().readAllBytes());
         rep = reportRep.save(rep);
         rep.setUrl(ServletUriComponentsBuilder
                         .fromCurrentContextPath()
@@ -215,6 +215,7 @@ public class ReportController {
                 .toUriString());
         rep = this.sendReport(userId, rep);
         rep.setSize(rep.getData().length);
+        System.out.println(rep.getData());
         rep.setUrl(AES.encrypt(rep.getUrl(), this.secretKey));
         reportRep.save(rep);
         return rep;
