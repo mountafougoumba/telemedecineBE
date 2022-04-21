@@ -1,6 +1,7 @@
 package com.telemedecineBE.dao;
 
 import com.telemedecineBE.entities.Message;
+import com.telemedecineBE.enumeration.MessageType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -13,6 +14,8 @@ public interface MessageRepository extends JpaRepository<Message, Serializable> 
 
     @Query("select m from Message m where m.sender_id = ?1 or m.receiver_id = ?1")
     public List<Message> findBySender(Integer sender_id);
+
+    public List<Message> findByMessageType(MessageType messageType);
 
     public Message findById(Integer id);
 

@@ -1,5 +1,6 @@
 package com.telemedecineBE.entities;
 
+import com.telemedecineBE.enumeration.MessageType;
 import lombok.*;
 
 import java.io.Serializable;
@@ -33,6 +34,8 @@ public class Message  implements Serializable{
 	private Integer sender_id;
 	@Column(name="RECEIVER_ID")
 	private Integer receiver_id;
+	@Column(name="MESSAGE_TYPE")
+	private MessageType messageType;
 
 	public Message(String content, LocalDate date){
 		super();
@@ -43,6 +46,13 @@ public class Message  implements Serializable{
 	public Message(String content){
 		super();
 		this.content = content;
+		this.date = LocalDate.now();
+	}
+
+	public Message(String content, MessageType messageType){
+		super();
+		this.content = content;
+		this.messageType = messageType;
 		this.date = LocalDate.now();
 	}
 

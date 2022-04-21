@@ -1,6 +1,7 @@
 package com.telemedecineBE.web;
 
 import com.telemedecineBE.entities.Message;
+import com.telemedecineBE.enumeration.MessageType;
 import org.springframework.web.bind.annotation.*;
 import com.telemedecineBE.dao.MessageRepository;
 
@@ -30,6 +31,15 @@ public class MessageController {
     @GetMapping("/messages/sender_id={sender_id}")
     List<Message> getAllMessagesBySender(@PathVariable(value="sender_id")Integer sender_id){
         List<Message> messages = messageRepository.findBySender(sender_id);
+        messages.forEach(message -> {
+            message.setContent(AES.decrypt(message.getContent(), this.secretKey));
+        });
+        return messages;
+    }
+
+    @GetMapping("/messages/messageType={messageType}")
+    List<Message> getAllMessagesByType(@PathVariable(value = "messageType") MessageType messageType){
+        List<Message> messages = messageRepository.findByMessageType(messageType);
         messages.forEach(message -> {
             message.setContent(AES.decrypt(message.getContent(), this.secretKey));
         });
