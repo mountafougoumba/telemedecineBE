@@ -161,7 +161,7 @@ public class TelemedecineBeApplication implements CommandLineRunner {
 				patientRepository.findByEmail("dLewis@gmail.com"),
 				doctorRepository.findByEmail("jCod@gmail.com")
 		));
-
+/*
 		this.requestRepository.save(new Requests(
 				this.prescriptionRepository.findById(20),
 				RequestType.PRESCRIPTION_REQUEST,
@@ -185,7 +185,7 @@ public class TelemedecineBeApplication implements CommandLineRunner {
 				patientRepository.findByEmail("dLewis@gmail.com"),
 				doctorRepository.findByEmail("jCod@gmail.com")
 		));
-
+*/
 
         this.requestRepository.save(new Requests(
                 new Appointment(
