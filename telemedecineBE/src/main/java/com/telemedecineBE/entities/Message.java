@@ -26,7 +26,7 @@ public class Message  implements Serializable{
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-	@Column(name="CONTENT")
+	@Column(name="CONTENT", length=5000)
 	private String content;
 	@Column(name="DATE")
 	private LocalDate date;
@@ -38,17 +38,21 @@ public class Message  implements Serializable{
 	private MessageType messageType;
 	@Column(name="SUBJECT")
 	private String subject;
+	@Column (name="VIEWED")
+	private Boolean viewed = false;
 
 	public Message(String content, LocalDate date){
 		super();
 		this.content = content;
 		this.date = date;
+		this.viewed = false;
 	}
 
 	public Message(String content){
 		super();
 		this.content = content;
 		this.date = LocalDate.now();
+		this.viewed = false;
 	}
 
 	public Message(String content, MessageType messageType){
@@ -56,6 +60,7 @@ public class Message  implements Serializable{
 		this.content = content;
 		this.messageType = messageType;
 		this.date = LocalDate.now();
+		this.viewed = false;
 	}
 
 	public Message(String content, MessageType messageType, String subject){
@@ -64,6 +69,7 @@ public class Message  implements Serializable{
 		this.messageType = messageType;
 		this.date = LocalDate.now();
 		this.subject = subject;
+		this.viewed = false;
 	}
 
 	public static long getSerialversionuid() {

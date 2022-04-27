@@ -66,6 +66,18 @@ public class MessageController {
         return message;
     }
 
+    @PutMapping("/message/viewed")
+    Message viewed(@RequestBody Message message){
+        Boolean exists = messageRepository.existsById(message.getId());
+        if(!exists){
+            throw new IllegalStateException("message with id " + message.getId() + " does not exist");
+        }
+        System.out.println("getMessageById");
+        Message m = messageRepository.findById(message.getId());
+        m.setViewed(true);
+        return messageRepository.save(m);
+    }
+
     @PostMapping("/message/messageType={messageType}")
     Message newMessage(@PathVariable(value="messageType") MessageType messageType, @RequestBody Message message){
         //set date now
@@ -77,14 +89,27 @@ public class MessageController {
         return message;
     }
 
-    @DeleteMapping("/message/id={id}")
-    void deleteMessageById(@PathVariable(value="id") Integer id){
+    @DeleteMapping("/message/id={id}/userId={userId}")
+    void deleteMessageById(@PathVariable(value="id") Integer id, @PathVariable(value="userId") String userId){
         Boolean exists = messageRepository.existsById(id);
         if(!exists){
             throw new IllegalStateException("message with id " + id + " does not exist.");
         }
-        System.out.println("deleteMessageById");
-        messageRepository.deleteById(id);
+        Message m = messageRepository.getById(id);
+        if(m.getReceiver_id().toString().equals(userId)){
+            System.out.println("RECEIVER DELETE");
+            m.setReceiver_id(0);
+            messageRepository.save(m);
+        }
+        if(m.getSender_id().toString().equals(userId)){
+            System.out.println("SENDER DELETE");
+            m.setSender_id(0);
+            messageRepository.save(m);
+        }
+        if(m.getReceiver_id() == null && m.getSender_id() == null){
+            messageRepository.deleteById(id);
+        }
+
     }
 
     @PutMapping("/message/id={id}")
