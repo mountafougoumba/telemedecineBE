@@ -185,7 +185,7 @@ public class TelemedecineBeApplication implements CommandLineRunner {
 				patientRepository.findByEmail("dLewis@gmail.com"),
 				doctorRepository.findByEmail("jCod@gmail.com")
 		));
-*/
+
 
         this.requestRepository.save(new Requests(
                 new Appointment(
@@ -202,6 +202,9 @@ public class TelemedecineBeApplication implements CommandLineRunner {
                 doctorRepository.findByEmail("jCod@gmail.com"),
                 adminRepository.findByEmail("fswetnam@gmail.com")
         ));
+
+
+ */
 
         this.requestRepository.save(new Requests(
                 new Appointment(
@@ -250,7 +253,7 @@ public class TelemedecineBeApplication implements CommandLineRunner {
 				doctorRepository.findByEmail("benB@gmail.com"),
 				adminRepository.findByEmail("fswetnam@gmail.com")
 		));
-
+/*
 		this.requestRepository.save(new Requests(
 				new Appointment(
 						LocalDateTime.of(2022, 4, 6, 14, 30),
@@ -282,6 +285,8 @@ public class TelemedecineBeApplication implements CommandLineRunner {
 				doctorRepository.findByEmail("benB@gmail.com"),
 				adminRepository.findByEmail("fswetnam@gmail.com")
 		));
+
+ */
 
 	}
 
