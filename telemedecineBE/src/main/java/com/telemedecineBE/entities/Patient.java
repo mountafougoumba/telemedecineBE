@@ -120,7 +120,7 @@ public class Patient extends User{
 		 */
 		this.setFname(AES.encrypt(this.getFname(), secretKey));
 		this.setLname(AES.encrypt(this.getLname(), secretKey));
-		this.setEmail(AES.encrypt(this.getEmail(), secretKey));
+		//this.setEmail(AES.encrypt(this.getEmail(), secretKey));
 		this.setUserName(AES.encrypt(this.getUsername(), secretKey));
 		this.setCellphone(AES.encrypt(this.getCellphone(), secretKey));
 		this.setDob(AES.encrypt(this.getDob(), secretKey));
@@ -129,7 +129,7 @@ public class Patient extends User{
 	public void decryptUserData() {
 		this.setFname(AES.decrypt(this.getFname(), secretKey));
 		this.setLname(AES.decrypt(this.getLname(), secretKey));
-		this.setEmail(AES.decrypt(this.getEmail(), secretKey));
+		//this.setEmail(AES.decrypt(this.getEmail(), secretKey));
 		this.setUserName(AES.decrypt(this.getUsername(), secretKey));
 		this.setCellphone(AES.decrypt(this.getCellphone(), secretKey));
 		this.setDob(AES.decrypt(this.getDob(), secretKey));

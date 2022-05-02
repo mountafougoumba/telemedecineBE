@@ -1,7 +1,9 @@
 package com.telemedecineBE.web;
 
 import com.telemedecineBE.dao.MedicalHistoryRepository;
+import com.telemedecineBE.dao.PatientRepository;
 import com.telemedecineBE.entities.MedicalHistory;
+import com.telemedecineBE.entities.Patient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,10 +15,12 @@ import java.util.List;
 public class MedicalHistoryController {
 
     private MedicalHistoryRepository medicalHistoryRepository;
+    private PatientRepository patientRepository;
 
     @Autowired
-    MedicalHistoryController(MedicalHistoryRepository medicalHistoryRepository){
+    MedicalHistoryController(MedicalHistoryRepository medicalHistoryRepository, PatientRepository patientRepository){
         this.medicalHistoryRepository = medicalHistoryRepository;
+        this.patientRepository = patientRepository;
     }
 
     //get all medical history (conditions)
@@ -94,6 +98,12 @@ public class MedicalHistoryController {
             throw new IllegalStateException("Medical History with id " + id + " does not exist.");
         }
         System.out.println("deleteMedicalHistoryById");
+        MedicalHistory mH = medicalHistoryRepository.findById(id);
+        Patient pat = mH.getPatient();
+        List<MedicalHistory> mHs = pat.getMedicalHistory();
+        mHs.removeIf(m -> m.getId() == mH.getId());
+        pat.setMedicalHistory(mHs);
+        patientRepository.save(pat);
         medicalHistoryRepository.deleteById(id);
     }
 
