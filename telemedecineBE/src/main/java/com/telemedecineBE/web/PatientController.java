@@ -29,7 +29,11 @@ public class PatientController {
 	@GetMapping("/patients")
 	List<Patient> getAllPatients(){
 		System.out.println("getAllPatients");
-		return patientRepository.findAll();
+		List<Patient> patients = patientRepository.findAll();
+		for(Patient p: patients){
+			p.decryptUserData();
+		}
+		return patients;
 	}
 
 	@GetMapping("patient/id={id}/appointments")
@@ -230,6 +234,7 @@ public class PatientController {
 		}
 
 		Patient currentPatient = patientRepository.findById(id);
+		currentPatient.decryptUserData();
 
 		if(patient.getFname() != null && patient.getFname().length() > 0 && currentPatient.getFname() != patient.getFname()){
 			currentPatient.setFname(patient.getFname());
@@ -250,10 +255,11 @@ public class PatientController {
 		if(patient.getUsername() != null && patient.getUsername() .length() > 0 && patient.getUsername()  != currentPatient.getUsername() && !userDao.existsByUserName(patient.getUsername())){
 			currentPatient.setUserName(patient.getUsername() );
 		}
-
+/*
 		if(patient.getUserpassword() != null && patient.getUserpassword().length() > 0 && patient.getUserpassword() != currentPatient.getUserpassword()){
 			currentPatient.setUserpassword(patient.getUserpassword());
 		}
+ */
 
 		if(patient.getUserType() != null && patient.getUserType() != currentPatient.getUserType()){
 			currentPatient.setUserType(patient.getUserType());

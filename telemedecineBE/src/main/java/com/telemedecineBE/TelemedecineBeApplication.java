@@ -47,36 +47,30 @@ public class TelemedecineBeApplication implements CommandLineRunner {
 	@Override
 	public void run(String...args) throws Exception {
         //Add patient entities
-		this.patientRepository.save(new Patient("Denise",
-							"Smith",
-							"dSmith@gmail.com",
-							"123-456-7890",
+		Patient patient1 = new Patient("Denise",
+				"Smith",
+				"dSmith@gmail.com",
+				"123-456-7890",
 				"1997-11-22",
-				BCrypt.hashpw("password", BCrypt.gensalt(TelemedecineBeApplication.strength))));
-		this.patientRepository.save(new Patient("Daniel",
-						"Lewis",
-						"dLewis@gmail.com",
-						"098-765-4321",
+				BCrypt.hashpw("password", BCrypt.gensalt(TelemedecineBeApplication.strength)));
+		Patient patient2 = new Patient("Daniel",
+				"Lewis",
+				"dLewis@gmail.com",
+				"098-765-4321",
 				"1996-10-21",
-				BCrypt.hashpw("password123", BCrypt.gensalt(TelemedecineBeApplication.strength))));
-		this.patientRepository.save(new Patient("Stanley",
-						"Goodman",
-						"stanleyG@gmail.com",
-						"345-453-2345",
+				BCrypt.hashpw("password123", BCrypt.gensalt(TelemedecineBeApplication.strength)));
+		Patient patient3 = new Patient("Stanley",
+				"Goodman",
+				"stanleyG@gmail.com",
+				"345-453-2345",
 				"1995-09-20",
-				BCrypt.hashpw("password", BCrypt.gensalt(TelemedecineBeApplication.strength))));
-
-        //Add address entities
-        this.addressRepository.save(new Address(
-                        "34212",
-                        "123 Developer Way",
-                        "Kennesaw",
-                        "GA"));
-        this.addressRepository.save(new Address(
-                        "23423",
-                        "456 Project Lane",
-                        "Marietta",
-                        "TX"));
+				BCrypt.hashpw("password", BCrypt.gensalt(TelemedecineBeApplication.strength)));
+		patient1.encryptUserData();
+		patient2.encryptUserData();
+		patient3.encryptUserData();
+		this.patientRepository.save(patient1);
+		this.patientRepository.save(patient2);
+		this.patientRepository.save(patient3);
 
 		this.doctorRepository.save(new Doctor(
 				"Benjamin",
@@ -162,6 +156,18 @@ public class TelemedecineBeApplication implements CommandLineRunner {
 				doctorRepository.findByEmail("jCod@gmail.com")
 		));
 /*
+		        //Add address entities
+        this.addressRepository.save(new Address(
+                        "34212",
+                        "123 Developer Way",
+                        "Kennesaw",
+                        "GA"));
+        this.addressRepository.save(new Address(
+                        "23423",
+                        "456 Project Lane",
+                        "Marietta",
+                        "TX"));
+
 		this.requestRepository.save(new Requests(
 				this.prescriptionRepository.findById(20),
 				RequestType.PRESCRIPTION_REQUEST,

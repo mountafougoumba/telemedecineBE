@@ -82,7 +82,9 @@ public class RequestController {
             throw new IllegalStateException("Requests with id " + id + " does not exist.");
         }
         Requests requests = requestRepository.findById(id);
-        return requests.getRequestingPatient();
+        Patient patient = requests.getRequestingPatient();
+        patient.decryptUserData();
+        return patient;
     }
 
     @PutMapping("/request/patient")

@@ -54,7 +54,9 @@ public class PrescriptionController {
         }
         System.out.println("getPrescriptionById");
         Prescriptions ps = prescriptionRepository.findById(id);
-        return ps.getPatient();
+        Patient patient = ps.getPatient();
+        patient.decryptUserData();
+        return patient;
     }
 
     @PostMapping("/prescription")

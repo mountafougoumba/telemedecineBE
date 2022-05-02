@@ -140,10 +140,12 @@ public class AdminController {
         if(admin.getUsername() != null && admin.getUsername() .length() > 0 && admin.getUsername()  != currentAdmin.getUsername() && !userDao.existsByUserName(admin.getUsername())){
             currentAdmin.setUserName(admin.getUsername() );
         }
-
+/*
         if(admin.getUserpassword() != null && admin.getUserpassword().length() > 0 && admin.getUserpassword() != currentAdmin.getUserpassword()){
             currentAdmin.setUserpassword(admin.getUserpassword());
         }
+
+ */
 
         if(admin.getState() != null && admin.getState() > 0 && admin.getState() != currentAdmin.getState()){
             currentAdmin.setState(admin.getState());

@@ -3,6 +3,7 @@ package com.telemedecineBE.web;
 
 import com.telemedecineBE.Security.JwtUtil;
 import com.telemedecineBE.dao.RoleRepository;
+import com.telemedecineBE.entities.Patient;
 import com.telemedecineBE.entities.User;
 
 import com.telemedecineBE.dao.PatientRepository;
@@ -70,8 +71,15 @@ public class UserController {
         /**
          * Setting the password to this string so it doesn't display the hash on the front end
          * Do not save this. Only used to hide the password on the frontend
-         */
+
         user.setUserpassword("*****");
+         */
+
+        if(user.getUserType() == UserType.PATIENT){
+            Patient patient = this.patientRepository.findById(user.getId());
+            patient.decryptUserData();
+            return patient;
+        }
 
         return user;
     }
@@ -82,7 +90,13 @@ public class UserController {
         if(!exists){
             throw new IllegalStateException("User with email " + email + " does not exist!");
         }
-        return userDao.findByEmail(email);
+        User user = userDao.findByEmail(email);
+        if(user.getUserType() == UserType.PATIENT){
+            Patient patient = this.patientRepository.findById(user.getId());
+            patient.decryptUserData();
+            return patient;
+        } else
+            return userDao.findByEmail(email);
     }
 
     @GetMapping("/user/id={id}")
@@ -91,7 +105,13 @@ public class UserController {
         if(!exists){
             throw new IllegalStateException("User with id " + id + " does not exist!");
         }
-        return userDao.findById(id);
+        User user = userDao.findById(id);
+        if(user.getUserType() == UserType.PATIENT){
+            Patient patient = this.patientRepository.findById(id);
+            patient.decryptUserData();
+            return patient;
+        } else
+            return userDao.findById(id);
     }
 
 
@@ -209,11 +229,11 @@ public class UserController {
         if(user.getUsername() != null && user.getUsername() .length() > 0 && user.getUsername()  != currentUser.getUsername() && !userDao.existsByUserName(user.getUsername())){
             currentUser.setUserName(user.getUsername() );
         }
-
+/*
         if(user.getUserpassword() != null && user.getUserpassword().length() > 0 && user.getUserpassword() != currentUser.getUserpassword()){
             currentUser.setUserpassword(user.getUserpassword());
         }
-
+*/
         if(user.getUserType() != null && user.getUserType() != currentUser.getUserType()){
             currentUser.setUserType(user.getUserType());
         }

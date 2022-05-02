@@ -1,10 +1,12 @@
 package com.telemedecineBE.web;
 
+import com.telemedecineBE.TelemedecineBeApplication;
 import com.telemedecineBE.dao.DoctorRepository;
 import com.telemedecineBE.dao.UserDao;
 import com.telemedecineBE.entities.*;
 import com.telemedecineBE.enumeration.UserType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -71,7 +73,13 @@ public class DoctorController {
             throw new IllegalStateException("Doctor with id " + id + " does not exist.");
         }
         Doctor doctor = doctorRepository.findById(id).get();
-        return doctor.getPrescribedPrescriptions();
+        List<Prescriptions> prescriptions = doctor.getPrescribedPrescriptions();
+        for(Prescriptions p: prescriptions){
+            Patient patient = p.getPatient();
+            patient.decryptUserData();
+            p.setPatient(patient);
+        }
+        return prescriptions;
     }
 
     @GetMapping("doctor/id={id}/requests")
@@ -82,7 +90,13 @@ public class DoctorController {
             throw new IllegalStateException("Doctor with id " + id + " does not exist.");
         }
         Doctor doctor = doctorRepository.findById(id).get();
-        return doctor.getRequests();
+        List<Requests> requests = doctor.getRequests();
+        for(Requests req: requests){
+            Patient patient = req.getRequestingPatient();
+            patient.decryptUserData();
+            req.setRequestingPatient(patient);
+        }
+        return requests;
     }
 
     @GetMapping("/doctor/id={id}/reports")
@@ -114,7 +128,8 @@ public class DoctorController {
     Doctor create(@RequestBody Doctor doc){
         doc.setUserType(UserType.DOCTOR);
         doc.setUserName(doc.getEmail());
-        doc.setUserpassword(doc.getUserpassword());
+        String encodedPassword = BCrypt.hashpw(doc.getUserpassword(), BCrypt.gensalt(TelemedecineBeApplication.strength));
+        doc.setUserpassword(encodedPassword);
         doctorRepository.save(doc);
         return doc;
     }
@@ -169,10 +184,12 @@ public class DoctorController {
         if(doctor.getUsername() != null && doctor.getUsername() .length() > 0 && doctor.getUsername()  != currentDoctor.getUsername() && !userDao.existsByUserName(doctor.getUsername())){
             currentDoctor.setUserName(doctor.getUsername() );
         }
-
+/*
         if(doctor.getUserpassword() != null && doctor.getUserpassword().length() > 0 && doctor.getUserpassword() != currentDoctor.getUserpassword()){
             currentDoctor.setUserpassword(doctor.getUserpassword());
         }
+
+ */
 
         if(doctor.getUserType() != null && doctor.getUserType() != currentDoctor.getUserType()){
             currentDoctor.setUserType(doctor.getUserType());
