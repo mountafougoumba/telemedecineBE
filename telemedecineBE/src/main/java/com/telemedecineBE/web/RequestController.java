@@ -94,6 +94,28 @@ public class RequestController {
         return requestRepository.findByRequestingPatient(patient);
     }
 
+    @PutMapping("/request/id={id}/hide-admin")
+    Requests hideRequestFromAdmin(@PathVariable Integer id){
+        Boolean exists = requestRepository.existsById(id);
+        if(!exists){
+            throw new IllegalStateException("Request with id " + id + " does not exist.");
+        }
+        Requests requests = requestRepository.findById(id);
+        requests.setAdmin(null);
+        return requestRepository.save(requests);
+    }
+
+    @PutMapping("/request/id={id}/hide-doctor")
+    Requests hideRequestFromDoctor(@PathVariable Integer id){
+        Boolean exists = requestRepository.existsById(id);
+        if(!exists){
+            throw new IllegalStateException("Request with id " + id + " does not exist.");
+        }
+        Requests requests = requestRepository.findById(id);
+        requests.setDoctor(null);
+        return requestRepository.save(requests);
+    }
+
     @PostMapping("/request")
     Requests addRequest(@RequestBody Requests requests){
         System.out.println("addRequest");
